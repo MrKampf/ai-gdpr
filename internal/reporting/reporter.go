@@ -337,6 +337,38 @@ const htmlTemplate = `<!DOCTYPE html>
                     console.log('Snippet copied to clipboard');
                 });
             }
+
+            function addToWhitelist(value, btn) {
+                if (!confirm(`Are you sure you want to whitelist: "${value}"?\nIt will be hidden in future scans.`)) {
+                    return;
+                }
+
+                fetch('/whitelist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ value: value }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Visual feedback
+                        btn.innerHTML = '<svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+                        btn.disabled = true;
+                        
+                        // Optional: Fade out the row
+                        const row = btn.closest('tr');
+                        row.style.opacity = '0.5';
+                        row.classList.add('line-through', 'decoration-gray-500');
+                    } else {
+                        alert('Failed to whitelist item.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error connecting to server. Is the reviewer mode running?');
+                });
+            }
         </script>
     </main>
 

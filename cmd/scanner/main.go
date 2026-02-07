@@ -8,6 +8,7 @@ import (
 	"github.com/digimosa/ai-gdpr-scan/internal/ai"
 	"github.com/digimosa/ai-gdpr-scan/internal/config"
 	"github.com/digimosa/ai-gdpr-scan/internal/scanner"
+	"github.com/digimosa/ai-gdpr-scan/internal/server"
 )
 
 func main() {
@@ -15,6 +16,8 @@ func main() {
 	rootPath := flag.String("path", ".", "Root directory to scan")
 	workers := flag.Int("workers", 0, "Number of concurrent workers (default: auto)")
 	verbose := flag.Bool("verbose", false, "Enable verbose logging")
+	serve := flag.Bool("serve", false, "Start a web server to review results and manage whitelist after scan")
+	port := flag.String("port", "8080", "Port for the web server")
 	flag.Parse()
 
 	// Setup configuration
@@ -71,5 +74,15 @@ func main() {
 		fmt.Printf("Error saving HTML report: %v\n", err)
 	} else {
 		fmt.Printf("HTML report saved to: %s\n", htmlFile)
+	}
+
+	if *serve {
+		srv := server.NewServer(s.Report, s.Whitelist)
+		addr := fmt.Sprintf("0.0.0.0:%s", *port)
+		fmt.Printf("\n[SERVER] Starting review server at http://localhost:%s\n", *port)
+		fmt.Println("Press Ctrl+C to stop")
+		if err := srv.Start(addr); err != nil {
+			fmt.Printf("Server error: %v\n", err)
+		}
 	}
 }

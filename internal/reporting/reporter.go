@@ -339,7 +339,7 @@ const htmlTemplate = `<!DOCTYPE html>
             }
 
             function addToWhitelist(value, btn) {
-                if (!confirm(`Are you sure you want to whitelist: "${value}"?\nIt will be hidden in future scans.`)) {
+                if (!confirm("Are you sure you want to whitelist: \"" + value + "\"?\nIt will be hidden in future scans.")) {
                     return;
                 }
 

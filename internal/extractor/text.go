@@ -2,20 +2,22 @@ package extractor
 
 import (
 	"io"
-	"regexp"
+
+	"github.com/digimosa/ai-gdpr-scan/internal/extractor/detectors"
+	"github.com/digimosa/ai-gdpr-scan/internal/models"
 )
 
 // Scanner defines the interface for content scanning
 type ContentScanner interface {
-	Scan(reader io.Reader) ([]Match, error)
+	Scan(reader io.Reader) ([]models.Match, error)
 }
 
 // TextScanner implements scanning for plain text files
 // It now uses chunk-based reading to handle binary/mixed files robustly.
 type TextScanner struct{}
 
-func (s *TextScanner) Scan(reader io.Reader) ([]Match, error) {
-	var matches []Match
+func (s *TextScanner) Scan(reader io.Reader) ([]models.Match, error) {
+	var matches []models.Match
 
 	// Use a 64KB buffer for chunk-based reading
 	const bufSize = 64 * 1024
@@ -116,32 +118,28 @@ func sanitizeBytes(data []byte) []byte {
 	return out
 }
 
-func runRegexChecks(content string, baseOffset int64) []Match {
-	var matches []Match
+func runRegexChecks(content string, baseOffset int64) []models.Match {
+	var matches []models.Match
 
-	check := func(regex *regexp.Regexp, t FindingType) {
-		// FindStringIndex to get exact location
-		locs := regex.FindAllStringIndex(content, -1)
-		for _, loc := range locs {
-			start, end := loc[0], loc[1]
-			val := content[start:end]
-			matches = append(matches, Match{
-				Type:    t,
-				Value:   val,
-				Snippet: getSnippet(content, val),
-				Offset:  baseOffset + int64(start),
-			})
-		}
+	detectorsList := []detectors.Detector{
+		detectors.NewIBANDetector(),
+		detectors.NewCreditCardDetector(),
+		detectors.NewEmailDetector(),
+		detectors.NewPhoneDetector(),
+		detectors.NewNameDetector(),
+		detectors.NewIdentityKeywordDetector(),
+		detectors.NewFinancialKeywordDetector(),
+		detectors.NewOfficialIDKeywordDetector(),
+		detectors.NewSensitiveKeywordDetector(),
 	}
 
-	check(IBANRegex, TypeIBAN)
-	check(EmailRegex, TypeEmail)
-	check(PhoneRegex, TypePhone)
-	check(IdentityKeywords, TypeIdentity)
-	check(FinancialKeywords, TypeFinancial)
-	check(IDKeywords, TypeID)
-	check(SensitiveKeywords, TypeSensitive)
-	check(NameRegex, TypeName)
+	for _, d := range detectorsList {
+		found := d.Detect(content)
+		for i := range found {
+			found[i].Offset += baseOffset
+			matches = append(matches, found[i])
+		}
+	}
 
 	return matches
 }

@@ -5,13 +5,14 @@ import (
 	"io"
 	"os"
 
+	"github.com/digimosa/ai-gdpr-scan/internal/models"
 	"github.com/ledongthuc/pdf"
 )
 
 // PDFScanner implements scanning for PDF files
 type PDFScanner struct{}
 
-func (s *PDFScanner) Scan(reader io.Reader) ([]Match, error) {
+func (s *PDFScanner) Scan(reader io.Reader) ([]models.Match, error) {
 	// ledongthuc/pdf requires an io.ReaderAt and size.
 	// Since we are passed an io.Reader, we might need to read it into a buffer
 	// or modify the interface to accept a file path or require ReaderAt.
@@ -48,7 +49,7 @@ func (s *PDFScanner) Scan(reader io.Reader) ([]Match, error) {
 		return nil, err
 	}
 
-	var matches []Match
+	var matches []models.Match
 
 	// Iterate through pages
 	// Note: ledongthuc/pdf can be slow on large docs, consider timeouts in calling code
@@ -65,88 +66,11 @@ func (s *PDFScanner) Scan(reader io.Reader) ([]Match, error) {
 			continue // Skip page on error
 		}
 
-		// Reuse logic from TextScanner effectively by treating page content as lines
-		// Or perform regex directly on the page string
-
-		// Check IBAN
-		if found := IBANRegex.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeIBAN,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i), // Use page number as offset for PDFs
-			})
-		}
-
-		// Check Email
-		if found := EmailRegex.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeEmail,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check Phone
-		if found := PhoneRegex.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypePhone,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check Identity Keywords
-		if found := IdentityKeywords.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeIdentity,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check Financial Keywords
-		if found := FinancialKeywords.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeFinancial,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check ID Keywords
-		if found := IDKeywords.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeID,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check Sensitive Keywords
-		if found := SensitiveKeywords.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeSensitive,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
-
-		// Check Name
-		if found := NameRegex.FindString(content); found != "" {
-			matches = append(matches, Match{
-				Type:    TypeName,
-				Value:   found,
-				Snippet: getSnippet(content, found),
-				Offset:  int64(i),
-			})
-		}
+		// Use the centralized regex checks
+		// Offset is set to page number for PDF context
+		// We could try to map byte offset within page, but page number is more useful
+		pageFindings := runRegexChecks(content, int64(i))
+		matches = append(matches, pageFindings...)
 	}
 
 	return matches, nil

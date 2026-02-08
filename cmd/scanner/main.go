@@ -9,11 +9,13 @@ import (
 	"github.com/digimosa/ai-gdpr-scan/internal/config"
 	"github.com/digimosa/ai-gdpr-scan/internal/scanner"
 	"github.com/digimosa/ai-gdpr-scan/internal/server"
+	"github.com/digimosa/ai-gdpr-scan/internal/storage"
 )
 
 func main() {
 	// Parse CLI flags
 	rootPath := flag.String("path", ".", "Root directory to scan")
+	scan := flag.Bool("scan", false, "Execute scan immediately (CLI mode)")
 	workers := flag.Int("workers", 0, "Number of concurrent workers (default: auto)")
 	verbose := flag.Bool("verbose", false, "Enable verbose logging")
 	serve := flag.Bool("serve", false, "Start a web server to review results and manage whitelist after scan")
@@ -26,6 +28,13 @@ func main() {
 	cfg.Verbose = *verbose
 	if *workers > 0 {
 		cfg.Workers = *workers
+	}
+
+	// Initialize Storage
+	fmt.Printf("Initializing database at: %s\n", cfg.DBPath)
+	if err := storage.Init(cfg.DBPath); err != nil {
+		fmt.Printf("[ERROR] Failed to initialize database: %v\n", err)
+		return
 	}
 
 	fmt.Printf("Starting GDPR Scan on: %s\n", cfg.RootPath)
@@ -48,41 +57,49 @@ func main() {
 	}
 	fmt.Println("OK")
 
-	start := time.Now()
-
-	// Initialize and start scanner
+	// Initialize scanner
 	s := scanner.NewScanner(cfg)
 
-	// The Start method runs the walker and workers in background
-	s.Start()
+	// CLI Mode: Scan immediately if requested
+	if *scan {
+		start := time.Now()
 
-	// Wait uses the waitgroup to ensure all workers finish
-	s.Wait()
+		// The Start method runs the walker and workers in background
+		s.Start()
+		s.Wait()
 
-	fmt.Printf("\nScan complete in %s\n", time.Since(start))
+		fmt.Printf("\nScan complete in %s\n", time.Since(start))
 
-	// Save Reports
-	jsonFile := "scan_report.json"
-	if err := s.Report.SaveJSON(jsonFile); err != nil {
-		fmt.Printf("Error saving JSON report: %v\n", err)
-	} else {
-		fmt.Printf("JSON report saved to: %s\n", jsonFile)
+		// Save Reports
+		jsonFile := "scan_report.json"
+		if err := s.Report.SaveJSON(jsonFile); err != nil {
+			fmt.Printf("Error saving JSON report: %v\n", err)
+		} else {
+			fmt.Printf("JSON report saved to: %s\n", jsonFile)
+		}
+
+		htmlFile := "scan_report.html"
+		if err := s.Report.SaveHTML(htmlFile); err != nil {
+			fmt.Printf("Error saving HTML report: %v\n", err)
+		} else {
+			fmt.Printf("HTML report saved to: %s\n", htmlFile)
+		}
 	}
 
-	htmlFile := "scan_report.html"
-	if err := s.Report.SaveHTML(htmlFile); err != nil {
-		fmt.Printf("Error saving HTML report: %v\n", err)
-	} else {
-		fmt.Printf("HTML report saved to: %s\n", htmlFile)
-	}
-
+	// Server Mode: Start web UI
 	if *serve {
-		srv := server.NewServer(s.Report, s.Whitelist)
+		srv := server.NewServer(cfg, s.Report, s.Whitelist)
 		addr := fmt.Sprintf("0.0.0.0:%s", *port)
 		fmt.Printf("\n[SERVER] Starting review server at http://localhost:%s\n", *port)
 		fmt.Println("Press Ctrl+C to stop")
 		if err := srv.Start(addr); err != nil {
 			fmt.Printf("Server error: %v\n", err)
 		}
+	} else if !*scan {
+		// No action specified
+		fmt.Println("No action specified.")
+		fmt.Println("Use -scan to run a CLI scan immediately.")
+		fmt.Println("Use -serve to start the web dashboard.")
+		flag.PrintDefaults()
 	}
 }

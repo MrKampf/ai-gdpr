@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDPR Scan Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            800: '#1f2937',
+                            900: '#111827',
+                            950: '#0b0f19', // Custom deeper dark
+                        },
+                        primary: {
+                            500: '#3b82f6', // bright blue
+                            600: '#2563eb',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Glassmorphism setup */
+        .glass {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-primary-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="glass sticky top-0 z-50 shadow-lg border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-primary-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    GDPR Scan Report
+                </h1>
+            </div>
+            <div class="text-sm text-gray-400 font-medium">
+                Generated: <span class="text-gray-200">{{.Summary.EndTime.Format "Jan 02, 2006 15:04:05"}}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Scan Controls -->
+        <div class="glass rounded-xl p-4 mb-8 flex items-center justify-between border border-white/10 bg-gray-900/50">
+            <div class="flex items-center space-x-4">
+                <div class="p-2 bg-purple-500/10 rounded-lg">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 uppercase font-semibold tracking-wider">Current Scan Path</p>
+                    <p class="text-white font-mono text-sm mt-0.5">{{.Summary.RootPath}}</p>
+                </div>
+            </div>
+
+            <form action="/scan" method="POST" class="flex items-center gap-3">
+                <input type="hidden" name="path" value="{{.Summary.RootPath}}">
+                <button type="submit"
+                    class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-blue-600/20">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Rescan
+                </button>
+                <a href="/"
+                    class="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors border border-white/10">
+                    Change Path
+                </a>
+            </form>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <!-- Total Files -->
+            <div class="glass rounded-xl p-6 card-hover transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Scanned</h3>
+                    <div class="p-2 bg-blue-500/10 rounded-lg">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{.Summary.TotalFilesScanned}}</p>
+                <p class="text-xs text-blue-400 mt-2">Files processed</p>
+            </div>
+
+            <!-- Issues Found -->
+            <div class="glass rounded-xl p-6 card-hover transition-all duration-300 border-l-4 border-red-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">Files with PII</h3>
+                    <div class="p-2 bg-red-500/10 rounded-lg">
+                        <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{.Summary.TotalFilesWithPII}}</p>
+                <p class="text-xs text-red-400 mt-2">Requires attention</p>
+            </div>
+
+            <!-- Total PII Objects -->
+            <div class="glass rounded-xl p-6 card-hover transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Findings</h3>
+                    <div class="p-2 bg-yellow-500/10 rounded-lg">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{.Summary.TotalPIIFound}}</p>
+                <p class="text-xs text-yellow-400 mt-2">Individual PII matches</p>
+            </div>
+
+            <!-- Duration -->
+            <div class="glass rounded-xl p-6 card-hover transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">Scan Duration</h3>
+                    <div class="p-2 bg-green-500/10 rounded-lg">
+                        <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{.Summary.ScanDuration}}</p>
+                <p class="text-xs text-green-400 mt-2">Started {{.Summary.StartTime.Format "15:04:05"}}</p>
+            </div>
+        </div>
+
+        <!-- Filters & Search -->
+        <div class="glass rounded-xl p-4 mb-8 border border-white/10 bg-gray-900/50">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+
+                <!-- Search -->
+                <div class="relative flex-grow max-w-md">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="Search files, snippets..."
+                        class="w-full pl-10 pr-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                </div>
+
+                <!-- Type Filters -->
+                <div class="flex flex-wrap gap-2" id="typeFilters">
+                    <!-- Checkboxes will be auto-generated or static. Let's make them static for known types for simplicity, or dynamic JS. -->
+                    <!-- Let's use simple toggles. Active state is colored. -->
+                    <button
+                        class="filter-btn active px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg transition-colors border border-transparent"
+                        data-filter="all">
+                        All
+                    </button>
+                    <!-- Generated via JS based on actual data to avoid empty buttons -->
+                </div>
+
+                <!-- Confidence Filter -->
+                <div class="flex items-center gap-2">
+                    <label for="confidenceFilter" class="text-xs text-gray-400 font-medium">Min Confidence:</label>
+                    <select id="confidenceFilter"
+                        class="bg-gray-800/50 border border-gray-700 text-white text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-500">
+                        <option value="0">All (0%)</option>
+                        <option value="0.5" selected>Medium (50%)</option>
+                        <option value="0.8">High (80%)</option>
+                        <option value="0.95">Very High (95%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Findings Table -->
+        <div class="glass rounded-xl overflow-hidden shadow-2xl border border-white/5">
+            <div class="px-6 py-5 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                    Detailed Findings
+                </h3>
+                <span
+                    class="px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/20">
+                    Live Data
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-800/50 text-gray-400 uppercase text-xs font-semibold tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4">File Path</th>
+                            <th class="px-6 py-4">Type</th>
+                            <th class="px-6 py-4">Snippet</th>
+                            <th class="px-6 py-4 text-center">Confidence</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        {{range .Findings}}
+                        {{$filePath := .FilePath}}
+                        {{range .Findings}}
+                        <tr class="hover:bg-white/5 transition-colors duration-150 group">
+                            <td class="px-6 py-4 font-medium text-blue-400 break-all max-w-xs">
+                                {{$filePath}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                        {{if eq .Type " IBAN"}} bg-purple-500/20 text-purple-300 border
+                                    border-purple-500/20 {{else if eq .Type "Email" }} bg-teal-500/20 text-teal-300
+                                    border border-teal-500/20 {{else}} bg-gray-500/20 text-gray-300 border
+                                    border-gray-500/20 {{end}}">
+                                    {{.Type}}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-gray-300 font-mono text-xs break-all max-w-md">
+                                {{.Snippet}}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <div class="w-16 bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-gradient-to-r 
+                                                {{if ge .Confidence 0.9}} from-green-500 to-green-400
+                                                {{else if ge .Confidence 0.7}} from-yellow-500 to-yellow-400
+                                                {{else}} from-red-500 to-red-400
+                                                {{end}} h-1.5 rounded-full" style="width: {{printf " %.0f" (mul
+                                            .Confidence 100)}}%"></div>
+                                    </div>
+                                    <span
+                                        class="text-xs font-medium {{if ge .Confidence 0.9}}text-green-400{{else if ge .Confidence 0.7}}text-yellow-400{{else}}text-red-400{{end}}">
+                                        {{printf "%.0f" (mul .Confidence 100)}}%
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button onclick="copyToClipboard('{{.Snippet}}')"
+                                        class="text-gray-500 hover:text-white transition-colors p-1 rounded hover:bg-white/10"
+                                        title="Copy Snippet">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                        </svg>
+                                    </button>
+                                    <button onclick="addToWhitelist('{{.Snippet}}', this)"
+                                        class="text-gray-500 hover:text-green-400 transition-colors p-1 rounded hover:bg-white/10"
+                                        title="Whitelist this value">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {{end}}
+                        {{end}}
+                    </tbody>
+                </table>
+                {{if not .Findings}}
+                <div class="px-6 py-12 text-center text-gray-500">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-gray-600" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-lg font-medium">No PII Violations Found</p>
+                    <p class="text-sm">Great job! Your files appear to be clean.</p>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <!-- Dynamic Data Script (for advanced filtering if needed later) -->
+        <script>
+            const reportData = {{ marshal .}};
+
+            // Determine unique types from data
+            const allFindings = [];
+            if (reportData.findings) {
+                reportData.findings.forEach(file => {
+                    if (file.findings) {
+                        file.findings.forEach(f => {
+                            f.filePath = file.file_path; // flatten slightly for easier search
+                            allFindings.push(f);
+                        });
+                    }
+                });
+            }
+
+            // Populate Filter Buttons
+            const uniqueTypes = [...new Set(allFindings.map(f => f.type))];
+            const filterContainer = document.getElementById('typeFilters');
+
+            const typeColors = {
+                'IBAN': 'purple',
+                'Email': 'teal',
+                'Phone': 'indigo',
+                'CreditCard': 'red',
+                'Name': 'blue',
+                'Identity': 'pink',
+                'Financial': 'amber',
+                'OfficialID': 'cyan',
+                'Sensitive': 'rose'
+            };
+
+            uniqueTypes.forEach(type => {
+                const btn = document.createElement('button');
+                const color = typeColors[type] || 'gray';
+                // Initially active
+                btn.className = `filter-type-btn active px-3 py-1.5 text-xs font-medium bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-transparent`;
+                // Set active style manually or toggle classes
+                btn.dataset.type = type;
+                btn.innerText = type;
+
+                btn.addEventListener('click', () => {
+                    toggleFilter(btn, type);
+                });
+
+                filterContainer.appendChild(btn);
+            });
+
+            // Set All as active initially? No, let's treat "All" as a reset or "Select All".
+            const allBtn = document.querySelector('[data-filter="all"]');
+            allBtn.addEventListener('click', () => {
+                // Reset checks
+                document.querySelectorAll('.filter-type-btn').forEach(b => {
+                    b.classList.remove('bg-gray-700', 'text-gray-300');
+                    b.classList.add('bg-blue-600', 'text-white'); // Make active
+                    b.classList.add('active');
+                });
+                applyFilters();
+            });
+
+            // Initialize buttons to active state
+            document.querySelectorAll('.filter-type-btn').forEach(b => {
+                b.classList.remove('bg-gray-700', 'text-gray-300');
+                b.classList.add('bg-blue-600', 'text-white');
+                b.classList.add('active');
+            });
+
+
+            function toggleFilter(btn, type) {
+                if (btn.classList.contains('active')) {
+                    // Deactivate
+                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-700', 'text-gray-300');
+                } else {
+                    // Activate
+                    btn.classList.add('active', 'bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-gray-700', 'text-gray-300');
+                }
+                applyFilters();
+            }
+
+            // Search & Confidence Listeners
+            // Pagination State
+            let currentPage = 1;
+            const rowsPerPage = 50;
+
+            // Search & Confidence Listeners
+            document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; applyFilters(); });
+            document.getElementById('confidenceFilter').addEventListener('change', () => { currentPage = 1; applyFilters(); });
+
+            // Create Pagination Controls
+            const tableContainer = document.querySelector('.overflow-x-auto');
+            const paginationDiv = document.createElement('div');
+            paginationDiv.className = "px-6 py-4 border-t border-white/5 bg-white/5 flex items-center justify-between";
+            paginationDiv.innerHTML = `
+                <div class="text-sm text-gray-400">
+                    Showing <span id="pageStart" class="font-medium text-white">0</span> to <span id="pageEnd" class="font-medium text-white">0</span> of <span id="totalRows" class="font-medium text-white">0</span> results
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="prevBtn" class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Previous</button>
+                    <button id="nextBtn" class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Next</button>
+                </div>
+            `;
+            tableContainer.after(paginationDiv);
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    applyFilters();
+                    window.scrollTo({ top: tableContainer.offsetTop - 100, behavior: 'smooth' });
+                }
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                currentPage++;
+                applyFilters();
+                window.scrollTo({ top: tableContainer.offsetTop - 100, behavior: 'smooth' });
+            });
+
+            function applyFilters() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const minConfidence = parseFloat(document.getElementById('confidenceFilter').value);
+
+                const activeTypes = Array.from(document.querySelectorAll('.filter-type-btn.active')).map(b => b.dataset.type);
+
+                const rows = Array.from(document.querySelectorAll('tbody tr'));
+                let visibleRows = [];
+
+                // 1. Filter
+                rows.forEach(row => {
+                    const typeSpan = row.querySelector('td:nth-child(2) span');
+                    const confText = row.querySelector('td:nth-child(4) span').innerText;
+                    const snippet = row.querySelector('td:nth-child(3)').innerText.toLowerCase();
+                    const filePath = row.querySelector('td:nth-child(1)').innerText.toLowerCase();
+
+                    const type = typeSpan ? typeSpan.innerText.trim() : "";
+                    const confidence = parseFloat(confText) / 100.0;
+
+                    const matchesSearch = snippet.includes(searchTerm) || filePath.includes(searchTerm);
+                    const matchesType = activeTypes.includes(type);
+                    const matchesConf = confidence >= minConfidence;
+
+                    if (matchesSearch && matchesType && matchesConf) {
+                        visibleRows.push(row);
+                    }
+                    // Hide all initially
+                    row.style.display = 'none';
+                });
+
+                // 2. Paginate
+                const totalItems = visibleRows.length;
+                const totalPages = Math.ceil(totalItems / rowsPerPage);
+
+                if (currentPage > totalPages) currentPage = totalPages || 1;
+                if (currentPage < 1) currentPage = 1;
+
+                const startIdx = (currentPage - 1) * rowsPerPage;
+                const endIdx = startIdx + rowsPerPage;
+                const pageItems = visibleRows.slice(startIdx, endIdx);
+
+                // Show current page items
+                pageItems.forEach(row => row.style.display = '');
+
+                // 3. Update Controls
+                document.getElementById('pageStart').innerText = totalItems > 0 ? startIdx + 1 : 0;
+                document.getElementById('pageEnd').innerText = Math.min(endIdx, totalItems);
+                document.getElementById('totalRows').innerText = totalItems;
+
+                document.getElementById('prevBtn').disabled = currentPage <= 1;
+                document.getElementById('nextBtn').disabled = currentPage >= totalPages || totalPages === 0;
+            }
+
+            // Initial Apply
+            applyFilters();
+
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Could add a toast notification here
+                    console.log('Snippet copied to clipboard');
+                });
+            }
+
+            function addToWhitelist(value, btn) {
+                if (!confirm("Are you sure you want to whitelist: \"" + value + "\"?\nIt will be hidden in future scans.")) {
+                    return;
+                }
+
+                fetch('/whitelist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ value: value }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Visual feedback
+                            btn.innerHTML = '<svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+                            btn.disabled = true;
+
+                            // Optional: Fade out the row
+                            const row = btn.closest('tr');
+                            row.style.opacity = '0.5';
+                            row.classList.add('line-through', 'decoration-gray-500');
+                        } else {
+                            alert('Failed to whitelist item.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error connecting to server. Is the reviewer mode running?');
+                    });
+            }
+        </script>
+    </main>
+
+    <footer class="mt-auto py-6 border-t border-white/5 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 Digimosa GDPR Scanner. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

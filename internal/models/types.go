@@ -27,3 +27,24 @@ type ScanResult struct {
 type Job struct {
 	FilePath string
 }
+
+type FindingType string
+
+const (
+	TypeIBAN       FindingType = "IBAN"
+	TypeEmail      FindingType = "Email"
+	TypePhone      FindingType = "Phone"
+	TypeName       FindingType = "Name"
+	TypeIdentity   FindingType = "Identity"
+	TypeFinancial  FindingType = "Financial"
+	TypeID         FindingType = "OfficialID"
+	TypeSensitive  FindingType = "Sensitive"
+	TypeCreditCard FindingType = "CreditCard"
+)
+
+type Match struct {
+	Type    FindingType
+	Snippet string
+	Value   string
+	Offset  int64
+}

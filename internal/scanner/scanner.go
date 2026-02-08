@@ -9,6 +9,7 @@ import (
 	"github.com/digimosa/ai-gdpr-scan/internal/extractor"
 	"github.com/digimosa/ai-gdpr-scan/internal/models"
 	"github.com/digimosa/ai-gdpr-scan/internal/reporting"
+	"github.com/digimosa/ai-gdpr-scan/internal/storage"
 	"github.com/digimosa/ai-gdpr-scan/internal/whitelist"
 )
 
@@ -25,6 +26,7 @@ type Scanner struct {
 	Report         *reporting.Report
 	scannerFactory *extractor.Factory
 	Whitelist      *whitelist.Whitelist
+	ScanModelID    uint // ID of the current scan in DB
 }
 
 func NewScanner(cfg *config.Config) *Scanner {
@@ -38,7 +40,7 @@ func NewScanner(cfg *config.Config) *Scanner {
 		wl = &whitelist.Whitelist{}
 	}
 
-	return &Scanner{
+	s := &Scanner{
 		cfg:            cfg,
 		jobs:           make(chan models.Job, cfg.Workers*4), // Buffer relative to workers
 		results:        make(chan models.ScanResult, cfg.Workers*4),
@@ -50,10 +52,21 @@ func NewScanner(cfg *config.Config) *Scanner {
 		scannerFactory: extractor.NewFactory(),
 		Whitelist:      wl,
 	}
+	s.Report.Summary.RootPath = cfg.RootPath
+	return s
 }
 
 // Start initializes the worker pool and starts the scan
 func (s *Scanner) Start() {
+	// Create Scan Record
+	scanModel, err := storage.CreateScan(s.cfg.RootPath)
+	if err == nil {
+		s.ScanModelID = scanModel.ID
+	} else {
+		// Log error but proceed?
+		// log.Printf("Failed to create scan record: %v", err)
+	}
+
 	// Start workers
 	for i := 0; i < s.cfg.Workers; i++ {
 		s.wg.Add(1)

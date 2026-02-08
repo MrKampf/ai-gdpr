@@ -3,6 +3,8 @@ package scanner
 import (
 	"fmt"
 	"time"
+
+	"github.com/digimosa/ai-gdpr-scan/internal/storage"
 )
 
 func (s *Scanner) processResults() {
@@ -15,6 +17,17 @@ func (s *Scanner) processResults() {
 
 		// Add to report regardless of findings (tracks total files scanned)
 		s.Report.AddResult(res)
+
+		// Save PII to DB if Scan ID exists
+		if s.ScanModelID != 0 && len(res.Findings) > 0 {
+			for _, f := range res.Findings {
+				// We don't have file path in Finding struct directly, need to check how it's structured
+				// ScanResult has FilePath.
+				// f.Snippet is the value
+				// f.Context is the AI reason
+				_ = storage.SaveFinding(s.ScanModelID, res.FilePath, f.Type, f.Snippet, f.Context, f.Confidence)
+			}
+		}
 
 		if res.Error != nil {
 			// Log error if verbose
@@ -32,5 +45,15 @@ func (s *Scanner) processResults() {
 		}
 	}
 	s.Report.Finalize() // Finalize timestamps
+
+	// Update Scan Completion Status in DB
+	if s.ScanModelID != 0 {
+		storage.GetScanByID(fmt.Sprintf("%d", s.ScanModelID)) // Reload? Or just update fields
+		// We need a helper to update by ID directly or retrieve first
+		if scan, err := storage.GetScanByID(fmt.Sprintf("%d", s.ScanModelID)); err == nil {
+			storage.CompleteScan(scan, s.Report.Summary.TotalFilesScanned, s.Report.Summary.TotalFilesWithPII, s.Report.Summary.TotalPIIFound)
+		}
+	}
+
 	close(s.done)
 }

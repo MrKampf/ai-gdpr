@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/digimosa/ai-gdpr-scan/internal/extractor"
 	"github.com/digimosa/ai-gdpr-scan/internal/models"
 )
 
@@ -78,7 +77,7 @@ func (s *Scanner) scanFile(path string) models.ScanResult {
 	return res
 }
 
-func (s *Scanner) performAIAnalysis(path string, matches []extractor.Match, res *models.ScanResult) {
+func (s *Scanner) performAIAnalysis(path string, matches []models.Match, res *models.ScanResult) {
 	if s.cfg.Verbose {
 		log.Printf("[AI] file %s has %d potential matches, sending for bulk analysis...", path, len(matches))
 	}
@@ -100,7 +99,17 @@ func (s *Scanner) performAIAnalysis(path string, matches []extractor.Match, res 
 	fullContext := sb.String()
 
 	// One Single AI Call per file with interesting regex hits
-	aiFindings, err := s.aiClient.AnalyzeFile(fullContext)
+	// Extract unique finding types for prompt customization
+	uniqueTypes := make(map[models.FindingType]bool)
+	typeList := []models.FindingType{}
+	for _, m := range matches {
+		if !uniqueTypes[m.Type] {
+			uniqueTypes[m.Type] = true
+			typeList = append(typeList, m.Type)
+		}
+	}
+
+	aiFindings, err := s.aiClient.AnalyzeFile(fullContext, typeList)
 
 	if err == nil {
 		for _, f := range aiFindings {
@@ -118,7 +127,7 @@ func (s *Scanner) performAIAnalysis(path string, matches []extractor.Match, res 
 			res.Findings = append(res.Findings, models.Finding{
 				Type:       f.Type,
 				Snippet:    f.Value,
-				Confidence: 0.99,
+				Confidence: f.Confidence, // AI-provided confidence
 				Offset:     0,
 				Context:    f.Reason, // Store the AI's explanation here
 			})

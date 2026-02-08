@@ -5,17 +5,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/digimosa/ai-gdpr-scan/internal/config"
+	"github.com/digimosa/ai-gdpr-scan/internal/models"
 )
 
 type OllamaClient struct {
 	BaseURL string
 	Model   string
 	Client  *http.Client
+	Verbose bool
+	LogFile string
+	mu      sync.Mutex
 }
 
 type GenerateRequest struct {
@@ -37,6 +44,8 @@ func NewClient(cfg *config.Config) *OllamaClient {
 		Client: &http.Client{
 			Timeout: 30 * time.Second, // Increased timeout for slower models/network
 		},
+		Verbose: cfg.Verbose,
+		LogFile: "ai_debug.log",
 	}
 }
 
@@ -125,15 +134,42 @@ Text: '%s'`,
 	return false, 0.1, nil
 }
 
-// AnalyzeFile sends full file content (limited by token size) to AI for comprehensive PII analysis
-func (c *OllamaClient) AnalyzeFile(content string) ([]FindingResult, error) {
+const promptTemplateBase = `You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+%s
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+%s
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.`
+
+// AnalyzeFile sends full file content (limited by token size) and customized instructions to AI
+func (c *OllamaClient) AnalyzeFile(content string, types []models.FindingType) ([]FindingResult, error) {
 	// Truncate content if too large (approx 4000 chars to be safe)
-	// In production, we would chunk this
 	if len(content) > 12000 {
 		content = content[:12000] + "...(truncated)"
 	}
 
-	prompt := c.createPrompt(content)
+	// Build dynamic instructions
+	var instructions strings.Builder
+	for _, t := range types {
+		if tmpl, ok := PromptTemplates[t]; ok {
+			instructions.WriteString(fmt.Sprintf("\nTarget: %s\n%s\n", t, tmpl))
+		}
+	}
+
+	// Fallback if no specific types (shouldn't happen given logic)
+	if instructions.Len() == 0 {
+		instructions.WriteString("\nTarget: General\n" + GetDefaultPrompt())
+	}
+
+	prompt := fmt.Sprintf(promptTemplateBase, instructions.String(), content)
 
 	responseText, err := c.callOllama(prompt, true) // pass true for JSON format
 	if err != nil {
@@ -161,6 +197,9 @@ Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"..."}].
 }
 
 func (c *OllamaClient) callOllama(prompt string, jsonFormat bool) (string, error) {
+	// Log Request
+	c.logDebug("PROMPT", prompt)
+
 	reqBody := GenerateRequest{
 		Model:  c.Model,
 		Prompt: prompt,
@@ -178,20 +217,53 @@ func (c *OllamaClient) callOllama(prompt string, jsonFormat bool) (string, error
 	client := &http.Client{Timeout: 60 * time.Second}
 	resp, err := client.Post(c.BaseURL, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
+		c.logDebug("ERROR", err.Error())
 		return "", err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+		c.logDebug("ERROR", fmt.Sprintf("status %d", resp.StatusCode))
 		return "", errors.New("ollama API returned non-200 status")
 	}
 
 	var genResp GenerateResponse
 	if err := json.NewDecoder(resp.Body).Decode(&genResp); err != nil {
+		c.logDebug("ERROR", err.Error())
 		return "", err
 	}
 
+	// Log Response
+	c.logDebug("RESPONSE", genResp.Response)
+
 	return strings.TrimSpace(genResp.Response), nil
+}
+
+func (c *OllamaClient) logDebug(kind, message string) {
+	// Console Log (if verbose)
+	if c.Verbose {
+		if len(message) > 500 {
+			log.Printf("[AI-%s] %s... (truncated)", kind, message[:500])
+		} else {
+			log.Printf("[AI-%s] %s", kind, message)
+		}
+	}
+
+	// File Log (Always, or concurrent safe)
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	f, err := os.OpenFile(c.LogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+
+	timestamp := time.Now().Format(time.RFC3339)
+	entry := fmt.Sprintf("[%s] [%s]\n%s\n--------------------------------------------------\n", timestamp, kind, message)
+	if _, err := f.WriteString(entry); err != nil {
+		// ignore write error
+	}
 }
 
 func (c *OllamaClient) parseFindings(responseText string) ([]FindingResult, error) {
@@ -213,9 +285,10 @@ func (c *OllamaClient) parseFindings(responseText string) ([]FindingResult, erro
 
 	// localized struct for unmarshalling
 	type AiFinding struct {
-		Type   string `json:"type"`
-		Value  string `json:"value"`
-		Reason string `json:"reason"`
+		Type       string  `json:"type"`
+		Value      string  `json:"value"`
+		Reason     string  `json:"reason"`
+		Confidence float64 `json:"confidence"`
 	}
 
 	var findings []AiFinding
@@ -225,10 +298,17 @@ func (c *OllamaClient) parseFindings(responseText string) ([]FindingResult, erro
 
 	var results []FindingResult
 	for _, f := range findings {
+		// Default confidence if missing or 0
+		conf := f.Confidence
+		if conf == 0 {
+			conf = 0.8 // Default to high if AI didn't specify
+		}
+
 		results = append(results, FindingResult{
-			Type:   f.Type,
-			Value:  f.Value,
-			Reason: f.Reason,
+			Type:       f.Type,
+			Value:      f.Value,
+			Reason:     f.Reason,
+			Confidence: conf,
 		})
 	}
 	return results, nil
@@ -246,7 +326,8 @@ func cleanMarkdown(text string) string {
 }
 
 type FindingResult struct {
-	Type   string `json:"type"`
-	Value  string `json:"value"`
-	Reason string `json:"reason"`
+	Type       string  `json:"type"`
+	Value      string  `json:"value"`
+	Reason     string  `json:"reason"`
+	Confidence float64 `json:"confidence"`
 }

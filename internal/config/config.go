@@ -13,6 +13,7 @@ type Config struct {
 
 	// WhitelistPath is the path to the file containing whitelisted terms
 	WhitelistPath string
+	DBPath        string
 }
 
 func DefaultConfig() *Config {
@@ -21,5 +22,6 @@ func DefaultConfig() *Config {
 		OllamaURL:     "http://144.76.33.231:11434/api/generate",
 		OllamaModel:   "llama3.2",
 		WhitelistPath: "whitelist.txt",
+		DBPath:        "gdpr-scan-results.db",
 	}
 }

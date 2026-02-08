@@ -3,13 +3,14 @@ package extractor
 import (
 	"io"
 
+	"github.com/digimosa/ai-gdpr-scan/internal/models"
 	"github.com/xuri/excelize/v2"
 )
 
 // ExcelScanner implements scanning for Excel files
 type ExcelScanner struct{}
 
-func (s *ExcelScanner) Scan(reader io.Reader) ([]Match, error) {
+func (s *ExcelScanner) Scan(reader io.Reader) ([]models.Match, error) {
 	// Excelize supports reading from a reader
 	f, err := excelize.OpenReader(reader)
 	if err != nil {
@@ -17,7 +18,7 @@ func (s *ExcelScanner) Scan(reader io.Reader) ([]Match, error) {
 	}
 	defer f.Close()
 
-	var matches []Match
+	var matches []models.Match
 
 	// Get all sheet names
 	for _, sheet := range f.GetSheetList() {
@@ -35,92 +36,20 @@ func (s *ExcelScanner) Scan(reader io.Reader) ([]Match, error) {
 				break
 			}
 
-			// Join columns to form a "line" for regex or check cell by cell
-			// checking cell by cell is safer against splitting PII across cells
+			// Check each cell using centralized regex checks
+			// We treat each cell as a small "content" block
 			for colIdx, cellValue := range row {
 				if cellValue == "" {
 					continue
 				}
 
-				// Check IBAN
-				if found := IBANRegex.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeIBAN,
-						Value:   found,
-						Snippet: cellValue,     // Context is the cell itself
-						Offset:  int64(rowIdx), // Use row index as offset
-					})
-				}
+				// Run checks
+				findings := runRegexChecks(cellValue, int64(rowIdx))
 
-				// Check Email
-				if found := EmailRegex.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeEmail,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check Phone
-				if found := PhoneRegex.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypePhone,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check Identity Keywords
-				if found := IdentityKeywords.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeIdentity,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check Financial Keywords
-				if found := FinancialKeywords.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeFinancial,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check ID Keywords
-				if found := IDKeywords.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeID,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check Sensitive Keywords
-				if found := SensitiveKeywords.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeSensitive,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
-
-				// Check Name
-				if found := NameRegex.FindString(cellValue); found != "" {
-					matches = append(matches, Match{
-						Type:    TypeName,
-						Value:   found,
-						Snippet: cellValue,
-						Offset:  int64(rowIdx),
-					})
-				}
+				// For excel, the snippet is the cell content itself usually,
+				// but runRegexChecks generates snippets based on its input.
+				// Since input is just cellValue, snippet == cellValue (mostly).
+				matches = append(matches, findings...)
 
 				// Avoid infinite loops or massive memory usage on extremely wide sheets
 				if colIdx > 1000 {

@@ -4,63 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDPR Scan | Report</title>
+    <title>GDPR Scan Report</title>
+    <!-- Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
+        /* Modern Dark Theme Variables */
         :root {
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(15, 23, 42, 0.6);
-            --neon-blue: #3b82f6;
-            --neon-purple: #8b5cf6;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-header: #1e293b;
+            --accent-primary: #3b82f6;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            /* Slate 950 */
-            color: #e2e8f0;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
-            background-attachment: fixed;
+            background-color: var(--bg-body);
+            color: var(--text-main);
         }
 
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-        }
-
-        .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-            background: rgba(30, 41, 59, 0.6);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-            filter: brightness(1.1);
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* Custom Scrollbar */
@@ -73,488 +43,301 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #475569;
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #64748b;
         }
 
-        /* Table Styles */
-        .table-row-hover:hover {
-            background-color: rgba(255, 255, 255, 0.03);
+        /* Utility classes */
+        .glass-header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        pre code {
-            font-family: 'Fira Code', monospace;
+        .finding-card {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid var(--border-color);
+        }
+
+        .finding-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
     </style>
 </head>
 
-<body class="min-h-screen flex">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Sidebar -->
-    <aside class="w-64 glass-panel border-r border-white/5 flex-shrink-0 hidden md:flex flex-col fixed h-full z-20">
-        <div class="p-6">
+    <!-- Top Navigation Information -->
+    <header class="glass-header sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="bg-blue-600/20 p-2 rounded-lg">
+                    <i data-lucide="shield-alert" class="w-6 h-6 text-blue-500"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-tight">GDPR Audit Report</h1>
+                    <p class="text-xs text-slate-400 font-mono">{{.Summary.RootPath}}</p>
+                </div>
+            </div>
             <div class="flex items-center gap-3">
-                <a href="/" class="flex items-center gap-3 group">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all">
-                        <i data-lucide="shield-check" class="text-white w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-lg tracking-tight text-white leading-tight">GDPR<span
-                                class="text-blue-400">Scan</span></h1>
-                        <p class="text-xs text-gray-500 font-medium tracking-wider">AI POWERED</p>
-                    </div>
+                <div class="hidden md:flex flex-col items-end mr-4">
+                    <span class="text-xs text-slate-400">Scan Finished</span>
+                    <!-- Simple time format -->
+                    <span class="text-sm font-medium text-slate-200">Today</span>
+                </div>
+                <form action="/scan" method="POST">
+                    <input type="hidden" name="path" value="{{.Summary.RootPath}}">
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Rescan
+                    </button>
+                </form>
+                <a href="/" class="text-slate-400 hover:text-white transition-colors p-2">
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </a>
             </div>
         </div>
+    </header>
 
-        <nav class="flex-1 px-4 space-y-2 mt-4">
-            <a href="/"
-                class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl font-medium transition-colors">
-                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                Dashboard
-            </a>
-            <!-- Current Page Indicator -->
-            <div
-                class="flex items-center gap-3 px-4 py-3 bg-blue-500/10 text-blue-400 rounded-xl font-medium border border-blue-500/20">
-                <i data-lucide="file-text" class="w-5 h-5"></i>
-                Scan Report
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+
+        <!-- KPI Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Files Scanned</p>
+                <p class="text-3xl font-bold text-white">{{.Summary.TotalFilesScanned}}</p>
             </div>
-            <a href="/whitelist"
-                class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl font-medium transition-colors">
-                <i data-lucide="list-checks" class="w-5 h-5"></i>
-                Whitelist
-            </a>
-            <a href="/logs/ai" target="_blank"
-                class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl font-medium transition-colors">
-                <i data-lucide="terminal" class="w-5 h-5"></i>
-                AI Logs
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-white/5">
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-white/5 text-center">
-                <p class="text-xs text-gray-400 mb-1">Generated</p>
-                <p class="text-sm font-semibold text-white">{{.Summary.EndTime.Format "Jan 02, 15:04"}}</p>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 md:ml-64 p-4 md:p-8 w-full max-w-[calc(100vw-16rem)]">
-
-        <!-- Header -->
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span
-                        class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-green-500/10 text-green-400 border border-green-500/20">Completed</span>
-                    <h2 class="text-2xl font-semibold text-white">Scan Report</h2>
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 relative overflow-hidden">
+                <div class="absolute right-0 top-0 p-4 opacity-10">
+                    <i data-lucide="alert-triangle" class="w-16 h-16 text-red-500"></i>
                 </div>
-                <p class="text-gray-400 text-sm font-mono flex items-center gap-2 text-wrap break-all">
-                    <i data-lucide="folder" class="w-4 h-4"></i> {{.Summary.RootPath}}
-                </p>
+                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">PII Detected</p>
+                <p class="text-3xl font-bold text-red-400">{{.Summary.TotalPIIFound}}</p>
+                <p class="text-xs text-red-500/80 mt-1 font-medium">Across {{.Summary.TotalFilesWithPII}} files</p>
             </div>
-            <div class="flex gap-3">
-                <form action="/scan" method="POST" class="flex gap-3">
-                    <input type="hidden" name="path" value="{{.Summary.RootPath}}">
-                    <button type="submit"
-                        class="btn-primary text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2 text-sm">
-                        <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-                        Rescan
-                    </button>
-                    <a href="/"
-                        class="py-2 px-4 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 transition-colors text-sm font-medium flex items-center gap-2">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                        Close
-                    </a>
-                </form>
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Duration</p>
+                <p class="text-3xl font-bold text-white">{{.Summary.ScanDuration}}</p>
             </div>
-        </header>
-
-        <!-- Summary Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="glass-card rounded-xl p-4">
-                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Files Scanned</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-bold text-white">{{.Summary.TotalFilesScanned}}</span>
-                </div>
-            </div>
-            <div class="glass-card rounded-xl p-4 border-l-4 border-l-red-500">
-                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Files with PII</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-bold text-white">{{.Summary.TotalFilesWithPII}}</span>
-                    <span class="text-xs text-red-400 font-medium">Action Required</span>
-                </div>
-            </div>
-            <div class="glass-card rounded-xl p-4">
-                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Findings</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-bold text-white">{{.Summary.TotalPIIFound}}</span>
-                </div>
-            </div>
-            <div class="glass-card rounded-xl p-4">
-                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Duration</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-bold text-white">{{.Summary.ScanDuration}}</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filters & Search Toolbar -->
-        <div
-            class="glass-panel rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center sticky top-4 z-10 shadow-xl shadow-black/20">
-            <div class="relative w-full md:w-96">
-                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
-                <input type="text" id="searchInput" placeholder="Search files, snippets..."
-                    class="w-full bg-slate-900/50 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
-            </div>
-
-            <div class="flex flex-wrap gap-2 items-center w-full md:w-auto">
+            <!-- Compliance Score (Mock) -->
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Scan Status</p>
                 <div class="flex items-center gap-2">
-                    <i data-lucide="filter" class="w-4 h-4 text-gray-500"></i>
-                    <span class="text-xs font-medium text-gray-400">Filters:</span>
+                    <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                    <p class="text-lg font-semibold text-green-400">Completed</p>
                 </div>
-                <!-- Dynamic Type Filters Container -->
-                <div id="typeFilters" class="flex flex-wrap gap-2">
-                    <button
-                        class="filter-btn active px-3 py-1.5 text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 transition-all"
-                        data-filter="all">All</button>
-                </div>
-
-                <div class="h-6 w-px bg-white/10 mx-2 hidden sm:block"></div>
-
-                <select id="confidenceFilter"
-                    class="bg-slate-900/50 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-blue-500">
-                    <option value="0">Min Confidence: 0%</option>
-                    <option value="0.5" selected>Min Confidence: 50%</option>
-                    <option value="0.8">Min Confidence: 80%</option>
-                    <option value="0.95">Min Confidence: 95%</option>
-                </select>
             </div>
         </div>
 
-        <!-- Data Table -->
-        <div class="glass-panel rounded-xl overflow-hidden shadow-2xl">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead
-                        class="bg-slate-900/80 border-b border-white/5 text-xs uppercase font-semibold text-gray-400 tracking-wider">
-                        <tr>
-                            <th class="px-6 py-4">File Path / Location</th>
-                            <th class="px-6 py-4 w-32">Type</th>
-                            <th class="px-6 py-4">Context Snippet</th>
-                            <th class="px-6 py-4 w-32 text-center">Confidence</th>
-                            <th class="px-6 py-4 w-24 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5">
-                        {{range .Findings}}
-                        {{$filePath := .FilePath}}
-                        {{range .Findings}}
-                        <tr class="table-row-hover group transition-colors">
-                            <td class="px-6 py-4 align-top">
-                                <div class="flex items-start gap-3">
-                                    <i data-lucide="file-code" class="w-4 h-4 text-gray-500 mt-1"></i>
-                                    <span
-                                        class="text-blue-400 font-medium break-all font-mono text-xs">{{$filePath}}</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 align-top">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border type-badge"
-                                    data-type="{{.Type}}">
-                                    {{.Type}}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 align-top">
-                                <div
-                                    class="bg-slate-950/50 rounded-lg p-3 border border-white/5 font-mono text-xs text-gray-300 break-all leading-relaxed relative group-hover:border-white/10 transition-colors">
-                                    {{.Snippet}}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 align-top">
-                                <div class="flex flex-col items-center gap-1">
-                                    <span
-                                        class="text-xs font-bold {{if ge .Confidence 0.9}}text-green-400{{else if ge .Confidence 0.7}}text-yellow-400{{else}}text-red-400{{end}}">
-                                        {{printf "%.0f" (mul .Confidence 100)}}%
-                                    </span>
-                                    <div class="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                        <div class="h-full rounded-full {{if ge .Confidence 0.9}}bg-green-500{{else if ge .Confidence 0.7}}bg-yellow-500{{else}}bg-red-500{{end}}"
-                                            style="width: {{printf " %.0f" (mul .Confidence 100)}}%"></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 align-top text-right">
-                                <div class="flex justify-end gap-1">
-                                    <button onclick="copyToClipboard('{{.Snippet}}')"
-                                        class="p-2 text-gray-500 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                                        title="Copy">
-                                        <i data-lucide="copy" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="addToWhitelist('{{.Snippet}}', this)"
-                                        class="p-2 text-gray-500 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
-                                        title="Whitelist">
-                                        <i data-lucide="shield-check" class="w-4 h-4"></i>
-                                    </button>
-                                    <div class="h-4 w-px bg-white/10 mx-1 self-center"></div>
-                                    <button onclick="submitFeedback('{{.ID}}', 'Correct', this)"
-                                        class="p-2 text-gray-500 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors {{if eq .Feedback "
-                                        Correct"}}text-green-400 bg-green-500/10{{end}}" title="Mark as Correct">
-                                        <i data-lucide="thumbs-up" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="submitFeedback('{{.ID}}', 'Incorrect', this)"
-                                        class="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors {{if eq .Feedback "
-                                        Incorrect"}}text-red-400 bg-red-500/10{{end}}" title="Mark as False Positive">
-                                        <i data-lucide="thumbs-down" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        {{end}}
-                        {{end}}
-
-                        {{if not .Findings}}
-                        <tr>
-                            <td colspan="5" class="px-6 py-16 text-center">
-                                <div class="flex flex-col items-center justify-center text-gray-500">
-                                    <div
-                                        class="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
-                                        <i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i>
-                                    </div>
-                                    <h3 class="text-lg font-medium text-white mb-1">No Issues Found</h3>
-                                    <p class="text-sm">Great job! Your scan did not detect any PII violations.</p>
-                                </div>
-                            </td>
-                        </tr>
-                        {{end}}
-                    </tbody>
-                </table>
+        <!-- Toolbar -->
+        <div
+            class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 backdrop-blur-sm sticky top-20 z-40">
+            <div class="relative w-full md:w-96">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                <input type="text" id="searchInput" placeholder="Filter findings..."
+                    class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 outline-none transition-all">
             </div>
+            <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0" id="filterContainer">
+                <button
+                    class="filter-chip active text-xs font-medium px-3 py-1.5 rounded-full bg-blue-600 text-white transition-colors whitespace-nowrap"
+                    data-filter="all">All Types</button>
+                <!-- JS will populate types here -->
+            </div>
+        </div>
 
-            <!-- Pagination Controls -->
-            <div
-                class="px-6 py-4 border-t border-white/5 bg-slate-900/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs text-gray-400">
-                    Showing <span id="pageStart" class="font-medium text-white">0</span> to <span id="pageEnd"
-                        class="font-medium text-white">0</span> of <span id="totalRows"
-                        class="font-medium text-white">0</span> findings
-                </div>
-                <div class="flex gap-2">
-                    <button id="prevBtn"
-                        class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-white/5">Previous</button>
-                    <button id="nextBtn"
-                        class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-white/5">Next</button>
+        <!-- Findings List (Cards) -->
+        <div id="findingsList" class="space-y-4">
+            {{range .Findings}}
+            {{$filePath := .FilePath}}
+            {{range .Findings}}
+            <div class="finding-card bg-slate-800 rounded-lg p-5 group" data-type="{{.Type}}"
+                data-content="{{$filePath}} {{.Snippet}}">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+
+                    <!-- Main Content -->
+                    <div class="flex-grow space-y-3">
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <span
+                                class="bg-slate-700 text-slate-300 text-[10px] font-mono px-2 py-1 rounded border border-slate-600 truncate max-w-md"
+                                title="{{$filePath}}">
+                                {{$filePath}}
+                            </span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                {{.Type}}
+                            </span>
+                        </div>
+
+                        <div class="bg-slate-950/50 border border-slate-800 rounded-md p-3">
+                            <code class="text-sm font-mono text-red-300 break-all block">{{.Snippet}}</code>
+                        </div>
+                    </div>
+
+                    <!-- Side Actions -->
+                    <div
+                        class="flex flex-row md:flex-col items-center md:items-end gap-3 min-w-[140px] border-t md:border-t-0 md:border-l border-slate-700 pt-3 md:pt-0 md:pl-4">
+
+                        <!-- Confidence -->
+                        <div class="text-right">
+                            <div class="text-[10px] text-slate-500 uppercase font-bold text-center w-full">Confidence
+                            </div>
+                            <div
+                                class="text-xl font-bold {{if ge .Confidence 0.9}}text-green-400{{else if ge .Confidence 0.7}}text-yellow-400{{else}}text-red-400{{end}} text-center">
+                                {{printf "%.0f" (mul .Confidence 100)}}%
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center gap-1 mt-auto">
+                            <button onclick="submitFeedback('{{.ID}}', 'Correct', this)" class="p-2 rounded-md hover:bg-slate-700 text-slate-400 hover:text-green-400 transition-colors {{if eq .Feedback 
+                                    " Correct"}}text-green-400 bg-green-500/10{{end}}" title="Confirm Issue">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="submitFeedback('{{.ID}}', 'Incorrect', this)" class="p-2 rounded-md hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors {{if eq .Feedback 
+                                    " Incorrect"}}text-red-400 bg-red-500/10{{end}}" title="Mark False Positive">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                            <div class="w-px h-4 bg-slate-700 mx-1"></div>
+                            <button onclick="addToWhitelist('{{.Snippet}}', this)"
+                                class="p-2 rounded-md hover:bg-slate-700 text-slate-400 hover:text-blue-400 transition-colors"
+                                title="Whitelist">
+                                <i data-lucide="eye-off" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+            {{end}}
+            {{else}}
+            <div class="text-center py-20">
+                <div class="bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="check-circle" class="w-10 h-10 text-green-500"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white">No PII Found</h3>
+                <p class="text-slate-400 mt-2">Your files appear to be compliant.</p>
+            </div>
+            {{end}}
         </div>
 
     </main>
 
+    <footer class="border-t border-slate-800 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
+            <p>GDPR Audit Scanner &copy; 2026 Digimosa</p>
+        </div>
+    </footer>
+
     <script>
         lucide.createIcons();
 
-        // Type Colors Configuration
-        const typeStyles = {
-            'IBAN': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-            'Email': 'bg-teal-500/10 text-teal-400 border-teal-500/20',
-            'Phone': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-            'CreditCard': 'bg-red-500/10 text-red-400 border-red-500/20',
-            'Name': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-            'Identity': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-            default: 'bg-slate-700/30 text-gray-300 border-slate-600/30'
-        };
+        // --- Logic (Filters, Feedback, Whitelist) ---
+        // Same logical structure, updated for new classes
 
-        // Apply styles to badges
-        document.querySelectorAll('.type-badge').forEach(badge => {
-            const type = badge.dataset.type.trim();
-            const styles = typeStyles[type] || typeStyles.default;
-            badge.className = `inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border type-badge \${styles}`;
-        });
+        // 1. Populate Filters
+        const cards = document.querySelectorAll('.finding-card');
+        const types = new Set();
+        cards.forEach(c => types.add(c.dataset.type));
 
-        // --- Filter Logic (Client Side) ---
-
-        // 1. Collect all unique types
-        const allRows = Array.from(document.querySelectorAll('tbody tr'));
-        const uniqueTypes = new Set();
-        allRows.forEach(row => {
-            const badge = row.querySelector('.type-badge');
-            if (badge) uniqueTypes.add(badge.dataset.type.trim());
-        });
-
-        // 2. Generate Filter Buttons
-        const filterContainer = document.getElementById('typeFilters');
-        uniqueTypes.forEach(type => {
+        const filterContainer = document.querySelector('#filterContainer');
+        types.forEach(type => {
+            if (!type) return;
             const btn = document.createElement('button');
-            btn.className = "filter-btn active px-3 py-1.5 text-xs font-medium bg-slate-800 text-gray-300 border border-slate-700/50 rounded-lg hover:bg-slate-700 transition-all";
+            btn.className = "filter-chip text-xs font-medium px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition-colors whitespace-nowrap";
             btn.dataset.filter = type;
             btn.textContent = type;
-            btn.addEventListener('click', () => toggleFilter(btn));
+            btn.onclick = () => toggleFilter(btn, type);
             filterContainer.appendChild(btn);
         });
 
-        // "All" Button Logic
-        const allBtn = document.querySelector('[data-filter="all"]');
-        allBtn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn !== allBtn) {
-                    btn.classList.add('bg-slate-800', 'text-gray-300');
-                    btn.classList.remove('bg-blue-500/20', 'text-blue-300', 'border-blue-500/30', 'active');
-                }
+        // Filter State
+        let activeFilter = 'all';
+
+        function toggleFilter(btn, type) {
+            // Simple single select for this design for clarity, or toggle
+            // Let's do single select group behavior for simplicity in "Audit" mode
+            document.querySelectorAll('.filter-chip').forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white');
+                b.classList.add('bg-slate-800', 'text-slate-300');
             });
-            // Reset "All" button to active look (optional, or just keep it distinct)
-            applyFilters();
-        });
-
-        function toggleFilter(btn) {
-            // Toggle active class visually
-            if (btn.classList.contains('active')) {
-                btn.classList.remove('active', 'bg-blue-500/20', 'text-blue-300', 'border-blue-500/30');
-                btn.classList.add('bg-slate-800', 'text-gray-300');
-            } else {
-                btn.classList.add('active', 'bg-blue-500/20', 'text-blue-300', 'border-blue-500/30');
-                btn.classList.remove('bg-slate-800', 'text-gray-300');
-            }
+            btn.classList.remove('bg-slate-800', 'text-slate-300');
+            btn.classList.add('bg-blue-600', 'text-white');
+            activeFilter = type;
             applyFilters();
         }
 
-        // Pagination State
-        let currentPage = 1;
-        const rowsPerPage = 20;
+        document.querySelector('[data-filter="all"]').onclick = function () { toggleFilter(this, 'all'); };
 
-        // Event Listeners
-        document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; applyFilters(); });
-        document.getElementById('confidenceFilter').addEventListener('change', () => { currentPage = 1; applyFilters(); });
-        document.getElementById('prevBtn').addEventListener('click', () => changePage(-1));
-        document.getElementById('nextBtn').addEventListener('click', () => changePage(1));
-
-        function changePage(delta) {
-            currentPage += delta;
-            applyFilters();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // Search Input
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', applyFilters);
 
         function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const minConfidence = parseFloat(document.getElementById('confidenceFilter').value);
+            const query = searchInput.value.toLowerCase();
+            let visibleCount = 0;
 
-            // Get active types
-            const activeBtns = Array.from(document.querySelectorAll('.filter-btn.active'));
-            let activeTypes = activeBtns.map(b => b.dataset.filter);
+            cards.forEach(card => {
+                const type = card.dataset.type;
+                const content = card.dataset.content.toLowerCase();
 
-            // If "All" is treated specially or if no specific types selected, default to all logic? 
-            // Simplified: If specific buttons are 'active', show those. If none, maybe show all? 
-            // Let's stick to: "All" button just resets. The types array controls visibility.
-            const showAll = activeTypes.includes('all');
+                const matchesType = activeFilter === 'all' || type === activeFilter;
+                const matchesSearch = content.includes(query);
 
-            let visibleRows = [];
-
-            allRows.forEach(row => {
-                // Skip the "No findings" row placeholder if it exists
-                if (row.cells.length === 1) return;
-
-                const badge = row.querySelector('.type-badge');
-                const type = badge ? badge.dataset.type.trim() : '';
-
-                const confText = row.querySelector('td:nth-child(4) .text-xs').innerText; // safely select text
-                const confidence = parseFloat(confText) / 100.0;
-
-                const filePath = row.querySelector('td:nth-child(1)').innerText.toLowerCase();
-                const snippet = row.querySelector('td:nth-child(3)').innerText.toLowerCase();
-
-                const matchesSearch = filePath.includes(searchTerm) || snippet.includes(searchTerm);
-                const matchesConf = confidence >= minConfidence;
-                const matchesType = showAll || activeTypes.length === 0 || activeTypes.includes(type);
-
-                if (matchesSearch && matchesConf && matchesType) {
-                    visibleRows.push(row);
+                if (matchesType && matchesSearch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
                 }
-                row.style.display = 'none'; // Hide all initially
             });
-
-            // Pagination Logic
-            const totalItems = visibleRows.length;
-            const totalPages = Math.ceil(totalItems / rowsPerPage);
-
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
-
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const pageItems = visibleRows.slice(start, end);
-
-            pageItems.forEach(row => row.style.display = '');
-
-            // Update UI
-            document.getElementById('pageStart').innerText = totalItems === 0 ? 0 : start + 1;
-            document.getElementById('pageEnd').innerText = Math.min(end, totalItems);
-            document.getElementById('totalRows').innerText = totalItems;
-
-            document.getElementById('prevBtn').disabled = currentPage <= 1;
-            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
         }
 
-        // Initialize
-        applyFilters();
-
-
-        // --- Actions ---
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            // Optional visual feedback could go here
-        }
-
-        function addToWhitelist(value, btn) {
-            if (!confirm(`Whitelist this value?\n\n"${value}"\n\nIt will be ignored in future scans.`)) return;
-
-            fetch('/whitelist', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ value: value })
-            })
-                .then(res => {
-                    if (res.ok) {
-                        const row = btn.closest('tr');
-                        row.style.opacity = '0.3';
-                        row.style.pointerEvents = 'none';
-                        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-green-500"></i>';
-                    }
-                })
-                .catch(err => alert('Failed to whitelist.'));
-        }
-
+        // Feedback & Whitelist (Mocked for UI, connected to backend)
         function submitFeedback(id, feedback, btn) {
             fetch('/feedback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: id, feedback: feedback })
-            })
-                .then(res => {
-                    if (res.ok) {
-                        // Update UI state
-                        const container = btn.parentElement;
-                        const btns = container.querySelectorAll('button');
+            }).then(res => {
+                if (res.ok) {
+                    // Visual Toggle
+                    const parent = btn.parentElement;
+                    const checkBtn = parent.children[0];
+                    const xBtn = parent.children[1];
 
-                        // Reset all styles
-                        btns[2].className = "p-2 text-gray-500 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors";
-                        btns[3].className = "p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors";
+                    // Reset
+                    checkBtn.classList.remove('text-green-400', 'bg-green-500/10');
+                    xBtn.classList.remove('text-red-400', 'bg-red-500/10');
 
-                        // Apply active style
-                        if (feedback === 'Correct') {
-                            btns[2].classList.add('text-green-400', 'bg-green-500/10');
-                        } else if (feedback === 'Incorrect') {
-                            btns[3].classList.add('text-red-400', 'bg-red-500/10');
-                        }
+                    if (feedback === 'Correct') {
+                        checkBtn.classList.add('text-green-400', 'bg-green-500/10');
                     } else {
-                        alert('Failed to submit feedback');
+                        xBtn.classList.add('text-red-400', 'bg-red-500/10');
                     }
-                })
-                .catch(err => console.error('Error submitting feedback:', err));
+                }
+            });
         }
+
+        function addToWhitelist(val, btn) {
+            if (!confirm(`Whitelist this snippet?\n\n"${val}"`)) return;
+            fetch('/whitelist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ value: val })
+            }).then(res => {
+                if (res.ok) {
+                    btn.closest('.finding-card').style.opacity = '0.5';
+                    btn.closest('.finding-card').style.pointerEvents = 'none';
+                }
+            });
+        }
+
     </script>
 </body>
 

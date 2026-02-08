@@ -9,6 +9,8 @@ type Finding struct {
 	Confidence float64 `json:"confidence"`        // 0.0 to 1.0
 	Offset     int64   `json:"offset"`            // Byte offset in file
 	Context    string  `json:"context,omitempty"` // AI explanation or surrounding context
+	ID         uint    `json:"id"`                // Database ID for feedback
+	Feedback   string  `json:"feedback"`          // "Correct", "Incorrect", "Unknown"
 }
 
 // ScanResult represents the outcome of scanning a single file

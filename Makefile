@@ -21,7 +21,13 @@ build-windows:
 	GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o $(BUILD_DIR)/$(BINARY_NAME)-windows-amd64.exe $(ENTRY_POINT)
 	@echo "Windows build complete: $(BUILD_DIR)/$(BINARY_NAME)-windows-amd64.exe"
 
+
 clean:
 	@echo "Cleaning up..."
 	@rm -rf $(BUILD_DIR)
 	@echo "Clean complete."
+
+test:
+	@echo "Running build validation..."
+	@sh scripts/validate-build.sh
+

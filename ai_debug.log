@@ -1724,3 +1724,1731 @@ IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
 [2026-02-08T04:33:07+01:00] [RESPONSE]
 {"type":"Name","value":"IT-Grundschutz-Kompendium","reason":"Company name","confidence":0.3}
 --------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Liste Rechner f√ºr Ralf Stand 14.10.2025.xlsx
+Potential PII Context:
+- [Name] Rechner / Laptops Standort Bernwardstr. 6, 31134 Hildeshei
+- [Name] B√ºro 3 Ann-Kathrin 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] Keller Regal hinten 
+- [Name] DELL Opti Plex 3040
+- [Name] ur alter Aufkleber, Dell Latitude E 6540
+- [Identity] nur alter Aufkleber, Dell Lat
+- [Name] ur alter Aufkleber, Dell Latitude E 6540
+- [Identity] nur alter Aufkleber, Dell Lat
+- [Name] ur alter Aufkleber, Dell Latitude E 6540
+- [Identity] nur alter Aufkleber, Dell Lat
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: RechnerlisteArbeitsplatz.xlsx
+Potential PII Context:
+- [Name] LEB Beratungsb√ºro Oldenburg
+- [Name] Lehrkraft Unterrichtsraum 1
+- [Name] Lehrkraft Unterrichtsraum 2
+- [Name] B√ºrorechner Lehrkr√§fte
+- [Name] Lehrkraft Unterrichtsraum 1
+- [Name] LEB Beratungsb√ºro Oldenburg
+- [Name] LEB Standort Gro√üenkneten
+- [Name] LEB Standort Goldenstedt
+- [Name] LEB Beratungsb√ºro Ammerland
+- [Name] LEB BIZ Bad Zwischenahn
+- [Identity] LEB AC Kaiserstra√üe
+- [Name] LEB Standort Aurich
+- [Name] LEB Werkstatt K√∂sterhof
+- [Name] LEB Sozialer Wirtschaftsbetrieb
+- [Name] LEB Beratungsb√ºro Bremerv√∂rde
+- [Name] LEB Beratungsb√ºro Cuxhaven-St.
+- [Name] LEB BIZ Cuxhaven Stade
+- [Name] LEB Beratungsb√ºro L√ºneburg
+- [Name] LEB Beratungsb√ºro Braunschweig
+- [Name] LEB BIZ Ehra Lessin (+Wittingen)
+- [Name] LEB Beratungsb√ºro Hannover
+- [Name] LEB Beratungsb√ºro Hildesheim
+- [Identity] LEB HiB Bernwardstra√üe
+- [Name] LEB HiB BIZ Bockenem Sammler
+- [Identity] LEB BIZ Hann. Bultstra√üe
+- [Identity] EB BIZ Hann.Plathnerstra√üe 5
+- [Name] LEB BIZ Hannover Raiffeisenstr
+- [Name] LEB Beratungsb√ºro G√∂ttingen
+- [Name] LEB BIZ Northeim Sitz G√ºterbahnhofstra√üe
+- [Identity] m Sitz G√ºterbahnhofstra√üe
+- [Name] LEB BIZ Einbeck Standort Uslar
+- [Name] LEB BIZ Bad Gandersheim
+- [Name] LEB BIZ Harz Herzberg
+- [Name] LEB Beratungsb√ºro Barnstorf
+- [Name] LEB Beratungsb√ºro Osnabr√ºck
+- [Name] LEB Beratungsb√ºro Emsland J√§gerstra√üe
+- [Identity] b√ºro Emsland J√§gerstra√üe
+- [Name] LEB FB Sucht Selbsthilfe
+- [Name] ZE Rewe-Controll
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: PingToolImport.xlsx
+Potential PII Context:
+- [Name] Neue Bezeichnung
+- [Name] Landesb√ºro Hannover
+- [Name] Router HBU - Landesb√ºro Hannover
+- [Name] BIZ Hannover, Standort Raiffeisenstra√üe
+- [Identity]  Standort Raiffeisenstra√üe
+- [Name] HRA - BIZ Hannover, Standort Raiffeisenstra√üe
+- [Identity]  Standort Raiffeisenstra√üe
+- [Name] Beratungsb√ºro Weserbergland
+- [Name] Router HMR, HMB - Beratungsb√ºro Weserbergland
+- [Identity] Hildesheim, Bernwardstra√üe
+- [Identity] Hildesheim, Bernwardstra√üe
+- [Name] Beratungsb√ºro Oldenburg
+- [Name] Router HUS - Beratungsb√ºro Oldenburg
+- [Name] Assessment und Coaching Center Oldenburg
+- [Name] LK - Assessment und Coaching Center Oldenburg
+- [Name] Beratungsb√ºro Ostfriesland/Ammerland
+- [Name] Router ZWB - Beratungsb√ºro Ostfriesland/Ammerland
+- [Name] ratungsb√ºro AUR im Landvolk Haus
+- [Name] ratungsb√ºro AUR im Landvolk Haus
+- [Name] BIZ Bad Zwischenahn, Standort K√∂sterho
+- [Name] IZ Bad Zwischenahn, Standort K√∂sterhof
+- [Name] Router ZWE - BIZ Bad Zwischenahn, Standort K√∂sterho
+- [Name] IZ Bad Zwischenahn, Standort K√∂sterhof
+- [Name] BIZ Bad Zwischenahn, Standort Langenhof
+- [Name] IZ Bad Zwischenahn, Standort Langenhof
+- [Name] Router ZWL - BIZ Bad Zwischenahn, Standort Langenhof
+- [Name] IZ Bad Zwischenahn, Standort Langenhof
+- [Name] BIZ Bad Zwischenahn, Au√üenstelle AGH P
+- [Name] n, Au√üenstelle AGH Projekt Sandkrug
+- [Name] Router SAB - BIZ Bad Zwischenahn, Au√üenstelle AGH P
+- [Name] n, Au√üenstelle AGH Projekt Sandkrug
+- [Name] BIZ Werkhof Beverstedt
+- [Name] Router BEV - BIZ Werkhof Beverstedt
+- [Name] Beratungsb√ºro L√ºneburg
+- [Name] Router LUE - Beratungsb√ºro L√ºneburg
+- [Name] BIZ Einbeck, Au√üenstelle Gandersheim
+- [Name] GANB - BIZ Einbeck, Au√üenstelle Gandersheim
+- [Name] BIZ Einbeck, Au√üenstelle Gandersheim
+- [Name] GANM - BIZ Einbeck, Au√üenstelle Gandersheim
+- [Name] BIZ Northeim, Standort G√ºterbahnhofstra√üe
+- [Identity] andort G√ºterbahnhofstra√üe
+- [Name] OM2 - BIZ Northeim, Standort G√ºterbahnhofstra√üe
+- [Identity] andort G√ºterbahnhofstra√üe
+- [Name] BIZ Northeim, Au√üenstelle Uslar
+- [Name] USB - BIZ Northeim, Au√üenstelle Uslar
+- [Name] Beratungsb√ºro G√∂ttingen
+- [Name] Router GOE - Beratungsb√ºro G√∂ttingen
+- [Name] MoA IT-Hardware Dept.
+- [Name] Router ZOS - MoA IT-Hardware Dept.
+- [Name] TestStandort
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 20250708_Server√ºbersicht f√ºr net_de.xlsx
+Potential PII Context:
+- [Identity] Name
+- [Name] Summe Volumes
+- [Identity] zusatz innovaphone
+- [Identity] Telefonie
+- [Identity] IPVA f√ºr Innovaphone / Linux
+- [Name] Windows Server 2016 Datacenter
+- [Name] Active Directory Federation Services
+- [Name] Windows Server 2016 Standard
+- [Name] Remoteapp Applikationen
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2022 Standard
+- [Name] Dom√§nen Controller
+- [Name] Windows Server 2012 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Datacenter
+- [Name] Windows Server 2019 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Identity] Innovaphone
+- [Name] Meta Directory f√ºr innovaphone
+- [Identity] irectory f√ºr innovaphone
+- [Name] Windows Server 2019 Standard
+- [Name] Texterkennung Scan CAS - Planungsb√∂ge
+- [Name] Windows Server 2019 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2008 R2 Enterprise
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2022 Standard
+- [Name] Windows Server 2016 Datacenter
+- [Name] WebApplicationProxy
+- [Name] Windows Server 2016 Standard
+- [Name] Interne Zertifizierungsstelle Schulungsnetz
+- [Name] Windows Server 2019 Standard
+- [Name] Dom√§nen Controller
+- [Name] Windows Server 2012 Standard
+- [Name] Windows Server 2019 Standard
+- [Identity] Name
+- [Name] Summe Volumes
+- [Name] Windows Server 2016 Standard
+- [Name] Remoteapp Applikationen
+- [Name] Windows Server 2019 Standard
+- [Name] Windows Server 2019 Standard
+- [Name] Dom√§nen Controller
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Zeugenserver Cluster
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Server und Dienste √ºbersicht.xlsx
+Potential PII Context:
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R610
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Name] Virtuelle Server
+- [Name] PowerEdge R630
+- [Identity] Name
+- [Name] Service Tag
+- [Identity] Name
+- [Identity] Name
+- [Name] Summe Volumes
+- [Identity] zusatz innovaphone
+- [Identity] Telefonie
+- [Identity] IPVA f√ºr Innovaphone / Linux
+- [Name] Windows Server 2016 Datacenter
+- [Name] Active Directory Federation Services
+- [Name] Windows Server 2016 Standard
+- [Name] Remoteapp Applikationen
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2022 Standard
+- [Name] Dom√§nen Controller
+- [Name] Windows Server 2012 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Standard
+- [Name] Windows Server 2016 Datacenter
+- [Name] Windows Server 2019 Standard
+- [Name] Windows Server 2016 Standard
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 20250215_Vernichtungsbest√§tigung-AB0158.pdf
+Potential PII Context:
+- [Name] H
+Gesch√§ftsf√ºhrer
+Aleksander Jakubowski
+Rechtsform
+GmbH - 
+
+- [Name] H - 
+Eingetragen in Amtsgericht Dortmund ‚Äì HRB 36350
+Posta
+- [Name] 36350
+Postanschrift
+Rudolf-Diesel-Stra√üe 2 in 59425 Unna
+Ver
+- [Name] Ansprechpartner/in:
+Herr Dittrich
+Auftragsnummer:
+AB0
+- [Name] ie den Vorgaben der Datenschutz-Grundverordnung (DSGVO).
+- [Identity] form
+GmbH - 
+Eingetragen in Amtsgericht Dor
+- [Identity] d ‚Äì HRB 36350
+Postanschrift
+Rudolf-Diesel-Stra√
+- [Identity] hrift
+Rudolf-Diesel-Stra√üe 2 in 59425 Unna
+Ver
+- [Identity] 
+Raiffeisenstr. 6-8
+PLZ und Ort:
+30161 Hann
+- [Name] 
+2. Vernichtete Datentr√§ger
+Datentr√§gertyp
+Anz
+- [Name] tten 3,5 Zoll
+11
+H3
+Sonstige Festplatten
+x
+H3
+SSD 2,5 Zoll
+5
+- [Name]  2,5 Zoll
+50
+E2
+M.2/MvMe
+x
+E2
+Disketten
+x
+T1
+- [Name] tplatten 3,5 Zoll
+x
+Sonstige Festplatten
+x
+SSD 2,5 Zoll
+x
+M.
+- [Name] 
+SSD 2,5 Zoll
+x
+M.2/MvMe
+x
+Disketten
+x
+CDs
+x
+- [Name] 
+4. Verwendete Verfahren
+Alle Datentr√§ger w
+- [Name] erwendete Verfahren
+Alle Datentr√§ger wurden in √úbereins
+- [Name] SD 2,5 Zoll und M.2/MvMe
+: Vernichtung nach 
+- [Name] Sicherheitsstufe O1
+Die Ma√ünahmen entsprechen nach DI
+- [Name] Sicherheitsstufe 3: Diese Stufe
+ gilt f√ºr 
+vertrau
+- [Name] ertrauliche Daten
+. Die Datenwiederherstellung 
+gelingt nur mit sp
+- [Name] heblichem Aufwand. 
+Die Schutzklasse 1 ist f√ºr den norm
+- [Name] 5. L√∂schverfahren: Secure Erase
+Die digitale L√∂sch
+- [Name] gern wurde mit dem "Secure Erase" Verfahren 
+durchge
+- [Name] ren 
+durchgef√ºhrt. Dieses Verfahren stellt sicher, dass
+- [Name] gen des Art. 17 der Datenschutz-Grundverordnung 
+(DSGVO).
+6. Prozes
+- [Name] und Dokumentation
+: Die Seriennummern aller vernichteten
+
+- [Name] w√§hrleisten.
+‚óè
+ 
+Sicherer Transport
+: Der Transport der
+- [Name] icherer Transport
+: Der Transport der Datentr√§ger er
+- [Name]  Zugangskontrolle
+: Die Vernichtung der Datentr√§ger fa
+- [Name]  denen nur befugtes Personal Zugang 
+hatte.
+‚óè
+ 
+Laufe
+- [Name] ugang 
+hatte.
+‚óè
+ 
+Laufende Schulung der Mitarbeiter
+: A
+- [Name] utzbestimmungen und Recycling-Verfahren.
+7. Dokumentation
+‚
+- [Name] 
+8. Verantwortliche Personen
+‚óè
+ 
+Fahrer, der d
+- [Name] bgeholt hat
+:
+Name: Herr Asmus und Aleksander Jaku
+- [Name] ame: Herr Asmus und Aleksander Jakubowski
+‚óè
+ 
+Die Datentr√§
+- [Name] er Jakubowski
+‚óè
+ 
+Die Datentr√§gervernichtung erfolgte durch die 
+- [Name] arbeiter/in
+:
+Name: Anika L√ºttschwager
+‚óè
+ 
+Mitarbeiter, 
+- [Name] ef√ºhrt hat
+:
+Name: Aleksander Jakubowski
+9. Konformit√§tserk
+- [Name] chf√ºhrung
+Name des Verantwortlichen Person:
+ Anika L√ºttschwag
+- [Name] wortlichen Person:
+ Anika L√ºttschwager 
+Funktion:
+ Sicherh
+- [Identity] §ger abgeholt hat
+:
+Name: Herr Asmus und Ale
+- [Identity] ie Mitarbeiter/in
+:
+Name: Anika L√ºttschwage
+- [Identity] ame: Anika L√ºttschwager
+‚óè
+ 
+Mitarbeiter,
+- [Identity] durchgef√ºhrt hat
+:
+Name: Aleksander Jakubow
+- [Identity] §√üen Durchf√ºhrung
+Name des Verantwortliche
+- [Identity] on:
+ Anika L√ºttschwager 
+Funktion:
+ Sicher
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Gefaehrdungsbeurteilung_GEDOKU_Admin_Handbuch_2023.pdf
+Potential PII Context:
+- [Name] 
+GEDOKU Admin-HandbuchSeite 1 von 7
+ 
+GEDOKU AD
+- [Name] Bitte lesen Sie das Admin-Handbuch komplett, Sachverha
+- [Name]  den Betrieb - sind Administrator-Rechte notwendig.
+Zus√§tzl
+- [Name] us√§tzlich f√ºr die Einzelplatz-Fassung (siehe Kapitel 1):
+
+- [Name] us√§tzlich f√ºr die Netzwerk-Fassung (siehe Kapitel 2) /
+- [Name] en f√ºr den Server :Windows Version ist egal.
+Microsoft
+- [Name] oder besser neuer), Express Edition (oder h√∂her).
+Weit
+- [Name] tion (oder h√∂her).
+Weitere Anforderungen abh√§ngig von der e
+- [Name] on der eingesetzten Windows Server und SQL Server Vers
+- [Name] dows Server und SQL Server Version.Mindestens 100 MB f
+- [Name] tzt oder erzwungen. Wenn Client und Server relativ 
+- [Name] usgehandelt werden.
+Die Datenbank selbst wird unversc
+- [Name] gespeichert. In der Einzelplatz-Fassung liegt die Datenbank
+- [Name] n getroffen werden.
+Das Passwort f√ºr die Datenbankv
+- [Name]  eingegeben werden. Diese Passw√∂r-ter werden verschl√
+- [Financial] swort f√ºr die Datenbankverbindung (falls eines ben√∂t
+- [Name] 
+GEDOKU Admin-HandbuchSeite 2 von 7
+3.
+ 
+Update
+- [Name] men her
+-
+gestellt. Die Suche nach Updates ist op
+- [Name] . ‚Äûmanuell‚Äú. 
+ 
+Das Programm fragt aktuell diver
+- [Name] ndet. Bitte stellen Sie Ihre Firewall ent
+-
+sprechend ein
+- [Name] on zu verwenden. 
+ 
+Die Angabe von Proxy-Informati
+- [Name] . 
+ 
+Die Angabe von Proxy-Informationen ist aktuell nicht m
+- [Name]  LocalDB ‚Äì die ‚ÄûEinzelplatz-Fassung‚Äú 
+‚Äì Standardins
+- [Name] zelnen Arbeitsplatz
+Installieren Sie GEDOKU indem Sie da
+- [Name] echten 
+ausf√ºhren. W√§hlen Sie die ‚ÄûEinzelplatz-
+- [Name]  W√§hlen Sie die ‚ÄûEinzelplatz-Fassung‚Äú. Diese kann sp√§
+- [Name] sp√§ter zu einer ‚ÄûNetzwerk-Fassung‚Äú gemacht 
+werden,
+- [Name] rneut auszuf√ºhren. W√§hlen Sie dazu einfach im Pro
+- [Name]  / Daten
+-
+bank den Datenbank-Typ ‚ÄûSQL Server / SQL
+- [Name] ‚ÄûSQL Server / SQL Server Express‚Äú. 
+Bei der Instal
+- [Name] rs unter 
+C:\Users\<IhrBe
+-nutzerName>\AppDat
+- [Name] <IhrBe
+-nutzerName>\AppData\Local\GEDOKU
+ angel
+- [Name] erden in 
+C:\Users\<IhrBenutzerName>\AppData\Local\Jede
+- [Name] s\<IhrBenutzerName>\AppData\Local\Jedermann-
+Ve
+- [Name] lag_GmbH
+ abgelegt.
+Diese Dateien und Ordner werden b
+- [Name] te beachten Sie: 
+ 
+Die Komponente 
+SQL Server LocalDB
+- [Name] onen, z.
+ 
+B. 2019. Sollten Sie mehrere Versionen i
+- [Name] n verwendet werden! Eine Art Aktuali
+-
+sierung der Daten
+- [Name] t verwendet werden. Eine Wiederherstellung der Daten auf dem a
+- [Name]  Datenbank anlegen. Der Benutzer sieht dann nur den 
+- [Name]  sieht dann nur den Datenbank-Einstellungsdialog, mit einer 
+entspre
+- [Name]  k√∂nnen Sie in den Windows-Systemeinstellungen unter Apps & Featur
+- [Identity] Users\<IhrBe
+-nutzerName>\AppData\Local\GEDO
+- [Identity] :\Users\<IhrBenutzerName>\AppData\Local\Jede
+- [Name] 
+GEDOKU Admin-HandbuchSeite 3 von 7
+2
+ 
+GEDOKU 
+- [Name] L Server ‚Äì die ‚ÄûNetzwerk-Fassung‚Äú
+Entweder install
+- [Name] das Setup auf einem Windows Server ausf√ºhren und 
+das
+- [Name] ben dann freigeben. Letztgenannte Variante hat den 
+Vorteil, d
+- [Name] n Version arbeiten. Alle Benutzer m√ºssen aber Zugrif
+- [Name] ichnis ist wichtig.
+Im Programmverzeichnis finden Sie die Date
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Sensitive
+
+		- CRITICAL: Check for Article 9 GDPR special categories (Health, Religion, Political, Criminal).
+		- Flag immediately if this contains medical diagnoses, political affiliation, or religious beliefs.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Ausgabe_2024_12_Newsletter_FA.pdf
+Potential PII Context:
+- [Name] chutz 
+Now!
+ 
+ 
+ 
+ 
+Zur Information von Ihrem Datenschu
+- [Name] Zur Information von Ihrem Datenschutzbeauftragten
+ 
+ 
+ 
+Ausgabe 12/20
+- [Name] Ausgabe 12/2024
+ 
+ 
+Liebe Leserin, lieber Leser,
+ 
+ 
+
+- [Name] ark diskutiert wie 
+K√ºnstliche Intelligenz (KI). Die 
+meisten 
+- [Name] zu vermei-
+den.
+ 
+ 
+Ihr Hans
+-
+J√ºrgen Lehmann, 
+- [Name] den.
+ 
+ 
+Ihr Hans
+-
+J√ºrgen Lehmann, Datenschutzbeauftr
+- [Name] t fast schon banal: Das Unternehmen kann 
+festlegen, ob
+- [Identity] ten Besch√§ftigten sagen, sie h√§tten 
+bere
+- [Name]  nicht 
+bieten.
+ 
+ 
+Eine Registrierung sollte man m√∂glich
+- [Name] benutzen 
+kann.
+ 
+ 
+Mit Mailadressen muss man vorsichtig
+- [Name] I
+-
+Anwendungen
+ 
+ 
+Interne Daten m√ºssen intern blei
+- [Name] ne Daten weiter
+ 
+ 
+Die Optimierung von KI
+-
+Anwendunge
+- [Name] Optimierung dienen. Nach Erledigung der Aufgabe, die ei
+- [Name] er Optimierung.
+ 
+ 
+Die Eingabeprotokollierung bitte abschalten
+ 
+
+- [Name] n proto-
+kollieren. Viele Anwendungen bieten jedoch die M
+- [Name] .
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Korrekter Umgang mit Krankmeldungen
+
+- [Identity] istrierung, andere dagegen nicht. 
+Wenn ein
+- [Identity] en, die den eigenen Namen enthalten, sind f√
+- [Identity] √§cher, die keinen 
+Namen einer Person entha
+- [Identity] t sich nie vorher-
+sagen
+, was eine KI
+-
+An
+- [Identity]  die eingegebenen Fragestellungen und Aufga
+- [Sensitive] orrekter Umgang mit Krankmeldungen
+ 
+ 
+- [Name] ter
+ 
+Datenschutz
+ 
+Im Umgang mit Krankmeldungen 
+- [Name] esundheitsdaten
+ 
+ 
+Eine Krankmeldung ist eine Ansammlung
+- [Name] tlich bedeutsam
+ 
+ 
+Eine Krankmeldung hat in vielfacher H
+- [Name] icht erf√ºllen.
+ 
+ 
+Die Mitwirkung externer Dienstleis
+- [Name] berater angewiesen. Die √úbermittlung der notwendigen Dat
+- [Name] 
+sch√ºtzt sein.
+ 
+ 
+Die Erforderlichkeit ist das wesentliche
+- [Name]  gesichert sein
+ 
+ 
+Weitere Personen d√ºrfen informiert 
+- [Name] wen 
+es dabei geht. Falls Besch√§ftigte einander vertreten 
+- [Identity] t wird. Sofern eine Telefonzentrale vo
+rhanden 
+- [Sensitive] utz
+ 
+Im Umgang mit Krankmeldungen gilt es Vorsicht 
+- [Sensitive] Unternehmen an.
+ 
+ 
+Krankmeldungen bestehen aus Gesu
+- [Sensitive] heitsdaten
+ 
+ 
+Eine Krankmeldung ist eine Ansammlung
+- [Sensitive] dem 
+Fall gilt f√ºr Krankmeldungen der besondere
+ 
+S
+- [Sensitive] daten vorsieht.
+ 
+ 
+Krankmeldungen sind rechtlich be
+- [Sensitive]  bedeutsam
+ 
+ 
+Eine Krankmeldung hat in vielfacher H
+- [Sensitive] ternehmen darf eine Krankmeldung an alle Organisatio
+- [Name] lediglich √ºber die Abwesenheit Bescheid 
+wissen muss oder a
+- [Name] emand nicht da ist. Die Personalab
+teilung braucht dag
+- [Name] n Gesundheitswesen. Der Krankenstand ist dabei 
+ei
+ne wi
+- [Name] ige Kennziffer.
+ 
+ 
+Gro√üe Mailverteiler sind gef√§hrlich
+ 
+
+- [Name] genau dies in einem Hamburger Unternehmen
+. Dort ordnete ein 
+- [Name] rechtswidrig.
+ 
+ 
+ 
+Aus Datenpannen lernen, nicht nur a
+- [Name] ten, um das zu tun. Die Aufsichtsbeh√∂rden nennen viele Beispi
+- [Name] elle zu vermeiden. 
+Aus Fehlern kann und sollte man
+- [Identity] beruht. So muss die Telefonzentrale ledig-
+lich
+- [Identity] ab
+teilung braucht dagegen auch die Angabe,
+- [Sensitive] mte Abteilung √ºber Krankmeldungen zu informieren. D
+- [Sensitive] , alle 
+eingehenden Krankmeldungen √ºber einen beson
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:29+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Phone
+
+		- Verify if this is a valid phone number format.
+		- Distinguish between personal mobile numbers and general company hotlines.
+		- Flag personal mobile numbers as high risk.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Ausstehende Ger√§tekennzeichnungen der Region 80.msg
+Potential PII Context:
+- [Email] l:
+<a href="mailto:Yorck.Mueller-Dieckert@leb.de"><span style="color
+- [Email] yle="color:#0563C1">Yorck.Mueller-Dieckert@leb.de</span></a><span sty
+- [Email] cn=usere4bf3589    <13c78a05acc04c33bcaaf42b67295ccf@leb.de>                   
+- [Phone] ;&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA179<o:p></o:p></sp
+- [Phone] ;&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA069<o:p></o:p></p>
+- [Phone] ;&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA672<o:p></o:p></sp
+- [Name] & - †m0‡ †"]0Öo1 2 &Pf Pe{552ˆw3è4ü6Ä ∞d2ˆm6
+- [Name] ñ∑&M õ∏ﬂπÂD∫Ä»` E> ˇSpDoº_Q_GœS?]OU_?µ‰VˇX 	
+- [Name]  /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c
+- [Name]  /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c
+- [Name] 
+<meta http-equiv="Content-Type" content="text/html
+- [Name] Generator" content="Microsoft Word 15 (filtered medium
+- [Name] ]--><style><!--
+/* Font Definitions */
+@font-face
+	{f
+- [Name] ace
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 
+- [Name] 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li
+- [Name] e Definitions */
+p.MsoNormal, li.MsoNormal, div.
+- [Name] */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{m
+- [Name] , li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	ma
+- [Name] -US;}
+a:link, span.MsoHyperlink
+	{mso-style-priori
+- [Name] ;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priori
+- [Name] olor:windowtext;}
+.MsoChpDefault
+	{mso-style-type:e
+- [Name] ction1">
+<p class="MsoNormal"><b>Maria Determann
+- [Name] lass="MsoNormal"><b>Maria Determann<o:p></o:p></b></p>
+- [Name] </b></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] bsp;&nbsp;&nbsp; 64-Bit-Betriebssystem, x64-basierter Proz
+- [Name] pan></p>
+<p class="MsoNormal"><span style="color
+- [Name] pan></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p><
+- [Name] o:p></p>
+<p class="MsoNormal"><b>Diana Ebert<o:p
+- [Name] lass="MsoNormal"><b>Diana Ebert<o:p></o:p></b></p>
+- [Name] </b></p>
+<p class="MsoNormal">Ger‰tename&nbsp;&n
+- [Name] o:p></p>
+<p class="MsoNormal">Vollst‰ndiger Ger‰
+- [Name] o:p></p>
+<p class="MsoNormal">Prozessor&nbsp;&nb
+- [Name] o:p></p>
+<p class="MsoNormal">Installierter RAM&
+- [Name] o:p></p>
+<p class="MsoNormal">Ger‰te-ID&nbsp;&nb
+- [Name] o:p></p>
+<p class="MsoNormal">Produkt-ID&nbsp;&n
+- [Name] o:p></p>
+<p class="MsoNormal">Systemtyp&nbsp;&nb
+- [Name] bsp;&nbsp;&nbsp; 64-Bit-Betriebssystem, x64-basierter Proz
+- [Name] o:p></p>
+<p class="MsoNormal">Stift- und Touchei
+- [Name] o:p></p>
+<p class="MsoNormal"><b><o:p>&nbsp;</o:
+- [Name] </b></p>
+<p class="MsoNormal"><b>Kerstin Strobel
+- [Name] lass="MsoNormal"><b>Kerstin Strobel<o:p></o:p></b></p>
+- [Name] </b></p>
+<p class="MsoNormal">LIW-B-LAP02<o:p></
+- [Name] o:p></p>
+<p class="MsoNormal"><b><o:p>&nbsp;</o:
+- [Name] </b></p>
+<p class="MsoNormal"><b>Andrea Talle<o:
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:30+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2026 Plan.xlsx
+Potential PII Context:
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] Beratungsb√ºro Hannover | 70: Nienburg-Wese
+- [Name] √ºro Hannover | 70: Nienburg-Weserbergland | 80: Osnabr√ºck-Em
+- [Name] Weserbergland | 80: Osnabr√ºck-Emsland | 81: FB Sucht/Selb
+- [Name] Ideeller Bereich
+- [Name] WfbM, Anderer Leistungsanbieter
+- [Name] Zusch√ºsse Beh√∂rden
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre
+- [Name] R√ºckstellung Honorare
+- [Name] esb√ºro abgebildet. Nach Auswertung der Arbeitszeitlist
+- [Name] ben 1,0% angesetzt. Die Honorarkr√§ftethematik wird in einer vorha
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre:
+- [Name] 20.000 ‚Ç¨ Dohverlust Mieten wegen BIZ Harz gedr
+- [Name] Umzug Landesb√ºro inkl. Herrichtung B
+- [Name] g Landesb√ºro inkl. Herrichtung Bultstr. 20.000 ‚Ç¨ geviert
+- [Name] rtale verteilt f√ºr Vorlaufkosten Einf√ºhrung Nachfolgesoftware f√ºr P&I | 50.000 ‚
+- [Name]  R√ºckstellung f√ºr Nachzahlungen Honorarlehrkr√§fte: 90.000 ‚Ç¨ in Quar
+- [Name]  ‚Ç¨ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 ‚Ç¨ gevierte
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:30+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2025_Q3.xlsx
+Potential PII Context:
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] Beratungsb√ºro Hannover | 70: Nienburg-Wese
+- [Name] √ºro Hannover | 70: Nienburg-Weserbergland | 80: Osnabr√ºck-Em
+- [Name] Weserbergland | 80: Osnabr√ºck-Emsland | 81: FB Sucht/Selb
+- [Name] Ideeller Bereich
+- [Name] WfbM, Anderer Leistungsanbieter
+- [Name] Zusch√ºsse Beh√∂rden
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre
+- [Name] R√ºckstellung Honorare
+- [Name] esb√ºro abgebildet. Nach Auswertung der Arbeitszeitlist
+- [Name] ben 1,0% angesetzt. Die Honorarkr√§ftethematik wird in einer vorha
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre:
+- [Name] 20.000 ‚Ç¨ Dohverlust Mieten wegen BIZ Harz gedr
+- [Name] Umzug Landesb√ºro inkl. Herrichtung B
+- [Name] g Landesb√ºro inkl. Herrichtung Bultstr. 20.000 ‚Ç¨ geviert
+- [Name] rtale verteilt f√ºr Vorlaufkosten Einf√ºhrung Nachfolgesoftware f√ºr P&I | 50.000 ‚
+- [Name]  R√ºckstellung f√ºr Nachzahlungen Honorarlehrkr√§fte: 90.000 ‚Ç¨ in Quar
+- [Name]  ‚Ç¨ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 ‚Ç¨ gevierte
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:30+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2025 Plan.xlsx
+Potential PII Context:
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] Beratungsb√ºro Hannover | 70: Nienburg-Wese
+- [Name] √ºro Hannover | 70: Nienburg-Weserbergland | 80: Osnabr√ºck-Em
+- [Name] Weserbergland | 80: Osnabr√ºck-Emsland | 81: FB Sucht/Selb
+- [Name] Ideeller Bereich
+- [Name] WfbM, Anderer Leistungsanbieter
+- [Name] Zusch√ºsse Beh√∂rden
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre
+- [Name] R√ºckstellung Honorare
+- [Name] esb√ºro abgebildet. Nach Auswertung der Arbeitszeitlist
+- [Name] ben 1,0% angesetzt. Die Honorarkr√§ftethematik wird in einer vorha
+- [Name] Aufl√∂sung R√ºckstellungen Vorjahre:
+- [Name] 20.000 ‚Ç¨ Dohverlust Mieten wegen BIZ Harz gedr
+- [Name] Umzug Landesb√ºro inkl. Herrichtung B
+- [Name] g Landesb√ºro inkl. Herrichtung Bultstr. 20.000 ‚Ç¨ geviert
+- [Name] rtale verteilt f√ºr Vorlaufkosten Einf√ºhrung Nachfolgesoftware f√ºr P&I | 50.000 ‚
+- [Name]  R√ºckstellung f√ºr Nachzahlungen Honorarlehrkr√§fte: 90.000 ‚Ç¨ in Quar
+- [Name]  ‚Ç¨ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 ‚Ç¨ gevierte
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | 20|21 Elbe/Weser 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+- [Name] ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir
+- [Name] ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. 
+- [Name] er inkl. WfbM | 30: L√ºneburger Heide | 52: BIZ Hannover 
+- [Name] 11: Weser-Ems Mitte | 12: Weser-Ems Nor
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:32+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: IBAN
+
+		- Check if the IBAN is a real bank account number.
+		- Verify if it looks like a test/example IBAN (e.g. 123456).
+		- Flag it especially if it appears in a context of real transaction data.
+	
+
+Target: CreditCard
+
+		- Verify if this number looks like a credit card (13-19 digits).
+		- Context Check: Is it near words like "CVV", "Expires", "Visa", "Mastercard"?
+		- STRICTLY FLAGGING: Storing full Credit Card numbers is a critical violation.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Phone
+
+		- Verify if this is a valid phone number format.
+		- Distinguish between personal mobile numbers and general company hotlines.
+		- Flag personal mobile numbers as high risk.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: IT-Verwaltung.accdb
+Potential PII Context:
+- [Name]       è    `kvkMd`f^QuMd^o`bk       è    `kv
+- [Name] mQ     	 è    `kvkY`QuMd^o`bk     ( è    `kv
+- [Name] vkOL       è    ko``JivYbSd       è    okQiOQSY
+- [IBAN] 393222000"
+CMG="CDCFD92E6BFF6FFF6FFF6FFF6F"
+DPB="9A988E615A62
+- [CreditCard] 0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 } # 4 . 2 # 9 #
+- [CreditCard] 0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 } # 2 . 0 # 0 #
+- [Name] 8D4C5B4D5B4DA4"
+
+[Host Extender Info]
+&H00000001={3832D
+- [Name] tem32\ e2 .tlb#OLE  AutomatXion 0    ÇD AO> JD A jO
+- [Identity] CA4-8E6745FEC3D5}"
+Name="IT-Verwaltung"
+He
+- [Email] nˇ˛+49 8265 998910ˇ˛info@esm-computer.de_ I 8 0 !     ˇ     
+- [Email] ˇ˛+49 800 887-9000ˇ˛grosskunden-tk@ewe.de_ H 6 +       ˇ     
+- [Email] nˇ˛+49 30 80951000ˇ˛support@easybell.de] H 7 /       ˇ     
+- [Email] nnˇ˛+49 8003302870ˇ˛Service_GrK_016@telekom.dem Q A ; (     ˇ      
+- [Email] ˇ˛+49 176 63006340ˇ˛fatma.kenar@telefonica.comÄ d R I 1     ˇ     
+- [Email] rˇ˛+49 511 37294-0ˇ˛info@net.deS F 5 +       ˇ      
+- [Email] ˇ˛+49 7161 60692-0ˇ˛contact@teamviewer.comm U C 8 '     ˇ      
+- [Email] gˇ˛+49 911 9903126ˇ˛herzog@ah-printware.den V E ; .     ˇ      
+- [Email] ˇ˛+49 511 12332912ˇ˛info@leine-weber.neth R @ 6       ˇ      
+- [Email] gˇ˛+49 341 2568000ˇ˛heike.hentschel@softwareone.des S B 9 ,     ˇ      
+- [Email] larˇ˛+49 6441 5571ˇ˛info@rink-shop.deX E 6 -       ˇ      
+- [Email] gˇ˛+49 341 58906-0ˇ˛info@ocr-systeme.de_ J 9 0       ˇ    
+- [Email] gˇ˛+49 40 35770636ˇ˛martin.appel@nerosoft.dev \ K B )     ˇ      
+- [Email] +49 481 78767-9999ˇ˛info@nistech.deX G 3 ,       ˇ      
+- [Email] rstr. 9ˇ˛Remscheidˇ˛support@bbbserver.de^ H H = *     ø  
+  
+- [Email] +49 511 515464-214ˇ˛info@hornetsecurity.comk R > 4 #     ˇ  	   
+- [Email] dtˇ˛+49 40 53576-0ˇ˛info@gid-gmbh.deç { k ^ M     ˇ     
+- [Email] nˇ˛+49 800 1199151ˇ˛info@enthus.de\ L ; 0       ˇ     
+- [Email] erˇ˛+49 511 358650ˇ˛kontakt@comnet-solutions.deí u e [ J     ˇ     
+- [Email] lˇ˛+49 172 9383013ˇ˛stefan.drews@bytech-learning.deÜ e T F 7     ˇ     
+- [Email] ˇ˛+49 511 12341236ˇ˛kontakt@axxeo.de] K 9 /       ˇ     
+- [Email] ˇ˛+49 511 270416-0ˇ˛info@aldebaran.dex e S I ;     ˇ      
+- [Email] ˇ˛+49 511 458066-0ˇ˛office@alcera.deq _ M C 1     ˇ      
+- [Email] ˛+49 511 99979-200ˇ˛service@michael-wessel.deÉ h U K ;     ˇ  ‹  
+- [Phone] traﬂe 43ˇ˛Hannoverˇ˛+49 511 676885-0Y Y G = ,       ç   
+- [Phone] erbepark 4ˇ˛Salgenˇ˛+49 8265 998910ˇ˛info@esm-computer.
+- [Phone] str. 16ˇ˛Osnabr¸ckˇ˛+49 800 887-9000ˇ˛grosskunden-tk@ewe
+- [Phone] nstraﬂe 5aˇ˛Berlinˇ˛+49 30 80951000ˇ˛support@easybell.d
+- [Phone] rabenweg 151ˇ˛Bonnˇ˛+49 8003302870ˇ˛Service_GrK_016@te
+- [Phone] e-Ring 50ˇ˛M¸nchenˇ˛+49 176 63006340ˇ˛fatma.kenar@telefo
+- [Phone] raﬂe 315ˇ˛Hannoverˇ˛+49 511 6742-0Y Y I ? &           
+- [Phone] traﬂe 57ˇ˛Hannoverˇ˛+49 511 37294-0ˇ˛info@net.deS F 5 +
+- [Phone] platz 2ˇ˛Gˆppingenˇ˛+49 7161 60692-0ˇ˛contact@teamviewer
+- [Phone] nstr. 25ˇ˛N¸rnbergˇ˛+49 911 9903126ˇ˛herzog@ah-printwar
+- [Phone] traﬂe 11ˇ˛Hannoverˇ˛+49 511 12332912ˇ˛info@leine-weber.n
+- [Phone] ochstr. 1ˇ˛Leipzigˇ˛+49 341 2568000ˇ˛heike.hentschel@so
+- [Phone] erstr. 53ˇ˛Wetzlarˇ˛+49 6441 5571ˇ˛info@rink-shop.deX
+- [Phone] gstr. 20-22ˇ˛Fuldaˇ˛+49 661 480276-10T T A : '           
+- [Phone] wstr. 11aˇ˛Leipzigˇ˛+49 341 58906-0ˇ˛info@ocr-systeme.d
+- [Phone]  Stieg 1aˇ˛Hamburgˇ˛+49 40 35770636ˇ˛martin.appel@neros
+- [Phone] chkoppel 17ˇ˛Heideˇ˛+49 481 78767-9999ˇ˛info@nistech.deX G
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:34+01:00] [RESPONSE]
+{"type":"Name","value":"[\"John Smith\", \"Maria Garcia\", \"Thomas Mueller\"]","reason":"Full names like \u201cJohn Smith\u201d, \u201cMaria Garcia\u201d, \u201cThomas Mueller\u201d.","confidence":0.9,"type":"Company name","value":"[\"LEB Beratungsb√ºro Oldenburg\", \"LEB Lehrkraft Unterrichtsraum 1\"]","reason":"Company names (GmbH, Inc, Ltd)","confidence":0.1,"type":"Common noun","value":"[\"Lehrkraft\", \"Unterrichtsraum\"]","reason":"If the text is just a single word that could be a common noun.","confidence":0.2,"type":"Identity","value":"[\"LEB AC Kaiserstra\u00dfe\", \"EB BIZ Hann.Plathnerstra\u00dfe 5\"]","reason":"Analyze the context for identity markers (e.g. \u201cBirthdate\u201d, \u201cPlace of Birth\u201d, \u201cPassport\u201d).","confidence":0.8,"type":"Name","value":"[\"LEB Beratungsb√ºro Oldenburg\"]","reason":"REJECT: Single word that could be a company name (GmbH, Inc, Ltd)","confidence":0.1,"type":"Common noun","value":"[\"Standort\", \"Werkstatt\"]","reason":"If the text is just a single word that could be a common noun.","confidence":0.3,"type":"Identity","value":"[\"LEB HiB Bernwardstra\u00dfe\"]","reason":"Analyze the context for identity markers (e.g. \u201cBirthdate\u201d, \u201cPlace of Birth\u201d, \u201cPassport\u201d).","confidence":0.7,"type":"Name","value":"[\"LEB Beratungsb√ºro Hannover\"]","reason":"REJECT: Single word that could be a company name (GmbH, Inc, Ltd)","confidence":0.1}
+--------------------------------------------------
+[2026-02-08T04:57:35+01:00] [RESPONSE]
+{"type":"Identity","value":"zusatz innovaphone","reason":"contains name of Innovaphone device","confidence":0.2}
+--------------------------------------------------
+[2026-02-08T04:57:35+01:00] [RESPONSE]
+{"type":"Target: Name", "value":"[Name] Neue Bezeichnung","reason":"Filtering false positives of common nouns and company names.","confidence":0.8}
+--------------------------------------------------
+[2026-02-08T04:57:36+01:00] [RESPONSE]
+{
+  "type": "Name",
+  "value": ["Ralf", "Stand"],
+  "reason": "REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID). Rejecting as not a strictly identifiable real human name.",
+  "confidence": 0.0
+}
+--------------------------------------------------
+[2026-02-08T04:57:36+01:00] [RESPONSE]
+{"type":"Identity","value":"Thomas Mueller","reason":"","confidence":0.9}
+--------------------------------------------------
+[2026-02-08T04:57:37+01:00] [RESPONSE]
+{
+    "value": null,
+    "type": "",
+    "reason": "",
+    "confidence": 0.0
+}
+--------------------------------------------------
+[2026-02-08T04:57:39+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Sensitive
+
+		- CRITICAL: Check for Article 9 GDPR special categories (Health, Religion, Political, Criminal).
+		- Flag immediately if this contains medical diagnoses, political affiliation, or religious beliefs.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+Target: OfficialID
+
+		- Check for official ID numbers (Passport, SSN, Driver's License).
+		- Verify if the format resembles a valid ID number.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: IT_Grundschutz_Kompendium_Edition2023.pdf
+Potential PII Context:
+- [Name] 
+IT-Grundschutz-Kompendium
+IT-Grundschutz-Komp
+- [Email] ndBestellung:E-Mail:wirtschaft@reguvis.deISBN(Print):978-3-8462-0
+- [Name] K√∂lnwww.reguvis.de
+BeratungundBestellung:E-Mail:wirtschaft@r
+- [Name] mationstechnik,Bonn
+AlleRechtevorbehalten.DasWerkeinschlie√ül
+- [Name] leRechtevorbehalten.DasWerkeinschlie√ülichseinerTeileisturheberrechtlichgesch√ºtzt.JedeVerwertungau√üe
+- [Name] rechtlichgesch√ºtzt.JedeVerwertungau√üerhalbderGrenzendesU
+- [Name] ktronischenSystemen.HinsichtlichderindiesemWerkggf.enthaltenenTextevon
+- [Name] xtesind.Herausgeber:Bundesamtf√ºrSicherheitinderInformationstechnik,Bonn
+Gesamtverantwo
+- [Name] mationstechnik,Bonn
+GesamtverantwortungundChefredaktion:HolgerSchildt
+Redak
+- [Name] ungundChefredaktion:HolgerSchildt
+Redaktion:StefanieF
+- [Name] erSchildt
+Redaktion:StefanieF√∂rster,BrigitteHoffmann,Jo
+- [Name] on:StefanieF√∂rster,BrigitteHoffmann,JohannesOppeltundJe
+- [Name] er,BrigitteHoffmann,JohannesOppeltundJessikaWelticke
+ErstellungundAktual
+- [Name] AktualisierungvonIT-Grundschutz-Bausteinen:PetraBottenberg,Ale
+- [Name] ndschutz-Bausteinen:PetraBottenberg,AlexDidierEssoh,Ste
+- [Name] nen:PetraBottenberg,AlexDidierEssoh,StefanieF√∂rster,Da
+- [Name] erg,AlexDidierEssoh,StefanieF√∂rster,DanielGilles,Floria
+- [Name] oh,StefanieF√∂rster,DanielGilles,FlorianG√∂hler,Flor
+- [Name] ∂rster,DanielGilles,FlorianG√∂hler,FlorianHillebrand,B
+- [Name] lles,FlorianG√∂hler,FlorianHillebrand,BrigitteHoffmann,C√
+- [Name] r,FlorianHillebrand,BrigitteHoffmann,C√§ciliaJung,Birger
+- [Name] nd,BrigitteHoffmann,C√§ciliaJung,BirgerKlein,Alexand
+- [Name] ffmann,C√§ciliaJung,BirgerKlein,Alexander
+N√∂hles,J
+- [Name] hWiemersHerstellung:G√ºnterFabritiusSatz:CiceroComputerGmbH,
+- [Name] roComputerGmbH,Bonn
+DruckundbuchbinderischeVerarbeitung:PlumpDruck&MedienGm
+- [Name] erischeVerarbeitung:PlumpDruck&MedienGmbH,Rheinbre
+- [Name] umpDruck&MedienGmbH,RheinbreitbachPrintedinGermany
+- [Identity] ratungundBestellung:E-Mail:wirtschaft@reguvis.
+- [Name] esIns-
+trumentarium.EineerfolgreicheundnachhaltigeDigitalisierungkannnurgelingen,wennSicherheitsanfo
+- [Name] t
+diesebew√§hrteBSI-MethodesowohlVoraussetzungalsauchleichterEinstiegundNachschlagewerk,umden
+Herausforderu
+- [Name] chschlagewerk,umden
+HerausforderungenderDigitalisierungzubegegnen.Daisteswenigverwund
+- [Name] AnwendungsfeldernIT-Grundschutz-Profilegibt,wiezumBeispielf√ºrW
+- [Name] rauminfrastrukturen.EsbeschreibtMindestanforderungenandieCyber-Sicherheitf√ºrSatelliten-
+infrast
+- [Name] Kompendiumsbasieren.AnwenderinnenundAnwenderausWirtschaftundVerwaltungerhaltendarinpraxisnahe
+EmpfehlungenundInfo
+- [Name] ltendarinpraxisnahe
+EmpfehlungenundInformationen.MitdervorliegendenA
+- [Name] egendenAusgabedesIT-Grundschutz-KompendiumsstehtZust√§ndigeninBeh√∂rdenundUnterneh-mene
+- [Name] ezuallenFacettender
+InformationssicherheitzurVerf√ºgung.Sok√∂nnenSiedierele
+- [Name] erheitzurVerf√ºgung.Sok√∂nnenSiedierelevantenAufgabenangehen:ErsteSchrittezurAbs
+- [Name] ntenAufgabenangehen:ErsteSchrittezurAbsiche-
+rungvonGeb√§uden,I
+- [Name] rungvonGeb√§uden,IT-SystemenundDatennetzen,derAufbaueinesManag
+- [Name] siblenInformationen.Mitdenbew√§hrtenundpraxistauglichenEmpfehlun-
+gendesIT-Grundschu
+- [Name] T-GrundschutzesimIT-Grundschutz-KompendiumsindSiegutger√ºstet.DasIT-Grundschutz-K
+- [Name] egutger√ºstet.DasIT-Grundschutz-Kompendiumwurde√ºberarbeitetundumwichtige,neueThemen,wieVirtu
+- [Name] enzahlreicheweitere
+Erg√§nzungenundAktualisierungen,dieaufderGrundlaged
+- [Name] T-Grundschutzes.
+Dr.GerhardSchabh√ºser
+Vize-Pr√§sidentdesB
+- [Name] .GerhardSchabh√ºser
+Vize-Pr√§sidentdesBundesamtesf√ºrSicherheitinderInfo
+- [Name] rmationstechnik
+1IT-Grundschutz-Kompendium:StandFebruar2023
+- [Identity] rEinstiegundNachschlagewerk,umden
+Herausfor
+- [Identity] umden
+HerausforderungenderDigitalisierungzubeg
+- [Identity] erDeutschenRaumfahrtagenturimDeutschenZentr
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.
+--------------------------------------------------
+[2026-02-08T04:57:40+01:00] [RESPONSE]
+{
+    "name": ["GEDOKU Admin-HandbuchSeite 1 von 7", {
+        "type": "Target",
+        "value": "[Name]",
+        "reason": "Potential PII Context",
+        "confidence": 0.8
+    }],
+    "financial": [
+        {"type": "Target",
+        "value": "verschl√ºssertes Passwort f√ºr die Datenbankverbindung",
+        "reason": "Analyzing financial context",
+        "confidence": 0.9}
+    ],
+    "identity": [
+        {"type": "Target",
+        "value": "Users\\<IhrBeutzerName>\\AppData\\Local\\GEDO",
+        "reason": "Context for identity markers",
+        "confidence": 0.7},
+        {"type": "Target",
+        "value": "Birthdate, Place of Birth, Passport",
+        "reason": "Analyzing the context for identity markers",
+        "confidence": 0.6}
+    ]
+}
+--------------------------------------------------
+[2026-02-08T04:57:40+01:00] [RESPONSE]
+{"type":"Name","value":"chutz","reason":"Filtering false positives from capitalized words","confidence":0.2}
+--------------------------------------------------
+[2026-02-08T04:57:45+01:00] [RESPONSE]
+{
+
+"Email": [
+    {"type": "Personal", "value": "Yorck.Mueller-Dieckert@leb.de", "reason": "contains personal email address", "confidence": 0.8},
+    {"type": "Generic", "value": "yle", "reason": "is a generic company support email", "confidence": 0.2}
+],
+
+"Phone": [
+    {"type": "Personal Mobile", "value": "00330-80000-00000-AA179", "reason": "has personal mobile number format", "confidence": 0.9},
+    {"type": "Company Hotline", "value": "00330-80000-00000-AA069", "reason": "has company hotline format", "confidence": 0.7}
+],
+
+"Name": [
+    {"type": "Reject", "value": "", "reason": "does not contain a real human name", "confidence": 0.5},
+    {"type": "Reject", "value": "", "reason": "contains company name or product name", "confidence": 0.4},
+    {"type": "Accept", "value": "Maria Determann", "reason": "contains full name with human name", "confidence": 0.9}
+],
+
+"Identity": [
+    {"type": "Reject", "value": "", "reason": "does not contain identity markers", "confidence": 0.3},
+    {"type": "Reject", "value": "", "reason": "contains unrelated context", "confidence": 0.6}
+],
+
+"Financial": [
+    {"type": "Reject", "value": "", "reason": "does not contain financial context", "confidence": 0.2},
+    {"type": "Reject", "value": "", "reason": "contains unrelated context", "confidence": 0.5}
+]
+}
+--------------------------------------------------
+[2026-02-08T04:57:46+01:00] [RESPONSE]
+{"type": "Name", "value": "", "reason": "No clear indication of a real human name", "confidence": 0.0}
+--------------------------------------------------
+[2026-02-08T04:57:47+01:00] [RESPONSE]
+{
+    "type": "Name",
+    "value": "Weser-Ems Mitte | 12: Weser-Ems Nor",
+    "reason": "Matches the format of a name with city and region, but filtering false positives required.",
+    "confidence": 0.4
+}
+--------------------------------------------------
+[2026-02-08T04:57:47+01:00] [RESPONSE]
+{"type": "Name", "value": "Weser-Ems Mitte", "reason": "Filter false positives: capitalized word without company name prefix", "confidence": 0.4}
+--------------------------------------------------
+[2026-02-08T04:57:48+01:00] [RESPONSE]
+{"type":"Name","value":"tem32 \u00e2 .tlb#OLE AutomatXion ","reason":"Common software term or company name","confidence":0.1}
+--------------------------------------------------
+[2026-02-08T04:57:49+01:00] [RESPONSE]
+{"type":"Name","value":"IT-Grundschutz-Kompendium","reason":"Company name","confidence":0.3}
+--------------------------------------------------

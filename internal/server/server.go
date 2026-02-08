@@ -16,7 +16,13 @@ import (
 	"github.com/digimosa/ai-gdpr-scan/internal/storage"
 	"github.com/digimosa/ai-gdpr-scan/internal/templates"
 	"github.com/digimosa/ai-gdpr-scan/internal/whitelist"
+
+	_ "embed"
+	html_template "html/template"
 )
+
+//go:embed templates/dashboard.html
+var dashboardHTML string
 
 type Server struct {
 	cfg       *config.Config
@@ -25,13 +31,17 @@ type Server struct {
 	mu        sync.RWMutex
 	scanning  bool
 	status    string
+	tmpl      *html_template.Template
 }
 
 func NewServer(cfg *config.Config, report *reporting.Report, wl *whitelist.Whitelist) *Server {
+	tmpl := html_template.Must(html_template.New("dashboard").Parse(dashboardHTML))
+
 	return &Server{
 		cfg:       cfg,
 		report:    report,
 		whitelist: wl,
+		tmpl:      tmpl,
 	}
 }
 
@@ -42,6 +52,7 @@ func (s *Server) Start(addr string) error {
 	http.HandleFunc("/scan", s.handleScan)           // Trigger new scan
 	http.HandleFunc("/logs/ai", s.handleAILogs)      // Stream/Get AI logs
 	http.HandleFunc("/whitelist", s.handleWhitelist)
+	http.HandleFunc("/feedback", s.handleFeedback) // Feedback API
 
 	log.Printf("Starting report server at http://%s", addr)
 	return http.ListenAndServe(addr, nil)
@@ -119,59 +130,47 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) renderHistory(w http.ResponseWriter) {
+	s.mu.RLock()
 	// Fetch all scans
 	scans, _ := storage.GetAllScans()
-	// Render a simple HTML list (we can improve this template later)
+	s.mu.RUnlock()
 
-	// Use a new template or inline HTML for now
-	html := `<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <title>Scan History</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>body { background-color: #0b0f19; color: #fff; }</style>
-</head>
-<body class="p-8 max-w-7xl mx-auto font-sans">
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold">Scan History</h1>
-        <div class="flex gap-4">
-             <a href="/logs/ai" target="_blank" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm">View AI Logs</a>
-             <form action="/scan" method="POST" class="inline">
-                <input type="text" name="path" placeholder="/path/to/scan" class="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white" required value=".">
-                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded text-sm font-bold">New Scan</button>
-            </form>
-        </div>
-    </div>
-    
-    <div class="grid gap-4">
-    `
-	for _, scan := range scans {
-		statusColor := "text-yellow-400"
-		if scan.Status == "Completed" {
-			statusColor = "text-green-400"
-		}
-		if scan.Status == "Failed" {
-			statusColor = "text-red-400"
-		}
+	// Calculate stats
+	var totalFindings int64
+	var totalPIIFiles int64
+	var successCount int
 
-		html += fmt.Sprintf(`
-        <div class="p-6 bg-gray-800/50 border border-white/10 rounded-xl hover:bg-gray-800 transition block">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h3 class="text-lg font-semibold">%s</h3>
-                    <p class="text-sm text-gray-400">%s</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-sm %s font-bold">%s</p>
-                    <p class="text-xs text-gray-500">%d findings</p>
-                    <a href="/?id=%d" class="inline-block mt-2 text-blue-400 hover:text-blue-300 text-sm">View Report &rarr;</a>
-                </div>
-            </div>
-        </div>`, scan.RootPath, scan.StartTime.Format("Jan 02 15:04"), statusColor, scan.Status, scan.TotalFindings, scan.ID)
+	for _, s := range scans {
+		totalFindings += s.TotalFindings
+		totalPIIFiles += int64(s.PIIFiles)
+		if s.Status == "Completed" {
+			successCount++
+		}
 	}
-	html += `</div></body></html>`
-	fmt.Fprint(w, html)
+
+	data := struct {
+		Scans         []storage.ScanModel
+		TotalScans    int
+		TotalFindings int64
+		TotalPIIFiles int64
+		SuccessRate   int
+	}{
+		Scans:         scans,
+		TotalScans:    len(scans),
+		TotalFindings: totalFindings,
+		TotalPIIFiles: totalPIIFiles,
+		SuccessRate:   0,
+	}
+
+	if len(scans) > 0 {
+		data.SuccessRate = (successCount * 100) / len(scans)
+	}
+
+	w.Header().Set("Content-Type", "text/html")
+	if err := s.tmpl.Execute(w, data); err != nil {
+		log.Printf("Template render error: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }
 
 func (s *Server) handleScan(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +184,9 @@ func (s *Server) handleScan(w http.ResponseWriter, r *http.Request) {
 		path = "."
 	}
 
+	fastMode := r.FormValue("fast_mode") == "on"
+	aiEnabled := r.FormValue("ai_enabled") == "on"
+
 	s.mu.Lock()
 	if s.scanning {
 		s.mu.Unlock()
@@ -194,8 +196,10 @@ func (s *Server) handleScan(w http.ResponseWriter, r *http.Request) {
 	s.scanning = true
 	s.mu.Unlock()
 
-	// Update config path
+	// Update config
 	s.cfg.RootPath = path
+	s.cfg.FastMode = fastMode
+	s.cfg.DisableAI = !aiEnabled
 
 	go func() {
 		defer func() {
@@ -250,6 +254,37 @@ func (s *Server) handleWhitelist(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		ID       string `json:"id"`
+		Feedback string `json:"feedback"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if req.ID == "" || (req.Feedback != "Correct" && req.Feedback != "Incorrect") {
+		http.Error(w, "Invalid ID or Feedback value", http.StatusBadRequest)
+		return
+	}
+
+	if err := storage.UpdateFeedback(req.ID, req.Feedback); err != nil {
+		log.Printf("[ERROR] failed to update feedback: %v", err)
+		http.Error(w, "Failed to save feedback", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("[FEEDBACK] Finding %s marked as %s", req.ID, req.Feedback)
+	w.WriteHeader(http.StatusOK)
+}
+
 func convertToReport(scan *storage.ScanModel) *reporting.Report {
 	report := reporting.NewReport()
 	report.Summary.RootPath = scan.RootPath
@@ -265,11 +300,13 @@ func convertToReport(scan *storage.ScanModel) *reporting.Report {
 
 	for _, f := range scan.Findings {
 		finding := models.Finding{
+			ID:         f.ID,
 			Type:       f.Type,
 			Snippet:    f.Value,
 			Confidence: f.Confidence,
 			Offset:     0,
 			Context:    f.Reason,
+			Feedback:   f.Feedback,
 		}
 		grouped[f.FilePath] = append(grouped[f.FilePath], finding)
 	}

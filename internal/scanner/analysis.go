@@ -70,7 +70,19 @@ func (s *Scanner) scanFile(path string) models.ScanResult {
 	// Optimization: Skip individual snippet validation to reduce AI calls
 	// Instead, send the aggregated context once for full analysis if any regex matches are found.
 	if len(matches) > 0 {
-		s.performAIAnalysis(path, matches, &res)
+		if s.cfg.DisableAI {
+			// Just add regex matches directly
+			for _, m := range matches {
+				res.Findings = append(res.Findings, models.Finding{
+					Type:       string(m.Type),
+					Snippet:    m.Snippet,
+					Confidence: 0.5, // Regex only confidence
+					Offset:     m.Offset,
+				})
+			}
+		} else {
+			s.performAIAnalysis(path, matches, &res)
+		}
 	}
 
 	res.ScanTime = time.Since(start)

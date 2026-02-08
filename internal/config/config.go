@@ -14,6 +14,10 @@ type Config struct {
 	// WhitelistPath is the path to the file containing whitelisted terms
 	WhitelistPath string
 	DBPath        string
+
+	// Feature Flags
+	FastMode  bool // Skip files > 1MB
+	DisableAI bool // Only use regex
 }
 
 func DefaultConfig() *Config {

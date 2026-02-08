@@ -28,6 +28,7 @@ type FindingModel struct {
 	Value      string    `json:"value"` // Sanitized snippet
 	Confidence float64   `json:"confidence"`
 	Reason     string    `json:"reason"`
+	Feedback   string    `json:"feedback"` // "Correct" or "Incorrect"
 	CreatedAt  time.Time `json:"created_at"`
 }
 
@@ -88,4 +89,8 @@ func GetScanByID(id string) (*ScanModel, error) {
 	var scan ScanModel
 	err := DB.Preload("Findings").First(&scan, "id = ?", id).Error
 	return &scan, err
+}
+
+func UpdateFeedback(id string, feedback string) error {
+	return DB.Model(&FindingModel{}).Where("id = ?", id).Update("feedback", feedback).Error
 }

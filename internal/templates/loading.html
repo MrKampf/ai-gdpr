@@ -1,18 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="5">
-    <title>Scanning...</title>
+    <meta http-equiv="refresh" content="3">
+    <title>GDPR Scan | Processing...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #e2e8f0;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-ring {
+            border: 4px solid rgba(59, 130, 246, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
-<body
-    style="background:#0b0f19;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
-    <div style="text-align:center">
-        <h2>Scanning in progress...</h2>
-        <p>Please wait. Auto-refreshing.</p>
+<body>
+    <div class="text-center">
+        <div class="relative inline-block mb-8">
+            <div class="loader-ring"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="shield" class="w-6 h-6 text-blue-500/50"></i>
+            </div>
+        </div>
+        <h2 class="text-2xl font-semibold text-white mb-2">Scan in Progress</h2>
+        <p class="text-gray-400 mb-6 max-w-sm mx-auto">Our AI engine is analyzing your files for GDPR compliance
+            violations. This may take a few moments.</p>
+
+        <div class="flex flex-col gap-2 items-center text-xs text-gray-500 font-mono">
+            <p class="flex items-center gap-2"><i data-lucide="cpu" class="w-3 h-3"></i> Processing batches...</p>
+            <p class="flex items-center gap-2"><i data-lucide="search" class="w-3 h-3"></i> Analyzing patterns...</p>
+        </div>
     </div>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

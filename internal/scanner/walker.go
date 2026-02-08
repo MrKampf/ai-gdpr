@@ -24,6 +24,14 @@ func (s *Scanner) walkFiles() {
 				return nil
 			}
 
+			// Fast Mode Check
+			if s.cfg.FastMode {
+				info, err := d.Info()
+				if err == nil && info.Size() > 1024*1024 { // Skip > 1MB
+					return nil
+				}
+			}
+
 			select {
 			case <-s.ctx.Done():
 				return filepath.SkipAll

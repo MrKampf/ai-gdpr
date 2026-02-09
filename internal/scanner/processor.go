@@ -25,6 +25,9 @@ func (s *Scanner) processResults() {
 				// ScanResult has FilePath.
 				// f.Snippet is the value
 				// f.Context is the AI reason
+				if f.Confidence == 0 {
+					fmt.Printf("[DEBUG-ZERO-CONF] Saving %s finding for %s with 0 confidence! (Type: %s)\n", f.Type, res.FilePath, f.Type)
+				}
 				_ = storage.SaveFinding(s.ScanModelID, res.FilePath, f.Type, f.Snippet, f.Context, f.Confidence)
 			}
 		}

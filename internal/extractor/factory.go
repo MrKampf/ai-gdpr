@@ -40,7 +40,13 @@ func (f *Factory) GetScannerForFile(path string) (ContentScanner, string, error)
 func (f *Factory) IsSupported(ext string) bool {
 	switch ext {
 	// Block strict binaries / media
-	case ".exe", ".dll", ".so", ".dylib", ".bin":
+	case ".exe", ".dll", ".so", ".dylib", ".bin", ".class", ".pyc":
+		return false
+	// Block strict source code (if user wants to skip logic, keep data/structure)
+	// User requested to skip "where only code is in"
+	case ".css", ".js", ".ts", ".go", ".c", ".cpp", ".h", ".hpp", ".java", ".py", ".rb", ".php", ".cs", ".rs", ".swift", ".kt", ".dart":
+		return false
+	case ".sh", ".bash", ".zsh", ".bat", ".cmd", ".ps1":
 		return false
 	case ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp":
 		return false
@@ -48,7 +54,7 @@ func (f *Factory) IsSupported(ext string) bool {
 		return false
 	case ".zip", ".tar", ".gz", ".rar", ".7z", ".iso":
 		return false
-	// Allow everything else (Documents, Code, Configs, unknown types)
+	// Allow things that might contain data: .txt, .csv, .log, .json, .xml, .yaml, .md, .pdf, .xlsx, .docx
 	default:
 		return true
 	}

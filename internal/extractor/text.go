@@ -2,6 +2,7 @@ package extractor
 
 import (
 	"io"
+	"regexp"
 
 	"github.com/digimosa/ai-gdpr-scan/internal/extractor/detectors"
 	"github.com/digimosa/ai-gdpr-scan/internal/models"
@@ -118,8 +119,19 @@ func sanitizeBytes(data []byte) []byte {
 	return out
 }
 
+// stripXMLTags removes XML/HTML tags from the content
+// It assumes simple <tag> structures and might be imperfect for nested CDATA, but good for filtering metadata lines.
+var xmlTagRegex = regexp.MustCompile(`<[^>]*>`)
+
+func stripXMLTags(content string) string {
+	return xmlTagRegex.ReplaceAllString(content, " ") // Replace with space to maintain word boundaries
+}
+
 func runRegexChecks(content string, baseOffset int64) []models.Match {
 	var matches []models.Match
+
+	// Filter out XML tags to avoid false positives in code/metadata
+	cleanContent := stripXMLTags(content)
 
 	detectorsList := []detectors.Detector{
 		detectors.NewIBANDetector(),
@@ -134,7 +146,7 @@ func runRegexChecks(content string, baseOffset int64) []models.Match {
 	}
 
 	for _, d := range detectorsList {
-		found := d.Detect(content)
+		found := d.Detect(cleanContent)
 		for i := range found {
 			found[i].Offset += baseOffset
 			matches = append(matches, found[i])

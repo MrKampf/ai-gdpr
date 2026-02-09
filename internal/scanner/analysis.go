@@ -106,9 +106,13 @@ func (s *Scanner) performAIAnalysis(path string, matches []models.Match, res *mo
 
 	for i := 0; i < limit; i++ {
 		m := matches[i]
-		sb.WriteString(fmt.Sprintf("- [%s] %s\n", m.Type, m.Snippet))
+		sb.WriteString(fmt.Sprintf("MATCH[%d]: Type=%s Snippet='%s' Offset=%d\n", i, m.Type, m.Snippet, m.Offset))
 	}
 	fullContext := sb.String()
+
+	if s.cfg.Verbose {
+		log.Printf("[AI-DEBUG] Prepared context for %s (%d chars). Sending to Ollama...", path, len(fullContext))
+	}
 
 	// One Single AI Call per file with interesting regex hits
 	// Extract unique finding types for prompt customization

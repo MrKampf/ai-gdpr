@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -84,6 +85,15 @@ func (r *Report) RenderHTML(w io.Writer) error {
 		},
 		"mul": func(a, b float64) float64 {
 			return a * b
+		},
+		"hasPrefix": strings.HasPrefix,
+		"hasSuffix": strings.HasSuffix,
+		"parseJSON": func(s string) interface{} {
+			var out interface{}
+			if err := json.Unmarshal([]byte(s), &out); err != nil {
+				return nil
+			}
+			return out
 		},
 	}).Parse(templates.ReportHTML)
 	if err != nil {

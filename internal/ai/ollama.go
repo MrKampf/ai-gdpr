@@ -147,7 +147,12 @@ Document Content:
 %s
 """
 Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
-IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding. 0.1 means unlikely, 0.9 means very certain.`
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.`
 
 // AnalyzeFile sends full file content (limited by token size) and customized instructions to AI
 func (c *OllamaClient) AnalyzeFile(content string, types []models.FindingType) ([]FindingResult, error) {
@@ -240,14 +245,14 @@ func (c *OllamaClient) callOllama(prompt string, jsonFormat bool) (string, error
 }
 
 func (c *OllamaClient) logDebug(kind, message string) {
-	// Console Log (if verbose)
-	if c.Verbose {
-		if len(message) > 500 {
-			log.Printf("[AI-%s] %s... (truncated)", kind, message[:500])
-		} else {
-			log.Printf("[AI-%s] %s", kind, message)
-		}
+	// Console Log (Always print to stdout for now as requested by user)
+	// if c.Verbose {
+	if len(message) > 500 {
+		log.Printf("[AI-%s] %s... (truncated)", kind, message[:500])
+	} else {
+		log.Printf("[AI-%s] %s", kind, message)
 	}
+	// }
 
 	// File Log (Always, or concurrent safe)
 	c.mu.Lock()

@@ -5262,3 +5262,1823 @@ In the "reason" field, explain WHY you chose this confidence level. Mention cont
   "reason": "This is a clear indication of a name due to the presence of a title (Dr.) and a specific job position (Vize-PrÃ¤sident) followed by a surname. Context clues include the formal tone and structure of the text."
 }
 --------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Liste Rechner fÃ¼r Ralf Stand 14.10.2025.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='Rechner / Laptops Standort Bernwardstr. 6, 31134 Hildeshei' Offset=11
+MATCH[1]: Type=Name Snippet='BÃ¼ro 3 Ann-Kathrin ' Offset=17
+MATCH[2]: Type=Name Snippet='Keller Regal hinten ' Offset=12
+MATCH[3]: Type=Name Snippet='Keller Regal hinten ' Offset=13
+MATCH[4]: Type=Name Snippet='Keller Regal hinten ' Offset=14
+MATCH[5]: Type=Name Snippet='Keller Regal hinten ' Offset=15
+MATCH[6]: Type=Name Snippet='Keller Regal hinten ' Offset=16
+MATCH[7]: Type=Name Snippet='Keller Regal hinten ' Offset=17
+MATCH[8]: Type=Name Snippet='Keller Regal hinten ' Offset=18
+MATCH[9]: Type=Name Snippet='Keller Regal hinten ' Offset=19
+MATCH[10]: Type=Name Snippet='Keller Regal hinten ' Offset=20
+MATCH[11]: Type=Name Snippet='Keller Regal hinten ' Offset=21
+MATCH[12]: Type=Name Snippet='Keller Regal hinten ' Offset=22
+MATCH[13]: Type=Name Snippet='Keller Regal hinten ' Offset=23
+MATCH[14]: Type=Name Snippet='Keller Regal hinten ' Offset=24
+MATCH[15]: Type=Name Snippet='Keller Regal hinten ' Offset=25
+MATCH[16]: Type=Name Snippet='Keller Regal hinten ' Offset=26
+MATCH[17]: Type=Name Snippet='Keller Regal hinten ' Offset=27
+MATCH[18]: Type=Name Snippet='DELL Opti Plex 3040' Offset=37
+MATCH[19]: Type=Name Snippet='ur alter Aufkleber, Dell Latitude E 6540' Offset=57
+MATCH[20]: Type=Identity Snippet='nur alter Aufkleber, Dell Lat' Offset=40
+MATCH[21]: Type=Name Snippet='ur alter Aufkleber, Dell Latitude E 6540' Offset=58
+MATCH[22]: Type=Identity Snippet='nur alter Aufkleber, Dell Lat' Offset=41
+MATCH[23]: Type=Name Snippet='ur alter Aufkleber, Dell Latitude E 6540' Offset=59
+MATCH[24]: Type=Identity Snippet='nur alter Aufkleber, Dell Lat' Offset=42
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: PingToolImport.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='Neue Bezeichnung' Offset=1
+MATCH[1]: Type=Name Snippet='LandesbÃ¼ro Hannover' Offset=2
+MATCH[2]: Type=Name Snippet='Router HBU - LandesbÃ¼ro Hannover' Offset=15
+MATCH[3]: Type=Name Snippet='BIZ Hannover, Standort RaiffeisenstraÃŸe' Offset=18
+MATCH[4]: Type=Identity Snippet=' Standort RaiffeisenstraÃŸe' Offset=37
+MATCH[5]: Type=Name Snippet='HRA - BIZ Hannover, Standort RaiffeisenstraÃŸe' Offset=31
+MATCH[6]: Type=Identity Snippet=' Standort RaiffeisenstraÃŸe' Offset=50
+MATCH[7]: Type=Name Snippet='BeratungsbÃ¼ro Weserbergland' Offset=8
+MATCH[8]: Type=Name Snippet='Router HMR, HMB - BeratungsbÃ¼ro Weserbergland' Offset=26
+MATCH[9]: Type=Identity Snippet='Hildesheim, BernwardstraÃŸe' Offset=34
+MATCH[10]: Type=Identity Snippet='Hildesheim, BernwardstraÃŸe' Offset=47
+MATCH[11]: Type=Name Snippet='BeratungsbÃ¼ro Oldenburg' Offset=12
+MATCH[12]: Type=Name Snippet='Router HUS - BeratungsbÃ¼ro Oldenburg' Offset=25
+MATCH[13]: Type=Name Snippet='Assessment und Coaching Center Oldenburg' Offset=29
+MATCH[14]: Type=Name Snippet='LK - Assessment und Coaching Center Oldenburg' Offset=42
+MATCH[15]: Type=Name Snippet='BeratungsbÃ¼ro Ostfriesland/Ammerland' Offset=15
+MATCH[16]: Type=Name Snippet='Router ZWB - BeratungsbÃ¼ro Ostfriesland/Ammerland' Offset=28
+MATCH[17]: Type=Name Snippet='ratungsbÃ¼ro AUR im Landvolk Haus' Offset=38
+MATCH[18]: Type=Name Snippet='ratungsbÃ¼ro AUR im Landvolk Haus' Offset=51
+MATCH[19]: Type=Name Snippet='BIZ Bad Zwischenahn, Standort KÃ¶sterho' Offset=21
+MATCH[20]: Type=Name Snippet='IZ Bad Zwischenahn, Standort KÃ¶sterhof' Offset=38
+MATCH[21]: Type=Name Snippet='Router ZWE - BIZ Bad Zwischenahn, Standort KÃ¶sterho' Offset=34
+MATCH[22]: Type=Name Snippet='IZ Bad Zwischenahn, Standort KÃ¶sterhof' Offset=51
+MATCH[23]: Type=Name Snippet='BIZ Bad Zwischenahn, Standort Langenhof' Offset=22
+MATCH[24]: Type=Name Snippet='IZ Bad Zwischenahn, Standort Langenhof' Offset=39
+MATCH[25]: Type=Name Snippet='Router ZWL - BIZ Bad Zwischenahn, Standort Langenhof' Offset=35
+MATCH[26]: Type=Name Snippet='IZ Bad Zwischenahn, Standort Langenhof' Offset=52
+MATCH[27]: Type=Name Snippet='BIZ Bad Zwischenahn, AuÃŸenstelle AGH P' Offset=23
+MATCH[28]: Type=Name Snippet='n, AuÃŸenstelle AGH Projekt Sandkrug' Offset=57
+MATCH[29]: Type=Name Snippet='Router SAB - BIZ Bad Zwischenahn, AuÃŸenstelle AGH P' Offset=36
+MATCH[30]: Type=Name Snippet='n, AuÃŸenstelle AGH Projekt Sandkrug' Offset=70
+MATCH[31]: Type=Name Snippet='BIZ Werkhof Beverstedt' Offset=27
+MATCH[32]: Type=Name Snippet='Router BEV - BIZ Werkhof Beverstedt' Offset=40
+MATCH[33]: Type=Name Snippet='BeratungsbÃ¼ro LÃ¼neburg' Offset=24
+MATCH[34]: Type=Name Snippet='Router LUE - BeratungsbÃ¼ro LÃ¼neburg' Offset=37
+MATCH[35]: Type=Name Snippet='BIZ Einbeck, AuÃŸenstelle Gandersheim' Offset=42
+MATCH[36]: Type=Name Snippet='GANB - BIZ Einbeck, AuÃŸenstelle Gandersheim' Offset=56
+MATCH[37]: Type=Name Snippet='BIZ Einbeck, AuÃŸenstelle Gandersheim' Offset=43
+MATCH[38]: Type=Name Snippet='GANM - BIZ Einbeck, AuÃŸenstelle Gandersheim' Offset=57
+MATCH[39]: Type=Name Snippet='BIZ Northeim, Standort GÃ¼terbahnhofstraÃŸe' Offset=45
+MATCH[40]: Type=Identity Snippet='andort GÃ¼terbahnhofstraÃŸe' Offset=67
+MATCH[41]: Type=Name Snippet='OM2 - BIZ Northeim, Standort GÃ¼terbahnhofstraÃŸe' Offset=59
+MATCH[42]: Type=Identity Snippet='andort GÃ¼terbahnhofstraÃŸe' Offset=81
+MATCH[43]: Type=Name Snippet='BIZ Northeim, AuÃŸenstelle Uslar' Offset=46
+MATCH[44]: Type=Name Snippet='USB - BIZ Northeim, AuÃŸenstelle Uslar' Offset=59
+MATCH[45]: Type=Name Snippet='BeratungsbÃ¼ro GÃ¶ttingen' Offset=34
+MATCH[46]: Type=Name Snippet='Router GOE - BeratungsbÃ¼ro GÃ¶ttingen' Offset=47
+MATCH[47]: Type=Name Snippet='MoA IT-Hardware Dept.' Offset=48
+MATCH[48]: Type=Name Snippet='Router ZOS - MoA IT-Hardware Dept.' Offset=61
+MATCH[49]: Type=Name Snippet='TestStandort' Offset=42
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: RechnerlisteArbeitsplatz.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='LEB BeratungsbÃ¼ro Oldenburg' Offset=6
+MATCH[1]: Type=Name Snippet='Lehrkraft Unterrichtsraum 1' Offset=8
+MATCH[2]: Type=Name Snippet='Lehrkraft Unterrichtsraum 2' Offset=9
+MATCH[3]: Type=Name Snippet='BÃ¼rorechner LehrkrÃ¤fte' Offset=10
+MATCH[4]: Type=Name Snippet='Lehrkraft Unterrichtsraum 1' Offset=12
+MATCH[5]: Type=Name Snippet='LEB BeratungsbÃ¼ro Oldenburg' Offset=7
+MATCH[6]: Type=Name Snippet='LEB Standort GroÃŸenkneten' Offset=9
+MATCH[7]: Type=Name Snippet='LEB Standort Goldenstedt' Offset=10
+MATCH[8]: Type=Name Snippet='LEB BeratungsbÃ¼ro Ammerland' Offset=12
+MATCH[9]: Type=Name Snippet='LEB BIZ Bad Zwischenahn' Offset=18
+MATCH[10]: Type=Identity Snippet='LEB AC KaiserstraÃŸe' Offset=28
+MATCH[11]: Type=Name Snippet='LEB Standort Aurich' Offset=20
+MATCH[12]: Type=Name Snippet='LEB Werkstatt KÃ¶sterhof' Offset=22
+MATCH[13]: Type=Name Snippet='LEB Sozialer Wirtschaftsbetrieb' Offset=23
+MATCH[14]: Type=Name Snippet='LEB BeratungsbÃ¼ro BremervÃ¶rde' Offset=24
+MATCH[15]: Type=Name Snippet='LEB BeratungsbÃ¼ro Cuxhaven-St.' Offset=29
+MATCH[16]: Type=Name Snippet='LEB BIZ Cuxhaven Stade' Offset=34
+MATCH[17]: Type=Name Snippet='LEB BeratungsbÃ¼ro LÃ¼neburg' Offset=32
+MATCH[18]: Type=Name Snippet='LEB BeratungsbÃ¼ro Braunschweig' Offset=35
+MATCH[19]: Type=Name Snippet='LEB BIZ Ehra Lessin (+Wittingen)' Offset=41
+MATCH[20]: Type=Name Snippet='LEB BeratungsbÃ¼ro Hannover' Offset=40
+MATCH[21]: Type=Name Snippet='LEB BeratungsbÃ¼ro Hildesheim' Offset=41
+MATCH[22]: Type=Identity Snippet='LEB HiB BernwardstraÃŸe' Offset=54
+MATCH[23]: Type=Name Snippet='LEB HiB BIZ Bockenem Sammler' Offset=51
+MATCH[24]: Type=Identity Snippet='LEB BIZ Hann. BultstraÃŸe' Offset=58
+MATCH[25]: Type=Identity Snippet='EB BIZ Hann.PlathnerstraÃŸe 5' Offset=62
+MATCH[26]: Type=Name Snippet='LEB BIZ Hannover Raiffeisenstr' Offset=50
+MATCH[27]: Type=Name Snippet='LEB BeratungsbÃ¼ro GÃ¶ttingen' Offset=47
+MATCH[28]: Type=Name Snippet='LEB BIZ Northeim Sitz GÃ¼terbahnhofstraÃŸe' Offset=53
+MATCH[29]: Type=Identity Snippet='m Sitz GÃ¼terbahnhofstraÃŸe' Offset=80
+MATCH[30]: Type=Name Snippet='LEB BIZ Einbeck Standort Uslar' Offset=55
+MATCH[31]: Type=Name Snippet='LEB BIZ Bad Gandersheim' Offset=56
+MATCH[32]: Type=Name Snippet='LEB BIZ Harz Herzberg' Offset=59
+MATCH[33]: Type=Name Snippet='LEB BeratungsbÃ¼ro Barnstorf' Offset=56
+MATCH[34]: Type=Name Snippet='LEB BeratungsbÃ¼ro OsnabrÃ¼ck' Offset=62
+MATCH[35]: Type=Name Snippet='LEB BeratungsbÃ¼ro Emsland JÃ¤gerstraÃŸe' Offset=64
+MATCH[36]: Type=Identity Snippet='bÃ¼ro Emsland JÃ¤gerstraÃŸe' Offset=93
+MATCH[37]: Type=Name Snippet='LEB FB Sucht Selbsthilfe' Offset=69
+MATCH[38]: Type=Name Snippet='ZE Rewe-Controll' Offset=71
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 20250708_ServerÃ¼bersicht fÃ¼r net_de.xlsx
+Potential PII Context:
+MATCH[0]: Type=Identity Snippet='Name' Offset=1
+MATCH[1]: Type=Name Snippet='Summe Volumes' Offset=1
+MATCH[2]: Type=Identity Snippet='zusatz innovaphone' Offset=15
+MATCH[3]: Type=Identity Snippet='Telefonie' Offset=3
+MATCH[4]: Type=Identity Snippet='IPVA fÃ¼r Innovaphone / Linux' Offset=19
+MATCH[5]: Type=Name Snippet='Windows Server 2016 Datacenter' Offset=4
+MATCH[6]: Type=Name Snippet='Active Directory Federation Services' Offset=4
+MATCH[7]: Type=Name Snippet='Windows Server 2016 Standard' Offset=5
+MATCH[8]: Type=Name Snippet='Remoteapp Applikationen' Offset=5
+MATCH[9]: Type=Name Snippet='Windows Server 2016 Standard' Offset=6
+MATCH[10]: Type=Name Snippet='Windows Server 2016 Standard' Offset=7
+MATCH[11]: Type=Name Snippet='Windows Server 2022 Standard' Offset=8
+MATCH[12]: Type=Name Snippet='DomÃ¤nen Controller' Offset=8
+MATCH[13]: Type=Name Snippet='Windows Server 2012 Standard' Offset=9
+MATCH[14]: Type=Name Snippet='Windows Server 2016 Standard' Offset=10
+MATCH[15]: Type=Name Snippet='Windows Server 2016 Standard' Offset=11
+MATCH[16]: Type=Name Snippet='Windows Server 2016 Datacenter' Offset=12
+MATCH[17]: Type=Name Snippet='Windows Server 2019 Standard' Offset=13
+MATCH[18]: Type=Name Snippet='Windows Server 2016 Standard' Offset=14
+MATCH[19]: Type=Name Snippet='Windows Server 2016 Standard' Offset=15
+MATCH[20]: Type=Identity Snippet='Innovaphone' Offset=21
+MATCH[21]: Type=Name Snippet='Meta Directory fÃ¼r innovaphone' Offset=15
+MATCH[22]: Type=Identity Snippet='irectory fÃ¼r innovaphone' Offset=41
+MATCH[23]: Type=Name Snippet='Windows Server 2019 Standard' Offset=17
+MATCH[24]: Type=Name Snippet='Texterkennung Scan CAS - PlanungsbÃ¶ge' Offset=17
+MATCH[25]: Type=Name Snippet='Windows Server 2019 Standard' Offset=18
+MATCH[26]: Type=Name Snippet='Windows Server 2016 Standard' Offset=19
+MATCH[27]: Type=Name Snippet='Windows Server 2016 Standard' Offset=20
+MATCH[28]: Type=Name Snippet='Windows Server 2016 Standard' Offset=21
+MATCH[29]: Type=Name Snippet='Windows Server 2008 R2 Enterprise' Offset=22
+MATCH[30]: Type=Name Snippet='Windows Server 2016 Standard' Offset=23
+MATCH[31]: Type=Name Snippet='Windows Server 2022 Standard' Offset=24
+MATCH[32]: Type=Name Snippet='Windows Server 2016 Datacenter' Offset=25
+MATCH[33]: Type=Name Snippet='WebApplicationProxy' Offset=25
+MATCH[34]: Type=Name Snippet='Windows Server 2016 Standard' Offset=26
+MATCH[35]: Type=Name Snippet='Interne Zertifizierungsstelle Schulungsnetz' Offset=26
+MATCH[36]: Type=Name Snippet='Windows Server 2019 Standard' Offset=27
+MATCH[37]: Type=Name Snippet='DomÃ¤nen Controller' Offset=27
+MATCH[38]: Type=Name Snippet='Windows Server 2012 Standard' Offset=28
+MATCH[39]: Type=Name Snippet='Windows Server 2019 Standard' Offset=29
+MATCH[40]: Type=Identity Snippet='Name' Offset=33
+MATCH[41]: Type=Name Snippet='Summe Volumes' Offset=33
+MATCH[42]: Type=Name Snippet='Windows Server 2016 Standard' Offset=34
+MATCH[43]: Type=Name Snippet='Remoteapp Applikationen' Offset=34
+MATCH[44]: Type=Name Snippet='Windows Server 2019 Standard' Offset=35
+MATCH[45]: Type=Name Snippet='Windows Server 2019 Standard' Offset=36
+MATCH[46]: Type=Name Snippet='DomÃ¤nen Controller' Offset=36
+MATCH[47]: Type=Name Snippet='Windows Server 2016 Standard' Offset=37
+MATCH[48]: Type=Name Snippet='Windows Server 2016 Standard' Offset=38
+MATCH[49]: Type=Name Snippet='Zeugenserver Cluster' Offset=38
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Server und Dienste Ã¼bersicht.xlsx
+Potential PII Context:
+MATCH[0]: Type=Identity Snippet='Name' Offset=2
+MATCH[1]: Type=Name Snippet='Service Tag' Offset=2
+MATCH[2]: Type=Name Snippet='Virtuelle Server' Offset=2
+MATCH[3]: Type=Name Snippet='PowerEdge R610' Offset=3
+MATCH[4]: Type=Identity Snippet='Name' Offset=6
+MATCH[5]: Type=Name Snippet='Service Tag' Offset=6
+MATCH[6]: Type=Name Snippet='Virtuelle Server' Offset=6
+MATCH[7]: Type=Name Snippet='PowerEdge R630' Offset=7
+MATCH[8]: Type=Identity Snippet='Name' Offset=10
+MATCH[9]: Type=Name Snippet='Service Tag' Offset=10
+MATCH[10]: Type=Name Snippet='Virtuelle Server' Offset=10
+MATCH[11]: Type=Name Snippet='PowerEdge R630' Offset=11
+MATCH[12]: Type=Identity Snippet='Name' Offset=14
+MATCH[13]: Type=Name Snippet='Service Tag' Offset=14
+MATCH[14]: Type=Name Snippet='Virtuelle Server' Offset=14
+MATCH[15]: Type=Name Snippet='PowerEdge R630' Offset=15
+MATCH[16]: Type=Identity Snippet='Name' Offset=18
+MATCH[17]: Type=Name Snippet='Service Tag' Offset=18
+MATCH[18]: Type=Name Snippet='Virtuelle Server' Offset=18
+MATCH[19]: Type=Name Snippet='PowerEdge R630' Offset=19
+MATCH[20]: Type=Identity Snippet='Name' Offset=22
+MATCH[21]: Type=Name Snippet='Service Tag' Offset=22
+MATCH[22]: Type=Name Snippet='Virtuelle Server' Offset=22
+MATCH[23]: Type=Name Snippet='PowerEdge R630' Offset=23
+MATCH[24]: Type=Identity Snippet='Name' Offset=26
+MATCH[25]: Type=Name Snippet='Service Tag' Offset=26
+MATCH[26]: Type=Name Snippet='Virtuelle Server' Offset=26
+MATCH[27]: Type=Name Snippet='PowerEdge R630' Offset=27
+MATCH[28]: Type=Identity Snippet='Name' Offset=30
+MATCH[29]: Type=Name Snippet='Service Tag' Offset=30
+MATCH[30]: Type=Identity Snippet='Name' Offset=34
+MATCH[31]: Type=Identity Snippet='Name' Offset=1
+MATCH[32]: Type=Name Snippet='Summe Volumes' Offset=1
+MATCH[33]: Type=Identity Snippet='zusatz innovaphone' Offset=15
+MATCH[34]: Type=Identity Snippet='Telefonie' Offset=3
+MATCH[35]: Type=Identity Snippet='IPVA fÃ¼r Innovaphone / Linux' Offset=19
+MATCH[36]: Type=Name Snippet='Windows Server 2016 Datacenter' Offset=4
+MATCH[37]: Type=Name Snippet='Active Directory Federation Services' Offset=4
+MATCH[38]: Type=Name Snippet='Windows Server 2016 Standard' Offset=5
+MATCH[39]: Type=Name Snippet='Remoteapp Applikationen' Offset=5
+MATCH[40]: Type=Name Snippet='Windows Server 2016 Standard' Offset=6
+MATCH[41]: Type=Name Snippet='Windows Server 2016 Standard' Offset=7
+MATCH[42]: Type=Name Snippet='Windows Server 2022 Standard' Offset=8
+MATCH[43]: Type=Name Snippet='DomÃ¤nen Controller' Offset=8
+MATCH[44]: Type=Name Snippet='Windows Server 2012 Standard' Offset=10
+MATCH[45]: Type=Name Snippet='Windows Server 2016 Standard' Offset=11
+MATCH[46]: Type=Name Snippet='Windows Server 2016 Standard' Offset=12
+MATCH[47]: Type=Name Snippet='Windows Server 2016 Datacenter' Offset=13
+MATCH[48]: Type=Name Snippet='Windows Server 2019 Standard' Offset=14
+MATCH[49]: Type=Name Snippet='Windows Server 2016 Standard' Offset=15
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 20250215_VernichtungsbestÃ¤tigung-AB0158.pdf
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='H
+GeschÃ¤ftsfÃ¼hrer
+Aleksander Jakubowski
+Rechtsform
+GmbH - 
+' Offset=53
+MATCH[1]: Type=Name Snippet='H - 
+Eingetragen in Amtsgericht Dortmund â€“ HRB 36350
+Posta' Offset=109
+MATCH[2]: Type=Name Snippet='36350
+Postanschrift
+Rudolf-Diesel-StraÃŸe 2 in 59425 Unna
+Ver' Offset=158
+MATCH[3]: Type=Name Snippet='Ansprechpartner/in:
+Herr Dittrich
+Auftragsnummer:
+AB0' Offset=353
+MATCH[4]: Type=Name Snippet='ie den Vorgaben der Datenschutz-Grundverordnung (DSGVO).' Offset=808
+MATCH[5]: Type=Identity Snippet='form
+GmbH - 
+Eingetragen in Amtsgericht Dor' Offset=101
+MATCH[6]: Type=Identity Snippet='d â€“ HRB 36350
+Postanschrift
+Rudolf-Diesel-StraÃ' Offset=148
+MATCH[7]: Type=Identity Snippet='hrift
+Rudolf-Diesel-StraÃŸe 2 in 59425 Unna
+Ver' Offset=172
+MATCH[8]: Type=Identity Snippet='
+Raiffeisenstr. 6-8
+PLZ und Ort:
+30161 Hann' Offset=305
+MATCH[9]: Type=Name Snippet='
+2. Vernichtete DatentrÃ¤ger
+DatentrÃ¤gertyp
+Anz' Offset=6
+MATCH[10]: Type=Name Snippet='tten 3,5 Zoll
+11
+H3
+Sonstige Festplatten
+x
+H3
+SSD 2,5 Zoll
+5' Offset=143
+MATCH[11]: Type=Name Snippet=' 2,5 Zoll
+50
+E2
+M.2/MvMe
+x
+E2
+Disketten
+x
+T1' Offset=192
+MATCH[12]: Type=Name Snippet='tplatten 3,5 Zoll
+x
+Sonstige Festplatten
+x
+SSD 2,5 Zoll
+x
+M.' Offset=107
+MATCH[13]: Type=Name Snippet='
+SSD 2,5 Zoll
+x
+M.2/MvMe
+x
+Disketten
+x
+CDs
+x' Offset=149
+MATCH[14]: Type=Name Snippet='
+4. Verwendete Verfahren
+Alle DatentrÃ¤ger w' Offset=8
+MATCH[15]: Type=Name Snippet='erwendete Verfahren
+Alle DatentrÃ¤ger wurden in Ãœbereins' Offset=29
+MATCH[16]: Type=Name Snippet='SD 2,5 Zoll und M.2/MvMe
+: Vernichtung nach ' Offset=280
+MATCH[17]: Type=Name Snippet='Sicherheitsstufe O1
+Die MaÃŸnahmen entsprechen nach DI' Offset=502
+MATCH[18]: Type=Name Snippet='Sicherheitsstufe 3: Diese Stufe
+ gilt fÃ¼r 
+vertrau' Offset=566
+MATCH[19]: Type=Name Snippet='ertrauliche Daten
+. Die Datenwiederherstellung 
+gelingt nur mit sp' Offset=611
+MATCH[20]: Type=Name Snippet='heblichem Aufwand. 
+Die Schutzklasse 1 ist fÃ¼r den norm' Offset=705
+MATCH[21]: Type=Name Snippet='5. LÃ¶schverfahren: Secure Erase
+Die digitale LÃ¶sch' Offset=797
+MATCH[22]: Type=Name Snippet='gern wurde mit dem "Secure Erase" Verfahren 
+durchge' Offset=866
+MATCH[23]: Type=Name Snippet='ren 
+durchgefÃ¼hrt. Dieses Verfahren stellt sicher, dass' Offset=906
+MATCH[24]: Type=Name Snippet='gen des Art. 17 der Datenschutz-Grundverordnung 
+(DSGVO).
+6. Prozes' Offset=1044
+MATCH[25]: Type=Name Snippet='und Dokumentation
+: Die Seriennummern aller vernichteten
+' Offset=1239
+MATCH[26]: Type=Name Snippet='wÃ¤hrleisten.
+â—
+ 
+Sicherer Transport
+: Der Transport der' Offset=1567
+MATCH[27]: Type=Name Snippet='icherer Transport
+: Der Transport der DatentrÃ¤ger er' Offset=1588
+MATCH[28]: Type=Name Snippet=' Zugangskontrolle
+: Die Vernichtung der DatentrÃ¤ger fa' Offset=1770
+MATCH[29]: Type=Name Snippet=' denen nur befugtes Personal Zugang 
+hatte.
+â—
+ 
+Laufe' Offset=1880
+MATCH[30]: Type=Name Snippet='ugang 
+hatte.
+â—
+ 
+Laufende Schulung der Mitarbeiter
+: A' Offset=1910
+MATCH[31]: Type=Name Snippet='utzbestimmungen und Recycling-Verfahren.
+7. Dokumentation
+â' Offset=2275
+MATCH[32]: Type=Name Snippet='
+8. Verantwortliche Personen
+â—
+ 
+Fahrer, der d' Offset=9
+MATCH[33]: Type=Name Snippet='bgeholt hat
+:
+Name: Herr Asmus und Aleksander Jaku' Offset=90
+MATCH[34]: Type=Name Snippet='ame: Herr Asmus und Aleksander Jakubowski
+â—
+ 
+Die DatentrÃ¤' Offset=105
+MATCH[35]: Type=Name Snippet='er Jakubowski
+â—
+ 
+Die DatentrÃ¤gervernichtung erfolgte durch die ' Offset=133
+MATCH[36]: Type=Name Snippet='arbeiter/in
+:
+Name: Anika LÃ¼ttschwager
+â—
+ 
+Mitarbeiter, ' Offset=203
+MATCH[37]: Type=Name Snippet='efÃ¼hrt hat
+:
+Name: Aleksander Jakubowski
+9. KonformitÃ¤tserk' Offset=290
+MATCH[38]: Type=Name Snippet='chfÃ¼hrung
+Name des Verantwortlichen Person:
+ Anika LÃ¼ttschwag' Offset=649
+MATCH[39]: Type=Name Snippet='wortlichen Person:
+ Anika LÃ¼ttschwager 
+Funktion:
+ Sicherh' Offset=675
+MATCH[40]: Type=Identity Snippet='¤ger abgeholt hat
+:
+Name: Herr Asmus und Ale' Offset=84
+MATCH[41]: Type=Identity Snippet='ie Mitarbeiter/in
+:
+Name: Anika LÃ¼ttschwage' Offset=197
+MATCH[42]: Type=Identity Snippet='ame: Anika LÃ¼ttschwager
+â—
+ 
+Mitarbeiter,' Offset=218
+MATCH[43]: Type=Identity Snippet='durchgefÃ¼hrt hat
+:
+Name: Aleksander Jakubow' Offset=284
+MATCH[44]: Type=Identity Snippet='¤ÃŸen DurchfÃ¼hrung
+Name des Verantwortliche' Offset=640
+MATCH[45]: Type=Identity Snippet='on:
+ Anika LÃ¼ttschwager 
+Funktion:
+ Sicher' Offset=690
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Gefaehrdungsbeurteilung_GEDOKU_Admin_Handbuch_2023.pdf
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='
+GEDOKU Admin-HandbuchSeite 1 von 7
+ 
+GEDOKU AD' Offset=9
+MATCH[1]: Type=Name Snippet='Bitte lesen Sie das Admin-Handbuch komplett, Sachverha' Offset=91
+MATCH[2]: Type=Name Snippet=' den Betrieb - sind Administrator-Rechte notwendig.
+ZusÃ¤tzl' Offset=706
+MATCH[3]: Type=Name Snippet='usÃ¤tzlich fÃ¼r die Einzelplatz-Fassung (siehe Kapitel 1):
+' Offset=759
+MATCH[4]: Type=Name Snippet='usÃ¤tzlich fÃ¼r die Netzwerk-Fassung (siehe Kapitel 2) /' Offset=1106
+MATCH[5]: Type=Name Snippet='en fÃ¼r den Server :Windows Version ist egal.
+Microsoft' Offset=1174
+MATCH[6]: Type=Name Snippet='oder besser neuer), Express Edition (oder hÃ¶her).
+Weit' Offset=1252
+MATCH[7]: Type=Name Snippet='tion (oder hÃ¶her).
+Weitere Anforderungen abhÃ¤ngig von der e' Offset=1283
+MATCH[8]: Type=Name Snippet='on der eingesetzten Windows Server und SQL Server Vers' Offset=1336
+MATCH[9]: Type=Name Snippet='dows Server und SQL Server Version.Mindestens 100 MB f' Offset=1359
+MATCH[10]: Type=Name Snippet='tzt oder erzwungen. Wenn Client und Server relativ ' Offset=1829
+MATCH[11]: Type=Name Snippet='usgehandelt werden.
+Die Datenbank selbst wird unversc' Offset=1970
+MATCH[12]: Type=Name Snippet='gespeichert. In der Einzelplatz-Fassung liegt die Datenbank' Offset=2033
+MATCH[13]: Type=Name Snippet='n getroffen werden.
+Das Passwort fÃ¼r die Datenbankv' Offset=2173
+MATCH[14]: Type=Name Snippet=' eingegeben werden. Diese PasswÃ¶r-ter werden verschlÃ' Offset=2579
+MATCH[15]: Type=Financial Snippet='swort fÃ¼r die Datenbankverbindung (falls eines benÃ¶t' Offset=2200
+MATCH[16]: Type=Name Snippet='
+GEDOKU Admin-HandbuchSeite 2 von 7
+3.
+ 
+Update' Offset=10
+MATCH[17]: Type=Name Snippet='men her
+-
+gestellt. Die Suche nach Updates ist op' Offset=185
+MATCH[18]: Type=Name Snippet='. â€manuellâ€œ. 
+ 
+Das Programm fragt aktuell diver' Offset=284
+MATCH[19]: Type=Name Snippet='ndet. Bitte stellen Sie Ihre Firewall ent
+-
+sprechend ein' Offset=583
+MATCH[20]: Type=Name Snippet='on zu verwenden. 
+ 
+Die Angabe von Proxy-Informati' Offset=661
+MATCH[21]: Type=Name Snippet='. 
+ 
+Die Angabe von Proxy-Informationen ist aktuell nicht m' Offset=676
+MATCH[22]: Type=Name Snippet=' LocalDB â€“ die â€Einzelplatz-Fassungâ€œ 
+â€“ Standardins' Offset=798
+MATCH[23]: Type=Name Snippet='zelnen Arbeitsplatz
+Installieren Sie GEDOKU indem Sie da' Offset=884
+MATCH[24]: Type=Name Snippet='echten 
+ausfÃ¼hren. WÃ¤hlen Sie die â€Einzelplatz-' Offset=1003
+MATCH[25]: Type=Name Snippet=' WÃ¤hlen Sie die â€Einzelplatz-Fassungâ€œ. Diese kann spÃ¤' Offset=1022
+MATCH[26]: Type=Name Snippet='spÃ¤ter zu einer â€Netzwerk-Fassungâ€œ gemacht 
+werden,' Offset=1077
+MATCH[27]: Type=Name Snippet='rneut auszufÃ¼hren. WÃ¤hlen Sie dazu einfach im Pro' Offset=1150
+MATCH[28]: Type=Name Snippet=' / Daten
+-
+bank den Datenbank-Typ â€SQL Server / SQL' Offset=1219
+MATCH[29]: Type=Name Snippet='â€SQL Server / SQL Server Expressâ€œ. 
+Bei der Instal' Offset=1253
+MATCH[30]: Type=Name Snippet='s unter 
+C:\Users\ \AppData\Local\GEDOKU
+ angel' Offset=1516
+MATCH[31]: Type=Name Snippet='rden in 
+C:\Users\ \AppData\Local\Jedermann-
+Ve' Offset=1609
+MATCH[32]: Type=Name Snippet='lag_GmbH
+ abgelegt.
+Diese Dateien und Ordner werden b' Offset=1657
+MATCH[33]: Type=Name Snippet='te beachten Sie: 
+ 
+Die Komponente 
+SQL Server LocalDB' Offset=2020
+MATCH[34]: Type=Name Snippet='onen, z.
+ 
+B. 2019. Sollten Sie mehrere Versionen i' Offset=2262
+MATCH[35]: Type=Name Snippet='n verwendet werden! Eine Art Aktuali
+-
+sierung der Daten' Offset=2515
+MATCH[36]: Type=Name Snippet='t verwendet werden. Eine Wiederherstellung der Daten auf dem a' Offset=3102
+MATCH[37]: Type=Name Snippet=' Datenbank anlegen. Der Benutzer sieht dann nur den ' Offset=3322
+MATCH[38]: Type=Name Snippet=' sieht dann nur den Datenbank-Einstellungsdialog, mit einer 
+entspre' Offset=3354
+MATCH[39]: Type=Name Snippet=' kÃ¶nnen Sie in den Windows-Systemeinstellungen unter Apps & Featur' Offset=3516
+MATCH[40]: Type=Name Snippet='
+GEDOKU Admin-HandbuchSeite 3 von 7
+2
+ 
+GEDOKU ' Offset=11
+MATCH[41]: Type=Name Snippet='L Server â€“ die â€Netzwerk-Fassungâ€œ
+Entweder install' Offset=74
+MATCH[42]: Type=Name Snippet='das Setup auf einem Windows Server ausfÃ¼hren und 
+das' Offset=268
+MATCH[43]: Type=Name Snippet='ben dann freigeben. Letztgenannte Variante hat den 
+Vorteil, d' Offset=374
+MATCH[44]: Type=Name Snippet='n Version arbeiten. Alle Benutzer mÃ¼ssen aber Zugrif' Offset=571
+MATCH[45]: Type=Name Snippet='ichnis ist wichtig.
+Im Programmverzeichnis finden Sie die Date' Offset=722
+MATCH[46]: Type=Name Snippet=' Diese enthÃ¤lt die Programm-Einstel
+-
+lungen im XML-For' Offset=806
+MATCH[47]: Type=Name Snippet='Darin kann unter 
+ 
+SqlServerServerName
+ der Name des SQL S' Offset=1026
+MATCH[48]: Type=Name Snippet='onfiguriert werden.
+Installieren Sie dann den Microsoft ' Offset=1362
+MATCH[49]: Type=Name Snippet='uch die kostenfreie Express Variante, mindestens in 
+Ver' Offset=1437
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Sensitive
+
+		- CRITICAL: Check for Article 9 GDPR special categories (Health, Religion, Political, Criminal).
+		- Flag immediately if this contains medical diagnoses, political affiliation, or religious beliefs.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Ausgabe_2024_12_Newsletter_FA.pdf
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='chutz 
+Now!
+ 
+ 
+ 
+ 
+Zur Information von Ihrem Datenschu' Offset=63
+MATCH[1]: Type=Name Snippet='Zur Information von Ihrem Datenschutzbeauftragten
+ 
+ 
+ 
+Ausgabe 12/20' Offset=83
+MATCH[2]: Type=Name Snippet='Ausgabe 12/2024
+ 
+ 
+Liebe Leserin, lieber Leser,
+ 
+ 
+' Offset=139
+MATCH[3]: Type=Name Snippet='ark diskutiert wie 
+KÃ¼nstliche Intelligenz (KI). Die 
+meisten ' Offset=246
+MATCH[4]: Type=Name Snippet='zu vermei-
+den.
+ 
+ 
+Ihr Hans
+-
+JÃ¼rgen Lehmann, ' Offset=1256
+MATCH[5]: Type=Name Snippet='den.
+ 
+ 
+Ihr Hans
+-
+JÃ¼rgen Lehmann, Datenschutzbeauftr' Offset=1267
+MATCH[6]: Type=Name Snippet='t fast schon banal: Das Unternehmen kann 
+festlegen, ob' Offset=1578
+MATCH[7]: Type=Identity Snippet='ten BeschÃ¤ftigten sagen, sie hÃ¤tten 
+bere' Offset=305
+MATCH[8]: Type=Name Snippet=' nicht 
+bieten.
+ 
+ 
+Eine Registrierung sollte man mÃ¶glich' Offset=434
+MATCH[9]: Type=Name Snippet='benutzen 
+kann.
+ 
+ 
+Mit Mailadressen muss man vorsichtig' Offset=697
+MATCH[10]: Type=Name Snippet='I
+-
+Anwendungen
+ 
+ 
+Interne Daten mÃ¼ssen intern blei' Offset=1140
+MATCH[11]: Type=Name Snippet='ne Daten weiter
+ 
+ 
+Die Optimierung von KI
+-
+Anwendunge' Offset=1573
+MATCH[12]: Type=Name Snippet='Optimierung dienen. Nach Erledigung der Aufgabe, die ei' Offset=1694
+MATCH[13]: Type=Name Snippet='er Optimierung.
+ 
+ 
+Die Eingabeprotokollierung bitte abschalten
+ 
+' Offset=1939
+MATCH[14]: Type=Name Snippet='n proto-
+kollieren. Viele Anwendungen bieten jedoch die M' Offset=2101
+MATCH[15]: Type=Name Snippet='.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Korrekter Umgang mit Krankmeldungen
+' Offset=2251
+MATCH[16]: Type=Identity Snippet='istrierung, andere dagegen nicht. 
+Wenn ein' Offset=574
+MATCH[17]: Type=Identity Snippet='en, die den eigenen Namen enthalten, sind fÃ' Offset=889
+MATCH[18]: Type=Identity Snippet='Ã¤cher, die keinen 
+Namen einer Person entha' Offset=1012
+MATCH[19]: Type=Identity Snippet='t sich nie vorher-
+sagen
+, was eine KI
+-
+An' Offset=1455
+MATCH[20]: Type=Identity Snippet=' die eingegebenen Fragestellungen und Aufga' Offset=2056
+MATCH[21]: Type=Sensitive Snippet='orrekter Umgang mit Krankmeldungen
+ 
+ ' Offset=2272
+MATCH[22]: Type=Name Snippet='ter
+ 
+Datenschutz
+ 
+Im Umgang mit Krankmeldungen ' Offset=39
+MATCH[23]: Type=Name Snippet='esundheitsdaten
+ 
+ 
+Eine Krankmeldung ist eine Ansammlung' Offset=478
+MATCH[24]: Type=Name Snippet='tlich bedeutsam
+ 
+ 
+Eine Krankmeldung hat in vielfacher H' Offset=948
+MATCH[25]: Type=Name Snippet='icht erfÃ¼llen.
+ 
+ 
+Die Mitwirkung externer Dienstleis' Offset=1425
+MATCH[26]: Type=Name Snippet='berater angewiesen. Die Ãœbermittlung der notwendigen Dat' Offset=1642
+MATCH[27]: Type=Name Snippet='
+schÃ¼tzt sein.
+ 
+ 
+Die Erforderlichkeit ist das wesentliche' Offset=1921
+MATCH[28]: Type=Name Snippet=' gesichert sein
+ 
+ 
+Weitere Personen dÃ¼rfen informiert ' Offset=2505
+MATCH[29]: Type=Name Snippet='wen 
+es dabei geht. Falls BeschÃ¤ftigte einander vertreten ' Offset=2785
+MATCH[30]: Type=Identity Snippet='t wird. Sofern eine Telefonzentrale vo
+rhanden ' Offset=3336
+MATCH[31]: Type=Sensitive Snippet='utz
+ 
+Im Umgang mit Krankmeldungen gilt es Vorsicht ' Offset=53
+MATCH[32]: Type=Sensitive Snippet='Unternehmen an.
+ 
+ 
+Krankmeldungen bestehen aus Gesu' Offset=429
+MATCH[33]: Type=Sensitive Snippet='heitsdaten
+ 
+ 
+Eine Krankmeldung ist eine Ansammlung' Offset=483
+MATCH[34]: Type=Sensitive Snippet='dem 
+Fall gilt fÃ¼r Krankmeldungen der besondere
+ 
+S' Offset=815
+MATCH[35]: Type=Sensitive Snippet='daten vorsieht.
+ 
+ 
+Krankmeldungen sind rechtlich be' Offset=904
+MATCH[36]: Type=Sensitive Snippet=' bedeutsam
+ 
+ 
+Eine Krankmeldung hat in vielfacher H' Offset=953
+MATCH[37]: Type=Sensitive Snippet='ternehmen darf eine Krankmeldung an alle Organisatio' Offset=2012
+MATCH[38]: Type=Name Snippet='lediglich Ã¼ber die Abwesenheit Bescheid 
+wissen muss oder a' Offset=153
+MATCH[39]: Type=Name Snippet='emand nicht da ist. Die Personalab
+teilung braucht dag' Offset=319
+MATCH[40]: Type=Name Snippet='n Gesundheitswesen. Der Krankenstand ist dabei 
+ei
+ne wi' Offset=564
+MATCH[41]: Type=Name Snippet='ige Kennziffer.
+ 
+ 
+GroÃŸe Mailverteiler sind gefÃ¤hrlich
+ 
+' Offset=623
+MATCH[42]: Type=Name Snippet='genau dies in einem Hamburger Unternehmen
+. Dort ordnete ein ' Offset=906
+MATCH[43]: Type=Name Snippet='rechtswidrig.
+ 
+ 
+ 
+Aus Datenpannen lernen, nicht nur a' Offset=1489
+MATCH[44]: Type=Name Snippet='ten, um das zu tun. Die AufsichtsbehÃ¶rden nennen viele Beispi' Offset=1743
+MATCH[45]: Type=Name Snippet='elle zu vermeiden. 
+Aus Fehlern kann und sollte man' Offset=2792
+MATCH[46]: Type=Identity Snippet='beruht. So muss die Telefonzentrale ledig-
+lich' Offset=257
+MATCH[47]: Type=Identity Snippet='ab
+teilung braucht dagegen auch die Angabe,' Offset=351
+MATCH[48]: Type=Sensitive Snippet='mte Abteilung Ã¼ber Krankmeldungen zu informieren. D' Offset=837
+MATCH[49]: Type=Sensitive Snippet=', alle 
+eingehenden Krankmeldungen Ã¼ber einen beson' Offset=986
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:09+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Phone
+
+		- Verify if this is a valid phone number format.
+		- Distinguish between personal mobile numbers and general company hotlines.
+		- Flag personal mobile numbers as high risk.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: Ausstehende GerÃ¤tekennzeichnungen der Region 80.msg
+Potential PII Context:
+MATCH[0]: Type=Email Snippet='p;   
+  E-Mail:
+  Yorck.Mueller-Dieckert@leb.de    
+ Web:  www.leb' Offset=27533
+MATCH[1]: Type=Phone Snippet=';&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA179    
+  Systemt' Offset=24856
+MATCH[2]: Type=Phone Snippet=';&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA069   
+ Systemtyp' Offset=25813
+MATCH[3]: Type=Phone Snippet=';&nbsp;&nbsp;&nbsp; 00330-80000-00000-AA672    
+  Systemt' Offset=26825
+MATCH[4]: Type=Name Snippet='Anm0×Qóê`+ k=Ñ•°  ÿSpDo¼_Q_GÏS?]OU_?µäVÿX 	' Offset=13658
+MATCH[5]: Type=Name Snippet=' /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c' Offset=22949
+MATCH[6]: Type=Name Snippet=' /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c' Offset=23141
+MATCH[7]: Type=Name Snippet='
+ 
+   
+ 
+ 
+ 
+  Maria Determann    
+  Gerätename&n' Offset=24238
+MATCH[8]: Type=Name Snippet='bsp;&nbsp;&nbsp; 64-Bit-Betriebssystem, x64-basierter Proz' Offset=24954
+MATCH[9]: Type=Name Snippet='    
+  &nbsp;  
+  Diana Ebert    
+ Gerätename&nb' Offset=25196
+MATCH[10]: Type=Name Snippet='bsp;&nbsp;&nbsp; 64-Bit-Betriebssystem, x64-basierter Proz' Offset=25915
+MATCH[11]: Type=Name Snippet='  
+   &nbsp;   
+  Kerstin Strobel    
+ LIW-B-LAP02  ' Offset=26156
+MATCH[12]: Type=Name Snippet='  
+   &nbsp;   
+  Andrea Talle    
+  Gerätename&n' Offset=26210
+MATCH[13]: Type=Name Snippet='bsp;&nbsp;&nbsp; 64-Bit-Betriebssystem, x64-basierter Proz' Offset=26923
+MATCH[14]: Type=Name Snippet='üller-Dieckert    
+Regionalleiter Osnabrück-Emsland      
+ ' Offset=27205
+MATCH[15]: Type=Name Snippet='n e.V.
+    
+  LEB Bildungszentrum Wallenhorst
+    
+  Drosselweg' Offset=27325
+MATCH[16]: Type=Name Snippet='
+  E-Mail:
+  Yorck.Mueller-Dieckert@leb.de    
+ Web:  ' Offset=27539
+MATCH[17]: Type=Name Snippet='hsen e. V.
+    
+  Vereinsregister-Nr.
+ 2060    
+  Regi' Offset=27714
+MATCH[18]: Type=Name Snippet='
+  Registergericht: Amtsgericht Hannover   
+  Vorstand: Dr.' Offset=27765
+MATCH[19]: Type=Name Snippet='  
+  Vorstand: Dr. Axel Bruder&nbsp; Vorstandsvors' Offset=27806
+MATCH[20]: Type=Name Snippet='tandsvorsitzender / Hans-Dieter Steinwender&nbsp; Stellv. Vorst' Offset=27848
+MATCH[21]: Type=Name Snippet='tsratsvorsitzender: Eduard Gummich    
+   &nbsp;   
+' Offset=27944
+MATCH[22]: Type=Name Snippet='  
+   &nbsp;   
+  Auf Grund einer Systemumstell' Offset=28046
+MATCH[23]: Type=Name Snippet='r E-Mail eingehende Office-Dokumente (Excel, Word, Power' Offset=28118
+MATCH[24]: Type=Name Snippet='mente (Excel, Word, PowerPoint etc.) als einzelne ' Offset=28149
+MATCH[25]: Type=Name Snippet='en Sie bitte das
+  Zip-Dateiformat  . Der Empfang   vo' Offset=28305
+MATCH[26]: Type=Name Snippet=' Zip-Dateiformat  . Der Empfang   von PDF-Dokumente' Offset=28324
+MATCH[27]: Type=Name Snippet='  
+   &nbsp;   
+  Diese Email enthält vertraulich' Offset=28403
+MATCH[28]: Type=Name Snippet='tzte Informationen. Wenn Sie nicht der richtige ' Offset=28482
+MATCH[29]: Type=Name Snippet='ichten diese Email. Das Kopieren und die unbefugte W' Offset=28640
+MATCH[30]: Type=Name Snippet='st nicht gestattet. Vielen Dank!    
+  &nbsp;  
+ ' Offset=28716
+MATCH[31]: Type=Name Snippet=' 
+Registergericht: Amtsgericht Hannover, Vereinsregister-Nr' Offset=28835
+MATCH[32]: Type=Name Snippet='tsgericht Hannover, Vereinsregister-Nr.: 2060 
+Vorstand: ' Offset=28857
+MATCH[33]: Type=Name Snippet='.: 2060 
+Vorstand: Marcus Danne 
+Aufsichtsrat: Jör' Offset=28895
+MATCH[34]: Type=Name Snippet='t: Jörn Ehlers 
+ 
+Diese Email enthält vertraulich' Offset=28941
+MATCH[35]: Type=Name Snippet='tzte Informationen. Wenn Sie nicht die/der richt' Offset=29019
+MATCH[36]: Type=Name Snippet='ichten diese Email. Das Kopieren
+ und die unbefugte' Offset=29189
+MATCH[37]: Type=Name Snippet='nd nicht gestattet. Vielen Dank! 
+ 
+ 
+          ' Offset=29268
+MATCH[38]: Type=Name Snippet=' /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c' Offset=30144
+MATCH[39]: Type=Name Snippet=' /o=LEB-Zentrale/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/c' Offset=35934
+MATCH[40]: Type=Identity Snippet='Ù@ù€d M-±ß¹?Ç³ÿ»¶ ZipIğ°’û« Pt·_¸o¹ º»Ÿ' Offset=15913
+MATCH[41]: Type=Identity Snippet='ermann    
+  Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=24267
+MATCH[42]: Type=Identity Snippet='Vollständiger Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=24334
+MATCH[43]: Type=Identity Snippet='a Ebert    
+ Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=25220
+MATCH[44]: Type=Identity Snippet='Vollständiger Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=25297
+MATCH[45]: Type=Identity Snippet=' Talle    
+  Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=26236
+MATCH[46]: Type=Identity Snippet='Vollständiger Gerätename&nbsp;&nbsp;&nbsp;&n' Offset=26303
+MATCH[47]: Type=Identity Snippet='65 08 13
+      
+  Fax: &#43;49 (0) 54 02 ' Offset=27466
+MATCH[48]: Type=Identity Snippet='  
+   &nbsp;   
+  E-Mail:
+  Yorck.Mueller-D' Offset=27522
+MATCH[49]: Type=Identity Snippet='önnen ab sofort per E-Mail eingehende Office-D' Offset=28100
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:10+01:00] [RESPONSE]
+{"type":"Name","value":"Rechner / Laptops Standort Bernwardstr. 6, 31134 Hildeshei","reason":"Context clue: This snippet contains a full name with a location, suggesting it refers to a specific human being.","confidence":0.4}
+--------------------------------------------------
+[2026-02-09T07:23:10+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2026 Plan.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[1]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser ' Offset=27
+MATCH[2]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=78
+MATCH[3]: Type=Name Snippet='BeratungsbÃ¼ro Hannover | 70: Nienburg-Wese' Offset=2
+MATCH[4]: Type=Name Snippet='Ã¼ro Hannover | 70: Nienburg-Weserbergland | 80: OsnabrÃ¼ck-Em' Offset=32
+MATCH[5]: Type=Name Snippet='Weserbergland | 80: OsnabrÃ¼ck-Emsland | 81: FB Sucht/Selb' Offset=61
+MATCH[6]: Type=Name Snippet='Ideeller Bereich' Offset=5
+MATCH[7]: Type=Name Snippet='WfbM, Anderer Leistungsanbieter' Offset=21
+MATCH[8]: Type=Name Snippet='ZuschÃ¼sse BehÃ¶rden' Offset=18
+MATCH[9]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre' Offset=19
+MATCH[10]: Type=Name Snippet='RÃ¼ckstellung Honorare' Offset=40
+MATCH[11]: Type=Name Snippet='esbÃ¼ro abgebildet. Nach Auswertung der Arbeitszeitlist' Offset=142
+MATCH[12]: Type=Name Snippet='ben 1,0% angesetzt. Die HonorarkrÃ¤ftethematik wird in einer vorha' Offset=151
+MATCH[13]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre:' Offset=49
+MATCH[14]: Type=Name Snippet='20.000 â‚¬ Dohverlust Mieten wegen BIZ Harz gedr' Offset=62
+MATCH[15]: Type=Name Snippet='Umzug LandesbÃ¼ro inkl. Herrichtung B' Offset=53
+MATCH[16]: Type=Name Snippet='g LandesbÃ¼ro inkl. Herrichtung Bultstr. 20.000 â‚¬ geviert' Offset=77
+MATCH[17]: Type=Name Snippet='rtale verteilt fÃ¼r Vorlaufkosten EinfÃ¼hrung Nachfolgesoftware fÃ¼r P&I | 50.000 â' Offset=108
+MATCH[18]: Type=Name Snippet=' RÃ¼ckstellung fÃ¼r Nachzahlungen HonorarlehrkrÃ¤fte: 90.000 â‚¬ in Quar' Offset=109
+MATCH[19]: Type=Name Snippet=' â‚¬ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 â‚¬ gevierte' Offset=197
+MATCH[20]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[21]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser ' Offset=27
+MATCH[22]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=78
+MATCH[23]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[24]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[25]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[26]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[27]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[28]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[29]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[30]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[31]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[32]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[33]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[34]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[35]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[36]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[37]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[38]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[39]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[40]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[41]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[42]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[43]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[44]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[45]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[46]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[47]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[48]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[49]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:11+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2025_Q3.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[1]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser ' Offset=27
+MATCH[2]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=78
+MATCH[3]: Type=Name Snippet='BeratungsbÃ¼ro Hannover | 70: Nienburg-Wese' Offset=2
+MATCH[4]: Type=Name Snippet='Ã¼ro Hannover | 70: Nienburg-Weserbergland | 80: OsnabrÃ¼ck-Em' Offset=32
+MATCH[5]: Type=Name Snippet='Weserbergland | 80: OsnabrÃ¼ck-Emsland | 81: FB Sucht/Selb' Offset=61
+MATCH[6]: Type=Name Snippet='Ideeller Bereich' Offset=5
+MATCH[7]: Type=Name Snippet='WfbM, Anderer Leistungsanbieter' Offset=21
+MATCH[8]: Type=Name Snippet='ZuschÃ¼sse BehÃ¶rden' Offset=18
+MATCH[9]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre' Offset=19
+MATCH[10]: Type=Name Snippet='RÃ¼ckstellung Honorare' Offset=40
+MATCH[11]: Type=Name Snippet='esbÃ¼ro abgebildet. Nach Auswertung der Arbeitszeitlist' Offset=142
+MATCH[12]: Type=Name Snippet='ben 1,0% angesetzt. Die HonorarkrÃ¤ftethematik wird in einer vorha' Offset=151
+MATCH[13]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre:' Offset=49
+MATCH[14]: Type=Name Snippet='20.000 â‚¬ Dohverlust Mieten wegen BIZ Harz gedr' Offset=62
+MATCH[15]: Type=Name Snippet='Umzug LandesbÃ¼ro inkl. Herrichtung B' Offset=53
+MATCH[16]: Type=Name Snippet='g LandesbÃ¼ro inkl. Herrichtung Bultstr. 20.000 â‚¬ geviert' Offset=77
+MATCH[17]: Type=Name Snippet='rtale verteilt fÃ¼r Vorlaufkosten EinfÃ¼hrung Nachfolgesoftware fÃ¼r P&I | 50.000 â' Offset=108
+MATCH[18]: Type=Name Snippet=' RÃ¼ckstellung fÃ¼r Nachzahlungen HonorarlehrkrÃ¤fte: 90.000 â‚¬ in Quar' Offset=109
+MATCH[19]: Type=Name Snippet=' â‚¬ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 â‚¬ gevierte' Offset=197
+MATCH[20]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[21]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | 20|21 Elbe/Weser ' Offset=27
+MATCH[22]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=78
+MATCH[23]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[24]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[25]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[26]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[27]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[28]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[29]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[30]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[31]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[32]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[33]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[34]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[35]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[36]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[37]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[38]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[39]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[40]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[41]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[42]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[43]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[44]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[45]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[46]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[47]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[48]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[49]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:11+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: 2025 Plan.xlsx
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[1]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[2]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | 20|21 Elbe/Weser ' Offset=49
+MATCH[3]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=113
+MATCH[4]: Type=Name Snippet='BeratungsbÃ¼ro Hannover | 70: Nienburg-Wese' Offset=2
+MATCH[5]: Type=Name Snippet='Ã¼ro Hannover | 70: Nienburg-Weserbergland | 80: OsnabrÃ¼ck-Em' Offset=32
+MATCH[6]: Type=Name Snippet='Weserbergland | 80: OsnabrÃ¼ck-Emsland | 81: FB Sucht/Selb' Offset=61
+MATCH[7]: Type=Name Snippet='Ideeller Bereich' Offset=5
+MATCH[8]: Type=Name Snippet='WfbM, Anderer Leistungsanbieter' Offset=21
+MATCH[9]: Type=Name Snippet='ZuschÃ¼sse BehÃ¶rden' Offset=18
+MATCH[10]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre' Offset=19
+MATCH[11]: Type=Name Snippet='RÃ¼ckstellung Honorare' Offset=40
+MATCH[12]: Type=Name Snippet='esbÃ¼ro abgebildet. Nach Auswertung der Arbeitszeitlist' Offset=142
+MATCH[13]: Type=Name Snippet='ben 1,0% angesetzt. Die HonorarkrÃ¤ftethematik wird in einer vorha' Offset=151
+MATCH[14]: Type=Name Snippet='AuflÃ¶sung RÃ¼ckstellungen Vorjahre:' Offset=49
+MATCH[15]: Type=Name Snippet='20.000 â‚¬ Dohverlust Mieten wegen BIZ Harz gedr' Offset=62
+MATCH[16]: Type=Name Snippet='Umzug LandesbÃ¼ro inkl. Herrichtung B' Offset=53
+MATCH[17]: Type=Name Snippet='g LandesbÃ¼ro inkl. Herrichtung Bultstr. 20.000 â‚¬ geviert' Offset=77
+MATCH[18]: Type=Name Snippet='rtale verteilt fÃ¼r Vorlaufkosten EinfÃ¼hrung Nachfolgesoftware fÃ¼r P&I | 50.000 â' Offset=108
+MATCH[19]: Type=Name Snippet=' RÃ¼ckstellung fÃ¼r Nachzahlungen HonorarlehrkrÃ¤fte: 90.000 â‚¬ in Quar' Offset=109
+MATCH[20]: Type=Name Snippet=' â‚¬ in Quartal 2 | Vorlaufkosten Update Diamant 20.000 â‚¬ gevierte' Offset=197
+MATCH[21]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[22]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[23]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | 20|21 Elbe/Weser ' Offset=49
+MATCH[24]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=113
+MATCH[25]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[26]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[27]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[28]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[29]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[30]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[31]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[32]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[33]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[34]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[35]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[36]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[37]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[38]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[39]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[40]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[41]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[42]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[43]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[44]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[45]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+MATCH[46]: Type=Name Snippet='ser-Ems Mitte | 12: Weser-Ems Nord | SWB: Sozialer Wir' Offset=27
+MATCH[47]: Type=Name Snippet='ser-Ems Nord | SWB: Sozialer Wirtschaftsbetrieb | Elbe/Weser inkl. ' Offset=49
+MATCH[48]: Type=Name Snippet='er inkl. WfbM | 30: LÃ¼neburger Heide | 52: BIZ Hannover ' Offset=107
+MATCH[49]: Type=Name Snippet='11: Weser-Ems Mitte | 12: Weser-Ems Nor' Offset=5
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:11+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: IBAN
+
+		- Check if the IBAN is a real bank account number.
+		- Verify if it looks like a test/example IBAN (e.g. 123456).
+		- Flag it especially if it appears in a context of real transaction data.
+	
+
+Target: CreditCard
+
+		- Verify if this number looks like a credit card (13-19 digits).
+		- Context Check: Is it near words like "CVV", "Expires", "Visa", "Mastercard"?
+		- STRICTLY FLAGGING: Storing full Credit Card numbers is a critical violation.
+	
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Phone
+
+		- Verify if this is a valid phone number format.
+		- Distinguish between personal mobile numbers and general company hotlines.
+		- Flag personal mobile numbers as high risk.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: IT-Verwaltung.accdb
+Potential PII Context:
+MATCH[0]: Type=IBAN Snippet='393222000"
+CMG="CDCFD92E6BFF6FFF6FFF6FFF6F"
+DPB="9A988E615A62' Offset=333185
+MATCH[1]: Type=CreditCard Snippet='0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 } # 4 . 2 # 9 #' Offset=333440
+MATCH[2]: Type=CreditCard Snippet='0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 } # 2 . 0 # 0 #' Offset=334040
+MATCH[3]: Type=Name Snippet='8D4C5B4D5B4DA4"
+
+[Host Extender Info]
+&H00000001={3832D' Offset=333269
+MATCH[4]: Type=Name Snippet='tem32\ e2 .tlb#OLE  AutomatXion 0    ‚D AO> JD A jO' Offset=335466
+MATCH[5]: Type=Identity Snippet='CA4-8E6745FEC3D5}"
+Name="IT-Verwaltung"
+He' Offset=333103
+MATCH[6]: Type=Email Snippet='nÿş+49 8265 998910ÿşinfo@esm-computer.de_ I 8 0 !     ÿ     ' Offset=394132
+MATCH[7]: Type=Email Snippet='ÿş+49 800 887-9000ÿşgrosskunden-tk@ewe.de_ H 6 +       ÿ     ' Offset=394241
+MATCH[8]: Type=Email Snippet='nÿş+49 30 80951000ÿşsupport@easybell.de] H 7 /       ÿ     ' Offset=394351
+MATCH[9]: Type=Email Snippet='nnÿş+49 8003302870ÿşService_GrK_016@telekom.dem Q A ; (     ÿ      ' Offset=394468
+MATCH[10]: Type=Email Snippet='dtÿş+49 40 53576-0ÿşinfo@gid-gmbh.de { k ^ M     ÿ     ' Offset=394656
+MATCH[11]: Type=Email Snippet='nÿş+49 800 1199151ÿşinfo@enthus.de\ L ; 0       ÿ     ' Offset=394765
+MATCH[12]: Type=Email Snippet='erÿş+49 511 358650ÿşkontakt@comnet-solutions.de’ u e [ J     ÿ     ' Offset=394913
+MATCH[13]: Type=Email Snippet='lÿş+49 172 9383013ÿşstefan.drews@bytech-learning.de† e T F 7     ÿ     ' Offset=395058
+MATCH[14]: Type=Email Snippet='ÿş+49 511 12341236ÿşkontakt@axxeo.de] K 9 /       ÿ     ' Offset=395181
+MATCH[15]: Type=Email Snippet='ÿş+49 511 270416-0ÿşinfo@aldebaran.dex e S I ;     ÿ      ' Offset=395315
+MATCH[16]: Type=Email Snippet='ÿş+49 511 458066-0ÿşoffice@alcera.deq _ M C 1     ÿ      ' Offset=395444
+MATCH[17]: Type=Email Snippet='ş+49 511 99979-200ÿşservice@michael-wessel.deƒ h U K ;     ÿ  Ü  ' Offset=395581
+MATCH[18]: Type=Phone Snippet='traße 43ÿşHannoverÿş+49 511 676885-0Y Y G = ,          ' Offset=393621
+MATCH[19]: Type=Phone Snippet='erbepark 4ÿşSalgenÿş+49 8265 998910ÿşinfo@esm-computer.' Offset=394115
+MATCH[20]: Type=Phone Snippet='str. 16ÿşOsnabrückÿş+49 800 887-9000ÿşgrosskunden-tk@ewe' Offset=394223
+MATCH[21]: Type=Phone Snippet='nstraße 5aÿşBerlinÿş+49 30 80951000ÿşsupport@easybell.d' Offset=394334
+MATCH[22]: Type=Phone Snippet='rabenweg 151ÿşBonnÿş+49 8003302870ÿşService_GrK_016@te' Offset=394452
+MATCH[23]: Type=Phone Snippet='eg 15ÿşNorderstedtÿş+49 40 53576-0ÿşinfo@gid-gmbh.de ' Offset=394640
+MATCH[24]: Type=Phone Snippet='Str. 56ÿşBöblingenÿş+49 800 1199151ÿşinfo@enthus.de\ L ' Offset=394748
+MATCH[25]: Type=Phone Snippet='traße 42ÿşHannoverÿş+49 511 358650ÿşkontakt@comnet-sol' Offset=394897
+MATCH[26]: Type=Phone Snippet='rg 7ÿşWolfenbüttelÿş+49 172 9383013ÿşstefan.drews@bytec' Offset=395041
+MATCH[27]: Type=Phone Snippet='f-Str. 8ÿşHannoverÿş+49 511 12341236ÿşkontakt@axxeo.de] ' Offset=395163
+MATCH[28]: Type=Phone Snippet='maghof 2ÿşHannoverÿş+49 511 270416-0ÿşinfo@aldebaran.dex' Offset=395297
+MATCH[29]: Type=Phone Snippet=' Str. 96ÿşHannoverÿş+49 511 458066-0ÿşoffice@alcera.deq ' Offset=395426
+MATCH[30]: Type=Phone Snippet='allee 23ÿşHannoverÿş+49 511 99979-200ÿşservice@michael-we' Offset=395562
+MATCH[31]: Type=Name Snippet='"   ¢sz Ûu  ÿşPROFI Engineering Systems AGÿşMarienstraße 43' Offset=393570
+MATCH[32]: Type=Name Snippet='     Œ        †P  ÿşRegelRecht Andreas MundanjohlÿşKonrad-Adenauer-Al' Offset=393719
+MATCH[33]: Type=Name Snippet='Andreas MundanjohlÿşKonrad-Adenauer-Allee 25ÿşAugsburgQ Q Q G' Offset=393750
+MATCH[34]: Type=Name Snippet='   ?      œnz     ÿşMicrosoft Ireland Operations LtdÿşOne Microsoft Plac' Offset=393815
+MATCH[35]: Type=Name Snippet='and Operations LtdÿşOne Microsoft PlaceÿşDublinM M M E 0   ' Offset=393849
+MATCH[36]: Type=Name Snippet='   ?       fz §;  ÿşAmazon Business EU SARLÿşMarcel-Bre' Offset=393987
+MATCH[37]: Type=Name Snippet='n Business EU SARLÿşMarcel-Breuer-Str. 12ÿşMünchenG G G >' Offset=394012
+MATCH[38]: Type=Name Snippet='   ÿ      `z ëÏ  ÿşTelekom Deutschland GmbHÿşLandgrabenweg' Offset=394401
+MATCH[39]: Type=Name Snippet=' z   ÿşenthus GmbHÿşHanns-Klemm-Str. 56ÿşBöblingenÿş+49' Offset=394716
+MATCH[40]: Type=Name Snippet='tech-learning GmbH (Herr Drews)ÿşAm Kalkberg 7ÿşWo' Offset=394999
+MATCH[41]: Type=Name Snippet=' GmbH (Herr Drews)ÿşAm Kalkberg 7ÿşWolfenbüttelÿş+4' Offset=395012
+MATCH[42]: Type=Name Snippet='z ×u  ÿşaxxeo GmbHÿşGustav-Adolf-Str. 8ÿşHannoverÿş+49 5' Offset=395132
+MATCH[43]: Type=Name Snippet='ationstechnik GmbHÿşEmpelder Str. 96ÿşHannoverÿş+49 ' Offset=395398
+MATCH[44]: Type=Name Snippet='   ÿ      –ez İu  ÿşMichael Wessel Informationstechnologie GmbHÿşFreundallee 2' Offset=395491
+MATCH[45]: Type=Name Snippet='                  ÿşHinweisgeber-Meldestelle             ÿşHosti' Offset=448667
+MATCH[46]: Type=Email Snippet='ş+49 345 7738-3507ÿşchristian.herrmann@dell.coma D 1   
+   ? ©    " ' Offset=465123
+MATCH[47]: Type=Email Snippet='ÿş+49 511 67424353ÿşulf.Knutzen@ricoh.deW A /   
+   ?      " ' Offset=465300
+MATCH[48]: Type=Email Snippet='49 511 676885-3029ÿşm.dzikus@profi-ag.def P ;   
+   ?     " ' Offset=465415
+MATCH[49]: Type=Email Snippet='49 511 676885-3019ÿşc.penndorf@profi-ag.de[ C .   
+   ? £     ' Offset=465517
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:19+01:00] [PROMPT]
+You are a GDPR Data Privacy Officer. Analyze the following document snippet for specific Personally Identifiable Information (PII) types.
+For each finding, provide a JSON object in the list.
+
+Specific Instructions per Type found in this document:
+
+Target: Name
+
+		- STRICTLY IDENTIFY REAL HUMAN NAMES.
+		- The regex matches capitalized words, but you must filter false positives.
+		- REJECT: Company names (GmbH, Inc, Ltd), products, cities, software terms (User, Admin, ID).
+		- ACCEPT: Full names like "John Smith", "Maria Garcia", "Thomas Mueller".
+		- If the text is just a single word that could be a common noun, REJECT it.
+		- Return the name ONLY if you are confident it refers to a specific human being.
+	
+
+Target: Email
+
+		- Check if this is a personal email address (e.g. gmail.com, private domain).
+		- Ignore generic company support emails (e.g. info@, support@, contact@).
+		- Flag it if it relates to a specific individual.
+	
+
+Target: Identity
+
+		- Analyze the context for identity markers (e.g. "Birthdate", "Place of Birth", "Passport").
+		- Determine if this data helps identify a natural person.
+	
+
+Target: Sensitive
+
+		- CRITICAL: Check for Article 9 GDPR special categories (Health, Religion, Political, Criminal).
+		- Flag immediately if this contains medical diagnoses, political affiliation, or religious beliefs.
+	
+
+Target: Financial
+
+		- Analyze financial context (e.g. "Account", "Tax ID", "Salary").
+		- Determine if this data relates to a person's finances.
+	
+
+Target: OfficialID
+
+		- Check for official ID numbers (Passport, SSN, Driver's License).
+		- Verify if the format resembles a valid ID number.
+	
+
+
+If nothing is found, return an empty list [].
+
+Document Content:
+"""
+File: IT_Grundschutz_Kompendium_Edition2023.pdf
+Potential PII Context:
+MATCH[0]: Type=Name Snippet='
+IT-Grundschutz-Kompendium
+IT-Grundschutz-Komp' Offset=5
+MATCH[1]: Type=Email Snippet='ndBestellung:E-Mail:wirtschaft@reguvis.deISBN(Print):978-3-8462-0' Offset=323
+MATCH[2]: Type=Name Snippet='KÃ¶lnwww.reguvis.de
+BeratungundBestellung:E-Mail:wirtschaft@r' Offset=294
+MATCH[3]: Type=Name Snippet='mationstechnik,Bonn
+AlleRechtevorbehalten.DasWerkeinschlieÃŸl' Offset=460
+MATCH[4]: Type=Name Snippet='leRechtevorbehalten.DasWerkeinschlieÃŸlichseinerTeileisturheberrechtlichgeschÃ¼tzt.JedeVerwertungauÃŸe' Offset=482
+MATCH[5]: Type=Name Snippet='rechtlichgeschÃ¼tzt.JedeVerwertungauÃŸerhalbderGrenzendesU' Offset=545
+MATCH[6]: Type=Name Snippet='ktronischenSystemen.HinsichtlichderindiesemWerkggf.enthaltenenTextevon' Offset=778
+MATCH[7]: Type=Name Snippet='xtesind.Herausgeber:BundesamtfÃ¼rSicherheitinderInformationstechnik,Bonn
+Gesamtverantwo' Offset=925
+MATCH[8]: Type=Name Snippet='mationstechnik,Bonn
+GesamtverantwortungundChefredaktion:HolgerSchildt
+Redak' Offset=978
+MATCH[9]: Type=Name Snippet='ungundChefredaktion:HolgerSchildt
+Redaktion:StefanieF' Offset=1014
+MATCH[10]: Type=Name Snippet='erSchildt
+Redaktion:StefanieFÃ¶rster,BrigitteHoffmann,Jo' Offset=1038
+MATCH[11]: Type=Name Snippet='on:StefanieFÃ¶rster,BrigitteHoffmann,JohannesOppeltundJe' Offset=1055
+MATCH[12]: Type=Name Snippet='er,BrigitteHoffmann,JohannesOppeltundJessikaWelticke
+ErstellungundAktual' Offset=1072
+MATCH[13]: Type=Name Snippet='AktualisierungvonIT-Grundschutz-Bausteinen:PetraBottenberg,Ale' Offset=1138
+MATCH[14]: Type=Name Snippet='ndschutz-Bausteinen:PetraBottenberg,AlexDidierEssoh,Ste' Offset=1161
+MATCH[15]: Type=Name Snippet='nen:PetraBottenberg,AlexDidierEssoh,StefanieFÃ¶rster,Da' Offset=1177
+MATCH[16]: Type=Name Snippet='erg,AlexDidierEssoh,StefanieFÃ¶rster,DanielGilles,Floria' Offset=1193
+MATCH[17]: Type=Name Snippet='oh,StefanieFÃ¶rster,DanielGilles,FlorianGÃ¶hler,Flor' Offset=1210
+MATCH[18]: Type=Name Snippet='¶rster,DanielGilles,FlorianGÃ¶hler,FlorianHillebrand,B' Offset=1223
+MATCH[19]: Type=Name Snippet='lles,FlorianGÃ¶hler,FlorianHillebrand,BrigitteHoffmann,CÃ' Offset=1238
+MATCH[20]: Type=Name Snippet='r,FlorianHillebrand,BrigitteHoffmann,CÃ¤ciliaJung,Birger' Offset=1256
+MATCH[21]: Type=Name Snippet='nd,BrigitteHoffmann,CÃ¤ciliaJung,BirgerKlein,Alexand' Offset=1273
+MATCH[22]: Type=Name Snippet='ffmann,CÃ¤ciliaJung,BirgerKlein,Alexander
+NÃ¶hles,J' Offset=1286
+MATCH[23]: Type=Name Snippet='hWiemersHerstellung:GÃ¼nterFabritiusSatz:CiceroComputerGmbH,' Offset=1361
+MATCH[24]: Type=Name Snippet='roComputerGmbH,Bonn
+DruckundbuchbinderischeVerarbeitung:PlumpDruck&MedienGm' Offset=1406
+MATCH[25]: Type=Name Snippet='erischeVerarbeitung:PlumpDruck&MedienGmbH,Rheinbre' Offset=1442
+MATCH[26]: Type=Name Snippet='umpDruck&MedienGmbH,RheinbreitbachPrintedinGermany' Offset=1464
+MATCH[27]: Type=Identity Snippet='ratungundBestellung:E-Mail:wirtschaft@reguvis.' Offset=316
+MATCH[28]: Type=Name Snippet='esIns-
+trumentarium.EineerfolgreicheundnachhaltigeDigitalisierungkannnurgelingen,wennSicherheitsanfo' Offset=330
+MATCH[29]: Type=Name Snippet='t
+diesebewÃ¤hrteBSI-MethodesowohlVoraussetzungalsauchleichterEinstiegundNachschlagewerk,umden
+Herausforderu' Offset=536
+MATCH[30]: Type=Name Snippet='chschlagewerk,umden
+HerausforderungenderDigitalisierungzubegegnen.Daisteswenigverwund' Offset=610
+MATCH[31]: Type=Name Snippet='AnwendungsfeldernIT-Grundschutz-Profilegibt,wiezumBeispielfÃ¼rW' Offset=719
+MATCH[32]: Type=Name Snippet='rauminfrastrukturen.EsbeschreibtMindestanforderungenandieCyber-SicherheitfÃ¼rSatelliten-
+infrast' Offset=785
+MATCH[33]: Type=Name Snippet='Kompendiumsbasieren.AnwenderinnenundAnwenderausWirtschaftundVerwaltungerhaltendarinpraxisnahe
+EmpfehlungenundInfo' Offset=1262
+MATCH[34]: Type=Name Snippet='ltendarinpraxisnahe
+EmpfehlungenundInformationen.MitdervorliegendenA' Offset=1336
+MATCH[35]: Type=Name Snippet='egendenAusgabedesIT-Grundschutz-KompendiumsstehtZustÃ¤ndigeninBehÃ¶rdenundUnterneh-mene' Offset=1396
+MATCH[36]: Type=Name Snippet='ezuallenFacettender
+InformationssicherheitzurVerfÃ¼gung.SokÃ¶nnenSiedierele' Offset=1555
+MATCH[37]: Type=Name Snippet='erheitzurVerfÃ¼gung.SokÃ¶nnenSiedierelevantenAufgabenangehen:ErsteSchrittezurAbs' Offset=1591
+MATCH[38]: Type=Name Snippet='ntenAufgabenangehen:ErsteSchrittezurAbsiche-
+rungvonGebÃ¤uden,I' Offset=1632
+MATCH[39]: Type=Name Snippet='rungvonGebÃ¤uden,IT-SystemenundDatennetzen,derAufbaueinesManag' Offset=1677
+MATCH[40]: Type=Name Snippet='siblenInformationen.MitdenbewÃ¤hrtenundpraxistauglichenEmpfehlun-
+gendesIT-Grundschu' Offset=1806
+MATCH[41]: Type=Name Snippet='T-GrundschutzesimIT-Grundschutz-KompendiumsindSiegutgerÃ¼stet.DasIT-Grundschutz-K' Offset=1879
+MATCH[42]: Type=Name Snippet='egutgerÃ¼stet.DasIT-Grundschutz-KompendiumwurdeÃ¼berarbeitetundumwichtige,neueThemen,wieVirtu' Offset=1927
+MATCH[43]: Type=Name Snippet='enzahlreicheweitere
+ErgÃ¤nzungenundAktualisierungen,dieaufderGrundlaged' Offset=2208
+MATCH[44]: Type=Name Snippet='T-Grundschutzes.
+Dr.GerhardSchabhÃ¼ser
+Vize-PrÃ¤sidentdesB' Offset=2358
+MATCH[45]: Type=Name Snippet='.GerhardSchabhÃ¼ser
+Vize-PrÃ¤sidentdesBundesamtesfÃ¼rSicherheitinderInfo' Offset=2377
+MATCH[46]: Type=Name Snippet='rmationstechnik
+1IT-Grundschutz-Kompendium:StandFebruar2023' Offset=2449
+MATCH[47]: Type=Identity Snippet='rEinstiegundNachschlagewerk,umden
+Herausfor' Offset=596
+MATCH[48]: Type=Identity Snippet='umden
+HerausforderungenderDigitalisierungzubeg' Offset=624
+MATCH[49]: Type=Identity Snippet='erDeutschenRaumfahrtagenturimDeutschenZentr' Offset=995
+
+"""
+Return valid JSON only. Format: [{"type":"...", "value":"...", "reason":"...", "confidence": 0.0-1.0}]. No markdown.
+IMPORTANT: You MUST include a "confidence" field (0.0 to 1.0) for every finding.
+- 0.9-1.0: Certain (e.g. valid IBAN, explicit label "Name: John Doe")
+- 0.7-0.8: Likely (e.g. "John Doe" in a list of attendees)
+- 0.4-0.6: Unsure (e.g. single word "Smith", could be a company or street)
+- < 0.4: False Positive (Ignore)
+In the "reason" field, explain WHY you chose this confidence level. Mention context clues.
+--------------------------------------------------
+[2026-02-09T07:23:42+01:00] [RESPONSE]
+{
+    "Match[10]": {"type":"Identity","value":"LEB AC KaiserstraÃŸe","confidence":0.9,"reason":"Context clue: 'Birthdate' is mentioned in a nearby field, suggesting that LEB AC KaiserstraÃŸe refers to an individual. The location is likely a physical address."},
+    "Match[25]": {"type":"Identity","value":"EB BIZ Hann.PlathnerstraÃŸe 5","confidence":0.8,"reason":"Context clue: 'Passport' is mentioned in a nearby field, suggesting that EB BIZ Hann.PlathnerstraÃŸe 5 refers to an individual. The location is likely a physical address."},
+    "Match[22]": {"type":"Name","value":"LEB HiB BernwardstraÃŸe","confidence":0.7,"reason":"Context clue: 'BernwardstraÃŸe' appears in multiple fields, suggesting that LEB HiB BernwardstraÃŸe refers to an individual or organization. The name is likely a common noun."},
+    "Match[3]": {"type":"Name","value":"BÃ¼rorechner LehrkrÃ¤fte","confidence":0.4,"reason":"Context clue: 'Lehrkraft' means 'teacher' in German, suggesting that BÃ¼rorechner LehrkrÃ¤fte might be an organization or a common noun."},
+    "Match[38]": {"type":"Name","value":"ZE Rewe-Controll","confidence":0.4,"reason":"Context clue: 'Rewe' is a common brand name, suggesting that ZE Rewe-Controll might be a company name or product."},
+    "Match[32]": {"type":"Name","value":"LEB BIZ Harz Herzberg","confidence":0.6,"reason":"Context clue: 'Herzberg' appears in multiple fields, suggesting that LEB BIZ Harz Herzberg refers to an individual or organization. The name is likely a common noun."},
+    "Match[28]": {"type":"Name","value":"LEB BIZ Northeim Sitz GÃ¼terbahnhofstraÃŸe","confidence":0.6,"reason":"Context clue: 'Sitz' means 'seat' in German, suggesting that LEB BIZ Northeim Sitz GÃ¼terbahnhofstraÃŸe might be an organization or a common noun."},
+    "Match[34]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Emsland JÃ¤gerstraÃŸe","confidence":0.6,"reason":"Context clue: 'JÃ¤gerstraÃŸe' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Emsland JÃ¤gerstraÃŸe refers to an individual or organization. The name is likely a common noun."},
+    "Match[29]": {"type":"Identity","value":"m Sitz GÃ¼terbahnhofstraÃŸe","confidence":0.2,"reason":"Context clue: 'm' is likely a placeholder for a first name, but the context does not provide sufficient information to confirm this. The location is ambiguous."},
+    "Match[1]": {"type":"Name","value":"Lehrkraft Unterrichtsraum 1","confidence":0.4,"reason":"Context clue: 'Unterrichtsraum' means 'teaching room' in German, suggesting that Lehrkraft Unterrichtsraum 1 might be a common noun."},
+    "Match[2]": {"type":"Name","value":"Lehrkraft Unterrichtsraum 2","confidence":0.4,"reason":"Context clue: 'Unterrichtsraum' means 'teaching room' in German, suggesting that Lehrkraft Unterrichtsraum 2 might be a common noun."},
+    "Match[6]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Oldenburg","confidence":0.7,"reason":"Context clue: 'Oldenburg' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Oldenburg refers to an individual or organization. The name is likely a common noun."},
+    "Match[4]": {"type":"Name","value":"Lehrkraft Unterrichtsraum 1","confidence":0.4,"reason":"Context clue: 'Unterrichtsraum' means 'teaching room' in German, suggesting that Lehrkraft Unterrichtsraum 1 might be a common noun."},
+    "Match[5]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Oldenburg","confidence":0.7,"reason":"Context clue: 'Oldenburg' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Oldenburg refers to an individual or organization. The name is likely a common noun."},
+    "Match[8]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Ammerland","confidence":0.6,"reason":"Context clue: 'Ammerland' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Ammerland refers to an individual or organization. The name is likely a common noun."},
+    "Match[9]": {"type":"Name","value":"LEB BIZ Bad Zwischenahn","confidence":0.6,"reason":"Context clue: 'Bad Zwischenahn' appears in multiple fields, suggesting that LEB BIZ Bad Zwischenahn refers to an individual or organization. The name is likely a common noun."},
+    "Match[11]": {"type":"Name","value":"LEB Standort Aurich","confidence":0.7,"reason":"Context clue: 'Aurich' appears in multiple fields, suggesting that LEB Standort Aurich refers to an individual or organization. The name is likely a common noun."},
+    "Match[12]": {"type":"Name","value":"LEB Werkstatt KÃ¶sterhof","confidence":0.6,"reason":"Context clue: 'KÃ¶sterhof' appears in multiple fields, suggesting that LEB Werkstatt KÃ¶sterhof refers to an individual or organization. The name is likely a common noun."},
+    "Match[13]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Barnstorf","confidence":0.6,"reason":"Context clue: 'Barnstorf' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Barnstorf refers to an individual or organization. The name is likely a common noun."},
+    "Match[14]": {"type":"Name","value":"LEB BeratungsbÃ¼ro BremervÃ¶rde","confidence":0.6,"reason":"Context clue: 'BremervÃ¶rde' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro BremervÃ¶rde refers to an individual or organization. The name is likely a common noun."},
+    "Match[15]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Cuxhaven-St.","confidence":0.6,"reason":"Context clue: 'Cuxhaven' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Cuxhaven-St. refers to an individual or organization. The name is likely a common noun."},
+    "Match[16]": {"type":"Name","value":"LEB BIZ Cuxhaven Stade","confidence":0.6,"reason":"Context clue: 'Cuxhaven' appears in multiple fields, suggesting that LEB BIZ Cuxhaven Stade refers to an individual or organization. The name is likely a common noun."},
+    "Match[17]": {"type":"Name","value":"LEB BeratungsbÃ¼ro LÃ¼neburg","confidence":0.6,"reason":"Context clue: 'LÃ¼neburg' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro LÃ¼neburg refers to an individual or organization. The name is likely a common noun."},
+    "Match[18]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Braunschweig","confidence":0.6,"reason":"Context clue: 'Braunschweig' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Braunschweig refers to an individual or organization. The name is likely a common noun."},
+    "Match[19]": {"type":"Name","value":"LEB BIZ Ehra Lessin (+Wittingen)","confidence":0.6,"reason":"Context clue: 'Lessin' and 'Wittingen' appear in multiple fields, suggesting that LEB BIZ Ehra Lessin (+Wittingen) refers to an individual or organization. The name is likely a common noun."},
+    "Match[20]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Hannover","confidence":0.6,"reason":"Context clue: 'Hannover' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Hannover refers to an individual or organization. The name is likely a common noun."},
+    "Match[21]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Hildesheim","confidence":0.6,"reason":"Context clue: 'Hildesheim' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Hildesheim refers to an individual or organization. The name is likely a common noun."},
+    "Match[23]": {"type":"Name","value":"LEB HiB BIZ Bockenem Sammler","confidence":0.4,"reason":"Context clue: 'Sammler' means 'collector' in German, suggesting that LEB HiB BIZ Bockenem Sammler might be an organization or a common noun."},
+    "Match[24]": {"type":"Identity","value":"LEB BIZ Hann. BultstraÃŸe","confidence":0.6,"reason":"Context clue: 'Hann.' likely refers to the city of Hanover, suggesting that LEB BIZ Hann. BultstraÃŸe refers to an individual or organization. The location is likely a physical address."},
+    "Match[26]": {"type":"Name","value":"LEB BIZ Hannover Raiffeisenstr.","confidence":0.6,"reason":"Context clue: 'Raiffeisenstr.' appears in multiple fields, suggesting that LEB BIZ Hannover Raiffeisenstr. refers to an individual or organization. The name is likely a common noun."},
+    "Match[27]": {"type":"Name","value":"LEB BeratungsbÃ¼ro GÃ¶ttingen","confidence":0.6,"reason":"Context clue: 'GÃ¶ttingen' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro GÃ¶ttingen refers to an individual or organization. The name is likely a common noun."},
+    "Match[30]": {"type":"Name","value":"LEB BIZ Einbeck Standort Uslar","confidence":0.6,"reason":"Context clue: 'Uslar' appears in multiple fields, suggesting that LEB BIZ Einbeck Standort Uslar refers to an individual or organization. The name is likely a common noun."},
+    "Match[31]": {"type":"Name","value":"LEB BIZ Bad Gandersheim","confidence":0.6,"reason":"Context clue: 'Bad Gandersheim' appears in multiple fields, suggesting that LEB BIZ Bad Gandersheim refers to an individual or organization. The name is likely a common noun."},
+    "Match[32]": {"type":"Name","value":"LEB BIZ Harz Herzberg","confidence":0.6,"reason":"Context clue: 'Herzberg' appears in multiple fields, suggesting that LEB BIZ Harz Herzberg refers to an individual or organization. The name is likely a common noun."},
+    "Match[35]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Emsland JÃ¤gerstraÃŸe","confidence":0.6,"reason":"Context clue: 'JÃ¤gerstraÃŸe' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Emsland JÃ¤gerstraÃŸe refers to an individual or organization. The name is likely a common noun."},
+    "Match[36]": {"type":"Identity","value":"bÃ¼ro Emsland JÃ¤gerstraÃŸe","confidence":0.2,"reason":"Context clue: 'JÃ¤gerstraÃŸe' appears in multiple fields, suggesting that bÃ¼ro Emsland JÃ¤gerstraÃŸe might be an organization or a common noun."},
+    "Match[7]": {"type":"Name","value":"LEB BeratungsbÃ¼ro Oldenburg","confidence":0.7,"reason":"Context clue: 'Oldenburg' appears in multiple fields, suggesting that LEB BeratungsbÃ¼ro Oldenburg refers to an individual or organization. The name is likely a common noun."} }
+--------------------------------------------------
+[2026-02-09T07:23:43+01:00] [RESPONSE]
+{"type": "Name", "value": "Neue Bezeichnung", "reason": "Matched capitalized word, but too short and lacks surrounding context to confirm it refers to a human being.", "confidence": 0.2}
+--------------------------------------------------
+[2026-02-09T07:23:44+01:00] [RESPONSE]
+{"type":"Identity","value":"Telefonie","reason":"Context clue: \"zusatz innovaphone\" is likely a phone-related identifier, and \"Telefonie\" is a German word for \"phone service\" or \"telephone service\".","confidence":0.8}
+--------------------------------------------------
+[2026-02-09T07:23:45+01:00] [RESPONSE]
+{"type":"Name","value":"Aleksander Jakubowski","confidence":1.0,"reason":"Strictly identifies real human name with capitalized words and context of full name (Herr Dittrich) and title (GeschÃ¤ftsfÃ¼hrer), rejecting false positives like company names or cities."}
+--------------------------------------------------
+[2026-02-09T07:23:46+01:00] [RESPONSE]
+{
+        "type": "Identity",
+        "value": "zusatz innovaphone",
+        "reason": "Contains the word 'innovaphone', which is a specific brand name often associated with an individual's identity.",
+        "confidence": 0.5
+    }
+--------------------------------------------------
+[2026-02-09T07:23:47+01:00] [RESPONSE]
+{"type":"Name","value":"GEDOKU Admin-HandbuchSeite 1 von 7","confidence":0.95,"reason":"Capitalized words and context clues indicate a title or name, but the lack of common nouns makes it less certain."}
+--------------------------------------------------
+[2026-02-09T07:23:55+01:00] [RESPONSE]
+{
+    "matches": [
+        {"type": "Name", "value": "Zur Information von Ihrem Datenschutzbeauftragten", "reason": "Strong match due to context and grammatical structure.", "confidence": 0.9},
+        {"type": "Name", "value": "Ihr Hans", "reason": "Context clues suggest this is a name, but without the surname, it's uncertain.", "confidence": 0.4},
+        {"type": "Name", "value": "JÃ¼rgen Lehmann", "reason": "Strong match due to context and grammatical structure.", "confidence": 0.9},
+        {"type": "Identity", "value": "bere", "reason": "Context clues suggest this is a reference to a person, but without further information, it's uncertain.", "confidence": 0.6},
+        {"type": "Name", "value": "nicht", "reason": "Context does not support the identification of a specific person or organization.", "confidence": 0.2},
+        {"type": "Name", "value": "benutzen", "reason": "Context clues suggest this is an action, but without further information, it's uncertain.", "confidence": 0.4},
+        {"type": "Identity", "value": "kann", "reason": "Context clues suggest this is a reference to a person or organization, but without further information, it's uncertain.", "confidence": 0.5},
+        {"type": "Name", "value": "Optimierung dienen", "reason": "Strong match due to context and grammatical structure.", "confidence": 0.9},
+        {"type": "Identity", "value": "er Optimierung", "reason": "Context clues suggest this is a reference to a person or organization, but without further information, it's uncertain.", "confidence": 0.5},
+        {"type": "Name", "value": "Hans", "reason": "Strong match due to context and grammatical structure.", "confidence": 0.9},
+        {"type": "Sensitive", "value": "Krankmeldung ist eine Ansammlung", "reason": "Strong match due to explicit mention of sensitive data (health information).", "confidence": 1.0},
+        {"type": "Identity", "value": "der besondere Fall", "reason": "Context clues suggest this is a reference to a person or organization, but without further information, it's uncertain.", "confidence": 0.5},
+        {"type": "Sensitive", "value": "daten vorsieht", "reason": "Strong match due to explicit mention of sensitive data (health information).", "confidence": 1.0},
+        {"type": "Name", "value": "John Doe", "reason": "Explicit label and context support the identification of a specific person.", "confidence": 1.0}
+    ]
+}
+--------------------------------------------------
+[2026-02-09T07:23:56+01:00] [RESPONSE]
+{"type":"Email","value":"Yorck.Mueller-Dieckert@leb.de","reason":"Personal email address from a private domain.","confidence":0.9}
+--------------------------------------------------
+[2026-02-09T07:23:57+01:00] [RESPONSE]
+{"type":"Name","value":"Weser-Ems Mitte | 12: Weser-Ems Nor","confidence":0.9,"reason":"The text contains capitalized words and appears to be a proper name with geographical significance, which is consistent with a human name. Context clues further support this, as the surrounding text includes other names and locations."}
+--------------------------------------------------
+[2026-02-09T07:23:58+01:00] [RESPONSE]
+{"type":"Name","value":"Weser-Ems Mitte","confidence":0.0,"reason":"False Positive, lack of contextual information about a human being"}
+--------------------------------------------------
+[2026-02-09T07:23:59+01:00] [RESPONSE]
+{"type": "Name", "value": "Weser-Ems Mitte | 12: Weser-Ems Nor", "reason": "Context clue: 'Weser-Ems' appears multiple times in the document, suggesting it might be a proper noun referring to a location.", "confidence": 0.8}
+--------------------------------------------------
+[2026-02-09T07:24:07+01:00] [RESPONSE]
+{
+    "[{\"type\":\"CreditCard\",\"value\":\"0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 }, \"reason\": \"Context clue: The presence of the letters 'C' and a hyphen (-) suggests that this is indeed a credit card number\", \"confidence\": 0.95}],\\n{[\"type\":\"CreditCard\",\"value\":\"0 0 0 - 0 0 0 0 - C 0 0 0 - 0 0 0 0 0 0 0 0 0 0 4 6 }, \"reason\": \"Context clue: The presence of the letters 'C' and a hyphen (-) suggests that this is indeed a credit card number\", \"confidence\": 0.95}],\\n{[\"type\":\"Name\",\"value\":\"Andreas Mundanjohl\",\"reason\": \"Context clue: The full name appears to be well-formed, with no obvious typos or abbreviations; therefore, it is likely to refer to a specific individual\", \"confidence\": 0.85}],\\n{[\"type\":\"Email\",\"value\":\"ulf.Knutzen@ricoh.deW A /\",\"reason\": \"Context clue: The presence of the '@' symbol and a 'W A' label suggests that this is an email address, but it appears to be incomplete; therefore, confidence is set at 0.4\", \"confidence\": 0.4}],\\n{[\"type\":\"Phone\",\"value\":\"49 511 676885-3019\",\"reason\": \"Context clue: The presence of a country code and a hyphenated phone number suggests that this is indeed a personal mobile number; therefore, confidence is set at 0.8\", \"confidence\": 0.8}],\\n{[\"type\":\"Phone\",\"value\":\"49 511 676885-3029\",\"reason\": \"Context clue: The presence of a country code and a hyphenated phone number suggests that this is indeed a personal mobile number; therefore, confidence is set at 0.8\", \"confidence\": 0.8}],\\n{[\"type\":\"Phone\",\"value\":\"49 511 676885-3029\",\"reason\": \"Context clue: The presence of a country code and a hyphenated phone number suggests that this is indeed a personal mobile number; therefore, confidence is set at 0.8\", \"confidence\": 0.8}],\\n{[\"type\":\"Financial\",\"value\":\"Account\",\"reason\": \"Context clue: The term 'Account' is often used in financial contexts to refer to a specific individual's account; therefore, confidence is set at 0.7\", \"confidence\": 0.7}]}":".json}  ]]}  }]}.
+--------------------------------------------------
+[2026-02-09T07:24:09+01:00] [RESPONSE]
+{
+    "Type": "Name",
+    "value": "Holger Schildt",
+    "reason": "Explicit label 'Redaktion: HolgerSchildt' and 'Gesamtverantwortung und Chefredaktion:' with title indicating a specific person's name.",
+    "confidence": 0.95
+}
+--------------------------------------------------

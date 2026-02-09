@@ -151,6 +151,10 @@
             </div>
         </div>
 
+        <!-- Pagination Controls -->
+        <div id="paginationControls" class="flex justify-center items-center gap-4 py-8 mt-4">
+            <!-- Populated by JS -->
+        </div>
         <!-- Findings List (Cards) -->
         <div id="findingsList" class="space-y-4">
             {{range .Findings}}
@@ -260,6 +264,13 @@
             {{end}}
         </div>
 
+        </div>
+
+        <!-- Pagination Controls (Bottom) -->
+        <div id="paginationControlsContainer" class="flex justify-center items-center gap-4 py-8 mt-4">
+            <!-- Populated by JS -->
+        </div>
+
     </main>
 
     <footer class="border-t border-slate-800 mt-auto py-8">
@@ -290,12 +301,13 @@
             filterContainer.appendChild(btn);
         });
 
-        // Filter State
+        // Filter & Pagination State
         let activeFilter = 'all';
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let visibleCards = Array.from(cards); // Initially all cards
 
         function toggleFilter(btn, type) {
-            // Simple single select for this design for clarity, or toggle
-            // Let's do single select group behavior for simplicity in "Audit" mode
             document.querySelectorAll('.filter-chip').forEach(b => {
                 b.classList.remove('bg-blue-600', 'text-white');
                 b.classList.add('bg-slate-800', 'text-slate-300');
@@ -314,23 +326,79 @@
 
         function applyFilters() {
             const query = searchInput.value.toLowerCase();
-            let visibleCount = 0;
 
-            cards.forEach(card => {
+            // 1. Filter matching cards
+            visibleCards = Array.from(cards).filter(card => {
                 const type = card.dataset.type;
                 const content = card.dataset.content.toLowerCase();
-
                 const matchesType = activeFilter === 'all' || type === activeFilter;
-                const matchesSearch = content.includes(query);
-
-                if (matchesType && matchesSearch) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+                const matchesSearch = !query || content.includes(query);
+                return matchesType && matchesSearch;
             });
+
+            // 2. Reset to Page 1
+            currentPage = 1;
+
+            // 3. Render
+            renderPagination();
         }
+
+        function renderPagination() {
+            // Hide all first
+            cards.forEach(c => c.style.display = 'none');
+
+            // Calculate Slice for current page
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = visibleCards.slice(start, end);
+
+            // Show slice
+            pageItems.forEach(c => c.style.display = 'block');
+
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            const container = document.getElementById('paginationControlsContainer');
+            if (!container) return;
+
+            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+
+            if (visibleCards.length === 0) {
+                container.innerHTML = '<span class="text-slate-500 text-sm">No results found</span>';
+                return;
+            }
+
+            let html = '';
+
+            // Prev
+            const prevDisabled = currentPage === 1 ? 'disabled opacity-50 cursor-not-allowed' : '';
+            html += `<button onclick="changePage(${currentPage - 1})" class="px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors ${prevDisabled}">Previous</button>`;
+
+            // Page Info
+            html += `<span class="px-4 text-slate-400 text-sm font-medium">Page ${currentPage} of ${totalPages}</span>`;
+
+            // Next
+            const nextDisabled = currentPage >= totalPages ? 'disabled opacity-50 cursor-not-allowed' : '';
+            html += `<button onclick="changePage(${currentPage + 1})" class="px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors ${nextDisabled}">Next</button>`;
+
+            container.innerHTML = html;
+        }
+
+        window.changePage = function (newPage) {
+            const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+            if (newPage < 1 || newPage > totalPages) return;
+
+            currentPage = newPage;
+            renderPagination();
+
+            // Scroll to top of list
+            const list = document.getElementById('findingsList');
+            if (list) list.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Initial Render
+        renderPagination();
 
         // Feedback & Whitelist (Mocked for UI, connected to backend)
         function submitFeedback(id, feedback, btn) {

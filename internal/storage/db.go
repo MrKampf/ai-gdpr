@@ -61,7 +61,7 @@ func CompleteScan(s *ScanModel, totalFiles, piiFiles, totalFindings int64) error
 	s.TotalFiles = totalFiles
 	s.PIIFiles = piiFiles
 	s.TotalFindings = totalFindings
-	return DB.Save(s).Error
+	return DB.Model(s).Select("EndTime", "Duration", "Status", "TotalFiles", "PIIFiles", "TotalFindings").Updates(s).Error
 }
 
 func SaveFinding(scanID uint, path, piiType, value, reason string, confidence float64) error {

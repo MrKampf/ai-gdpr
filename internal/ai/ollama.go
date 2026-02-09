@@ -278,12 +278,22 @@ func (c *OllamaClient) parseFindings(responseText string) ([]FindingResult, erro
 	start := strings.Index(cleanText, "[")
 	end := strings.LastIndex(cleanText, "]")
 
-	if start == -1 || end == -1 {
-		return []FindingResult{{
-			Type:   "Unknown",
-			Value:  responseText, // Return raw text for debugging
-			Reason: "AI returned non-JSON response",
-		}}, nil
+	// Fallback for single object response (missing brackets)
+	if start == -1 {
+		startObj := strings.Index(cleanText, "{")
+		endObj := strings.LastIndex(cleanText, "}")
+		if startObj != -1 && endObj != -1 {
+			// Wrap in brackets to make it a list
+			cleanText = "[" + cleanText[startObj:endObj+1] + "]"
+			start = 0
+			end = len(cleanText) - 1
+		} else {
+			return []FindingResult{{
+				Type:   "Unknown",
+				Value:  responseText, // Return raw text for debugging
+				Reason: "AI returned non-JSON response",
+			}}, nil
+		}
 	}
 
 	jsonPart := cleanText[start : end+1]
